@@ -1,7 +1,7 @@
 {
     "title":"Run2MyBeat Music Screen",
     "description":"This template builds an app that traces \"Hello, World!\" and breaks into the debugger.",
-    "id":"run2mybeat-music-screen.project.kinoma.marvell.com",
+    "id":"main_screen.kinoma.marvell.com",
     "tags":[
         "emptySample"
     ],
