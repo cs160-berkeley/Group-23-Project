@@ -16,13 +16,6 @@
  */
 
  let whiteMedStyle = new Style({ font: "20px", color: "white" });
- let heart = new Texture("images/favorite-heart-button copy.png");
- let heartIm = new Skin({
- 	width: 550, height: 550,
- 	texture: heart,
- 	fill: "white",
- 	aspect: "fit"
- });
  let whiteHeaderStyle = new Style({ font: "30px", color: "white" });
  let whiteSkin = new Skin ({fill: 'white'});
  let blackSkin = new Skin ({fill: 'black'});
@@ -39,6 +32,14 @@
  let subIm = new Skin({
  	width: 550, height: 550,
  	texture: sub,
+ 	fill: "white",
+ 	aspect: "fit"
+ });
+
+ let heart = new Texture("images/favorite-heart-button copy.png");
+ let heartIm = new Skin({
+ 	width: 550, height: 550,
+ 	texture: heart,
  	fill: "white",
  	aspect: "fit"
  });
@@ -107,7 +108,7 @@
  		skin: whiteSkin,
  		contents: [
  		new Line({
- 			top: 0, left: 0, right: 0, height: 30,
+ 			top: 0, left: 0, right: 0, height: 40,
  			skin: new Skin({ fill: "#7f7f7f" }),
  			contents: [
  			new Label({
