@@ -14,6 +14,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+ 
+trace("I am here \n");
 let blueSkin = new Skin ({fill: 'blue'});
 
 let whiteSkin = new Skin ({fill: 'white'});
@@ -128,7 +130,9 @@ let nextButton = Container.template($ => ({   right: 50, width: 20, height: 20,
 		song.start();
 		trace(curr_index + "  " + index+ "\n");      }   })}));
 
-/* Play screen layout */let playScreen = Column.template($ => ({    left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin,    contents: [      new Line({          left: 0, right: 0, height: 30, skin: graySkin,          contents: [
+
+/* Play screen layout */export var playScreen = Column.template($ => ({
+    left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin,    contents: [      new Line({          left: 0, right: 0, height: 30, skin: graySkin,          contents: [
           	new Label({left: 10, right: 10, top: 5,          		style: whiteMedStyle, string: "Now Playing"}),          ]      }),
       new Line({          left: 45, right: 45, top: 10, height: 90, skin: whiteSkin,          contents: [
           		new subButton(),
@@ -166,7 +170,7 @@ let nextButton = Container.template($ => ({   right: 50, width: 20, height: 20,
       		left: 0, right: 0, height: 20, top: 10, skin: centermenuDots,
       }),    ]}));
 
-let currentScreen;
+/*let currentScreen;
 currentScreen = new playScreen();
 application.add(currentScreen);
-
+*/

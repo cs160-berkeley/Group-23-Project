@@ -55,7 +55,7 @@
  }));
  
 
- let MainContainerTemplate = Container.template($ => ({
+ export var SettingsTemplate = Container.template($ => ({
  	left: 0, right: 0, top: 0, bottom: 0,
  	skin: new Skin({fill: "white"}),
  	contents: [
@@ -95,5 +95,5 @@
  	]
  }));
 
- var mainContainer = new MainContainerTemplate();
- application.add(mainContainer);
+// var mainContainer = new MainContainerTemplate();
+// application.add(mainContainer);
