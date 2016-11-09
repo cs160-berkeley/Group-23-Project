@@ -28,8 +28,18 @@ let whiteSmallStyle = new Style({ font: "10px", color: "white" });
 
 let centerdots = new Texture("images/dot-menu-icon.png");let centermenuDots = new Skin({      width: 150, height: 50,      texture: centerdots,      fill: "white",      aspect: "fit"});
 
+var dictionary = {};
+dictionary['80'] = ["21guns.mp3" , "HeyHo.mp3","SeeYouAgain.mp3"];
+dictionary['90'] = ["GoldDigger.mp3" , "Diamonds.mp3","WeAreYoung.mp3"];
+dictionary['100'] = ["Riptide.mp3" , "ManintheMirror.mp3","TurnDownForWhat.mp3"];
+var index;
+var curr_index = 0;
+var first = 0;
+var song = 0;
+
 var THR = 75;
 let targetHR = new Label({left: 0, right: 5, top: 0,          		style: whiteHeaderStyle, string: THR});
+
 
 let set = new Texture("images/settings-cogwheel-button copy.png");let settingsIm = new Skin({      width: 50, height: 50,      texture: set,      fill: "white",      aspect: "fit"});
 
@@ -60,21 +70,22 @@ let heartButton = Column.template($ => ({   left: 10, width: 87, height: 87, sk
 	//	application.add(currentScreen);      //}   //})}));
 
 let addButton = Container.template($ => ({   left: 10, width: 50, height: 50, skin: addIm, active: true,   contents: [   ],   behavior: Behavior({      onTouchEnded: function(container) {
-      	THR = THR + 1;
-      	targetHR.string = THR;      }   })}));
+      	THR = THR + 10;
+      	targetHR.string = THR;
+      	container.container.container.controls[1][1].delegate("onTouchEnded");
+      	first = 0;
+      	container.container.container.controls[1][1].delegate("onTouchEnded");
+      }   })}));
 
 
 
 let subButton = Container.template($ => ({   left: 10, width: 50, height: 50, skin: subIm, active: true,   contents: [   ],   behavior: Behavior({      onTouchEnded: function(container) {
-      	THR = THR - 1;
-      	targetHR.string = THR;      }   })}));
+      	THR = THR - 10;
+      	targetHR.string = THR;
+      	container.container.container.controls[1][1].delegate("onTouchEnded");
+      	first = 0;
+      	container.container.container.controls[1][1].delegate("onTouchEnded");      }   })}));
 
-var dictionary = {};
-dictionary['80'] = ["21guns.mp3" , "HeyHo.mp3","SeeYouAgain.mp3"];
-var index;
-var curr_index = 0;
-var first = 0;
-var song = 0;
 let playButton = Container.template($ => ({   left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,   contents: [   ],   behavior: Behavior({      onTouchEnded: function(container) {
       	if (container.skin ==pauseIm){
       		container.skin = playIm;
@@ -126,7 +137,7 @@ let nextButton = Container.template($ => ({   right: 50, width: 20, height: 20,
       	 ]
       }),
       new Column({
-      		left: 10, right: 10, height: 380, top: 5, skin: blackSkin,
+      		left: 10, right: 10, height: 380, top: 5, skin: blackSkin, name:"controls",
       		contents: [
       			 new Line({
       				top: 5, left: 5, right: 5, height: 320, skin: graySkin,
