@@ -20,9 +20,9 @@
  let whiteSkin = new Skin ({fill: 'white'});
  let blackSkin = new Skin ({fill: 'black'});
 
- import {
+ /*import {
  	SystemKeyboard
- } from 'assets/keyboard';
+ } from 'assets/keyboard';*/
 
  let emailButton = Container.template($ => ({
  	width: 200, height: 50, top: 10, skin: new Skin({ fill: "#c4c4c4" }), active: true,

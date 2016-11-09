@@ -73,6 +73,7 @@
  var THR = 75;
  let targetHR = new Label({left: 0, right: 5, top: 0,
  	style: whiteHeaderStyle, string: THR});
+ 	
  let heartButton = Column.template($ => ({
  	left: 10, width: 87, height: 87, skin: heartIm, active: true,
  	contents: [
@@ -99,7 +100,7 @@
  }));
 
 
- let MainContainerTemplate = Container.template($ => ({
+ export var StartRunTemplate = Container.template($ => ({
  	left: 0, right: 0, top: 0, bottom: 0,
  	skin: new Skin({fill: "white"}),
  	contents: [
@@ -138,5 +139,5 @@
  	]
  }));
 
- var mainContainer = new MainContainerTemplate();
- application.add(mainContainer);
+ /*var mainContainer = new MainContainerTemplate();
+ application.add(mainContainer);*/
