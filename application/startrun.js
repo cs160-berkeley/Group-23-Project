@@ -14,7 +14,12 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+	import { PlaySongTemplate } from "playsong";
+	import { SettingsTemplate } from "settings";
+	import { LibraryTemplate } from "library";
+	//import { currentScreen } from "main";
 
+ 
  let whiteMedStyle = new Style({ font: "20px", color: "white" });
  let whiteHeaderStyle = new Style({ font: "30px", color: "white" });
  let whiteSkin = new Skin ({fill: 'white'});
@@ -94,7 +99,7 @@
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      	//go to running screen
+      		application.add(new PlaySongTemplate());
       }
   })
  }));
