@@ -15,7 +15,11 @@
  *     limitations under the License.
  */
  
-trace("I am here \n");
+ 
+import { SettingsTemplate } from "settings";
+import { StartRunTemplate } from "startrun";
+import { LibraryTemplate } from "library";
+
 let blueSkin = new Skin ({fill: 'blue'});
 
 let whiteSkin = new Skin ({fill: 'white'});
@@ -130,6 +134,21 @@ let subIm = new Skin({
       aspect: "fit"
 });
 
+let finishRunButton = Container.template($ => ({
+ 	width: 200, height: 50, skin: new Skin({ fill: "#c4c4c4" }), active: true,
+ 	contents: [
+ 	new Label({
+ 		left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
+ 		string: "Finish Run"
+ 	}),
+ 	],
+ 	behavior: Behavior({
+ 		onTouchEnded: function(container) {
+      		application.add(new StartRunTemplate());
+      }
+  })
+ }));
+
 let heartButton = Column.template($ => ({
    left: 10, width: 87, height: 87, skin: heartIm, active: true,
    contents: [
@@ -160,6 +179,7 @@ let addButton = Container.template($ => ({
       }
    })
 }));
+
 
 
 
@@ -272,21 +292,21 @@ export var PlaySongTemplate = Column.template($ => ({
       	 ]
       }),
       new Column({
-      		left: 10, right: 10, height: 380, top: 5, skin: blackSkin, name:"controls",
+      		left: 10, right: 10, height: 330, top: 5, bottom: 10, skin: blackSkin, name:"controls",
       		contents: [
-      			 new Line({
-      				top: 5, left: 5, right: 5, height: 320, skin: graySkin,
+      			 new Column({
+      				top: 5, left: 5, right: 5, height: 270, skin: graySkin,
       				contents: [
       					new Line({
-      						top: 10, left: 30, width: 230, height: 230, skin: whiteSkin,
+      						top: 10, left: 50, width: 180, height: 180, skin: whiteSkin,
       						contents: [
       						]
      			 		}),
      			 		//having trouble making these labels appear
-     			 		new Label({left: 10, right: 10, top: 0,
-          					style: whiteSmallStyle, string: "Song Title"}),
-          				new Label({left: 10, right: 10, top: 0,
-          					style: whiteSmallStyle, string: "Song Artist"}),
+     			 		new Label({left: 10, right: 10, top: 10,
+          					style: whiteMedStyle, string: "Song Title"}),
+          				new Label({left: 10, right: 10, top: 10,
+          					style: whiteMedStyle, string: "Song Artist"}),
       				]
      			 }),
      			 new Line({
@@ -299,6 +319,7 @@ export var PlaySongTemplate = Column.template($ => ({
      			 }),
       		]
       }),
+      new finishRunButton(),
       new Line ({
       		left: 0, right: 0, height: 20, top: 10, skin: centermenuDots,
       }),
