@@ -14,6 +14,13 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+ 
+ 
+import { PlaySongTemplate } from "playsong";
+import { SettingsTemplate } from "settings";
+import { StartRunTemplate } from "startrun";
+import { LibraryTemplate } from "library";
+
 let horizontalScrollbarTexture = new Texture('assets/horizontalScrollbar.png', 1);
 let horizontalScrollbarSkin = new Skin({ texture: horizontalScrollbarTexture, width: 40, height: 10, tiles: { left:10, right:10 }, });
 let horizontalScrollerShadowTexture = new Texture('assets/horizontalScrollerShadow.png', 1);

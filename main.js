@@ -18,4 +18,9 @@ import { PlaySongTemplate } from "playsong";
 import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
-application.add(new LibraryTemplate());
+
+var currentScreen;
+
+currentScreen = new StartRunTemplate();
+
+application.add(currentScreen);

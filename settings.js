@@ -14,6 +14,10 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { PlaySongTemplate } from "playsong";
+import { LibraryTemplate } from "library";
+import { StartRunTemplate } from "startrun";
+
 
  let whiteMedStyle = new Style({ font: "20px", color: "white" });
  let whiteHeaderStyle = new Style({ font: "30px", color: "white" });
