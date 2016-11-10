@@ -40,16 +40,9 @@ let centermenuDots = new Skin({
       aspect: "fit"
 });
 
-var dictionary = {};
-dictionary['80'] = ["21guns.mp3" , "HeyHo.mp3","SeeYouAgain.mp3"];
-dictionary['90'] = ["GoldDigger.mp3" , "Diamonds.mp3","WeAreYoung.mp3"];
-dictionary['100'] = ["Riptide.mp3" , "ManintheMirror.mp3","TurnDownForWhat.mp3"];
-var index;
-var curr_index = 0;
-var first = 0;
-var song = 0;
-
-var THR = 75;
+var dictionary = {};dictionary['80'] = ["21guns" , "HeyHo","SeeYouAgain"];dictionary['90'] = ["GoldDigger" , "Diamonds","WeAreYoung"];dictionary['100'] = ["Riptide" , "ManintheMirror","TurnDownForWhat"];var name_artist_dict = {};name_artist_dict["21guns"] = ["21 Guns", "Green Day"];name_artist_dict["HeyHo"] = ["Hey Ho", "The Lumineers"];name_artist_dict["SeeYouAgain"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth"];name_artist_dict["GoldDigger"] = ["Gold Digger", "Kanye West"];name_artist_dict["Diamonds"] = ["Diamonds", "Rihanna"];name_artist_dict["WeAreYoung"] = ["We Are Young", "Fun ft. Janelle Monáe"];name_artist_dict["Riptide"] = ["Riptide", "Vance Joy"];name_artist_dict["ManintheMirror"] = ["Man in the Mirror", "Green Day"];name_artist_dict["TurnDownForWhat"] = ["Turn Down For What", "DJ Snake, Lil Jon"];var index;var curr_index = 0;var first = 0;var song = 0;
+var THR = 85;
+var CHR = 60;
 let targetHR = new Label({left: 0, right: 5, top: 0,
           		style: whiteHeaderStyle, string: THR});
 
@@ -198,78 +191,18 @@ let subButton = Container.template($ => ({
    })
 }));
 
-let playButton = Container.template($ => ({
-   left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,
-   contents: [
-   ],
-   behavior: Behavior({
-      onTouchEnded: function(container) {
-      	if (container.skin ==pauseIm){
-      		container.skin = playIm;
-      		//var song = new Media({url: mergeURI(application.url,"silence-1sec.mp3"),width: 0, height: 0});
-			song.stop();
-		
-      	} else{
-      		container.skin = pauseIm;
-      		var cat = THR/10;
-			cat = Math.ceil(cat) * 10;
-			index = dictionary[cat.toString()].length;
-			if (first == 0){ // when the application first loads up, play the first song in the correct HB category.
-      			first = 1;
-      			curr_index = 0;
-      		 	song = new Media({url: mergeURI(application.url,"songs/" + cat + "/" + dictionary[cat.toString()][curr_index]),width: 0, height: 0});
-				song.start();
-      			//var sound = new Sound(mergeURI(application.url, "songs/" + cat + "/" + dictionary[cat.toString()][curr_index]));
-				//sound.play();
-      			
-      		} else{
-      			song.start();
-			}
-		}
-      }
-   })
-}));
+let playButton = Container.template($ => ({   left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,   contents: [   ],   behavior: Behavior({      onTouchEnded: function(container) {      	if (container.skin ==pauseIm){      		container.skin = playIm;			song.stop();		      	} else{      		container.skin = pauseIm;      		var cat = THR/10;			cat = Math.ceil(cat) * 10;			index = dictionary[cat.toString()].length;			if (first == 0){ // when the application first loads up, play the first song in the correct HB category.      			first = 1;      			curr_index = 0;      		 	song = new Media({url: mergeURI(application.url,"songs/" + cat + "/" + dictionary[cat.toString()][curr_index] +".mp3"),width: 0, height: 0});				let picture = new Picture({url: mergeURI(application.url, "songs/" +cat + "/" + dictionary[cat.toString()][curr_index] +".jpg"),width: 250, height: 250});				container.container.container[0][0].empty();				container.container.container[0][0].add(picture);				container.container.container[0][1].string = name_artist_dict[dictionary[cat.toString()][curr_index]][0];				container.container.container[0][2].string = name_artist_dict[dictionary[cat.toString()][curr_index]][1];				song.start();      			      		} else{      			song.start();			}		}      }   })}));
 
 let prevButton = Container.template($ => ({
    left: 50, width: 20, height: 20, skin: prevIm, active: true,
    contents: [
    ],
-   behavior: Behavior({
-      onTouchEnded: function(container) {
-      	song.stop();
-      	var cat = THR/10;
-		cat = Math.ceil(cat) * 10;
-		curr_index = curr_index -1;
-		index = dictionary[cat.toString()].length;
-		if (curr_index < 0){
-			curr_index = index -1;
-		}
-      	song = new Media({url: mergeURI(application.url,"songs/" + cat + "/" + dictionary[cat.toString()][curr_index]),width: 0, height: 0});
-		song.start();
-      }
-   })
+   behavior: Behavior({      onTouchEnded: function(container) {      	song.stop();      	var cat = THR/10;		cat = Math.ceil(cat) * 10;		curr_index = curr_index -1;		index = dictionary[cat.toString()].length;		if (curr_index < 0){			curr_index = index -1;		}      	song = new Media({url: mergeURI(application.url,"songs/" + cat + "/" + dictionary[cat.toString()][curr_index]+".mp3"),width: 0, height: 0});		let picture = new Picture({url: mergeURI(application.url, "songs/" +cat + "/" + dictionary[cat.toString()][curr_index] +".jpg"),width: 250, height: 250});		container.container.container[0][0].empty();
+				container.container.container[0][0].add(picture);		container.container.container[0][1].string = name_artist_dict[dictionary[cat.toString()][curr_index]][0];		container.container.container[0][2].string = name_artist_dict[dictionary[cat.toString()][curr_index]][1];						song.start();      }   })
 }));
 
-let nextButton = Container.template($ => ({
-   right: 50, width: 20, height: 20, skin: nextIm, active: true,
-   contents: [
-   ],
-   behavior: Behavior({
-      onTouchEnded: function(container) {
-		song.stop();
-      	var cat = THR/10;
-		cat = Math.ceil(cat) * 10;
-		curr_index = curr_index +1;
-
-		if (curr_index >= index){
-			curr_index = 0;
-		}
-      	song = new Media({url: mergeURI(application.url,"songs/" + cat + "/" + dictionary[cat.toString()][curr_index]),width: 0, height: 0});
-		song.start();
-		trace(curr_index + "  " + index+ "\n");
-      }
-   })
-}));
+let nextButton = Container.template($ => ({   right: 50, width: 20, height: 20, skin: nextIm, active: true,   contents: [   ],   behavior: Behavior({      onTouchEnded: function(container) {		song.stop();      	var cat = THR/10;		cat = Math.ceil(cat) * 10;		curr_index = curr_index +1;		if (curr_index >= index){			curr_index = 0;		}      	song = new Media({url: mergeURI(application.url,"songs/" + cat + "/" + dictionary[cat.toString()][curr_index]+".mp3"),width: 0, height: 0});		let picture = new Picture({url: mergeURI(application.url, "songs/" +cat + "/" + dictionary[cat.toString()][curr_index] +".jpg"),width: 250, height: 250});		
+		trace("hello\n");		container.container.container[0][0].empty();		container.container.container[0][0].add(picture);		container.container.container[0][1].string = name_artist_dict[dictionary[cat.toString()][curr_index]][0];		container.container.container[0][2].string = name_artist_dict[dictionary[cat.toString()][curr_index]][1];						song.start();      }   })}));
 
 
 /* Play screen layout */
