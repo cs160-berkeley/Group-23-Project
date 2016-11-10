@@ -14,7 +14,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { playScreen } from "playScreen";
+import { PlaySongTemplate } from "playsong";
 import { SettingsTemplate } from "settings";
-
-application.add(new SettingsTemplate());
+import { StartRunTemplate } from "startrun";
+import { LibraryTemplate } from "library";
+application.add(new LibraryTemplate());

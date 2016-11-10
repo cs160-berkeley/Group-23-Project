@@ -32,8 +32,7 @@ var labelStuff = Container.template($ => ({
         new Label($, { width: 640, height:60, string:"TEST", style: labelStyle })
     ],
     Behavior: class extends Behavior {
-    	onTouchBegan(content){
-    		trace("reached\n");
+    	onTouchBegan(content){
     	}
     }
 }));
@@ -50,9 +49,7 @@ var SongNameWhite = Container.template($ => ({
     		content.state = 1;
         }
         onTouchEnded(content){
-        	trace($+"\n");
         	var songStr = $.replace(/\s/g, "-").toLowerCase();
-        	trace(songStr+"\n");
 			if(song!=0) song.stop();
 	        song = new Media({url: mergeURI(application.url, "songs/"+targetHR+"/"+songStr+".mp3")});
         	song.start();
@@ -70,9 +67,7 @@ var SongNameGray = Container.template($ => ({
     		content.state = 1;
         }
         onTouchEnded(content){
-        	trace($+"\n");
         	var songStr = $.replace(/\s/g, "-").toLowerCase();
-        	trace(songStr+"\n");
         	if(song!=0) song.stop();
         	song = new Media({url: mergeURI(application.url, "songs/"+targetHR+"/"+songStr+".mp3")});
         	song.start();
@@ -93,7 +88,6 @@ function getCurrHRArrays(hr, screen){
 		else{
 			screen.add(new SongNameGray(songArr[i]));
 		}
-		trace(songArr[i]+"\n");
 	}
 	/*for(var i in artistArr){
 		trace(artistArr[i]+"\n");
@@ -107,7 +101,15 @@ let songScreen = Column.template($ => ({
     left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin
 }));
 
-let currentScreen;
-currentScreen = new songScreen();
+
+var currentScreen = new songScreen();
 getCurrHRArrays(targetHR, currentScreen);
-application.add(currentScreen);
+// application.add(currentScreen);
+
+export var LibraryTemplate = Container.template($ => ({
+    left: 0, right: 0, top: 0, bottom: 0,
+    skin: new Skin({fill: "white"}),
+    contents: [
+        currentScreen
+    ]
+ }));
