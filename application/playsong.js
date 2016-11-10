@@ -127,6 +127,28 @@ let subIm = new Skin({
       aspect: "fit"
 });
 
+let nextScreenButton = Container.template($ => ({
+ 	right: 0, height: 10, skin: new Skin({ fill: "blue" }), active: true,
+ 	contents: [
+ 	],
+ 	behavior: Behavior({
+ 		onTouchEnded: function(container) {
+      		application.add(new AnalyticsTemplate());
+      }
+  })
+ }));
+
+let prevScreenButton = Container.template($ => ({
+ 	left: 0, height: 10, skin: new Skin({ fill: "blue" }), active: true,
+ 	contents: [
+ 	],
+ 	behavior: Behavior({
+ 		onTouchEnded: function(container) {
+      		application.add(new LibraryTemplate());
+      }
+  })
+ }));
+
 let finishRunButton = Container.template($ => ({
  	width: 200, height: 50, skin: new Skin({ fill: "#c4c4c4" }), active: true,
  	contents: [
@@ -173,9 +195,6 @@ let addButton = Container.template($ => ({
    })
 }));
 
-
-
-
 let subButton = Container.template($ => ({
    left: 10, width: 50, height: 50, skin: subIm, active: true,
    contents: [
@@ -196,6 +215,7 @@ let playButton = Container.template($ => ({   left: 0, right: 0, width: 30, hei
 			if (count == 1){
 				count = 0;	      		if (THR - CHR >= 10){	      			curr_cat +=10;	      		} else if( CHR - THR >= 10){	      			curr_cat -= 10;	      		} 	      	} else{	      		count +=1;	      	}
 						index = dictionary[curr_cat.toString()].length;			if (first == 0){ // when the application first loads up, play the first song in the correct HB category.      			first = 1;      			curr_index = 0;      		 	song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".mp3"),width: 0, height: 0});				let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 250, height: 250});				container.container.container[0][0].empty();				container.container.container[0][0].add(picture);				container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];				container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];				song.start();      			      		} else{      			song.start();			}		}      }   })}));
+
 
 let prevButton = Container.template($ => ({
    left: 50, width: 20, height: 20, skin: prevIm, active: true,
@@ -256,9 +276,16 @@ export var PlaySongTemplate = Column.template($ => ({
       		]
       }),
       new finishRunButton(),
-      new Line ({
-      		left: 0, right: 0, height: 20, top: 10, skin: centermenuDots,
-      }),
+	  new Line({
+      	top: 10, height: 20, skin: graySkin,
+      		contents: [
+      	      	new prevScreenButton(),
+      			new Line ({
+      				left: 0, right: 0, height: 20, top: 10, skin: centermenuDots,
+      			}),
+      			new nextScreenButton(),
+      		]
+     }),  
     ]
 }));
 
