@@ -14,9 +14,10 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-	import { PlaySongTemplate } from "playsong";
-	import { SettingsTemplate } from "settings";
-	import { LibraryTemplate } from "library";
+
+import { PlaySongTemplate } from "playsong";
+import { SettingsTemplate } from "settings";
+import { LibraryTemplate } from "library";
 	//import { currentScreen } from "main";
 
  
@@ -55,7 +56,7 @@
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
- 			THR = THR + 1;
+ 			THR = THR + 5;
  			targetHR.string = THR;
  		}
  	})
@@ -69,13 +70,13 @@
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
- 			THR = THR - 1;
+ 			THR = THR - 5;
  			targetHR.string = THR;
  		}
  	})
  }));
 
- var THR = 75;
+ export var THR = 75;
  let targetHR = new Label({left: 0, right: 5, top: 0,
  	style: whiteHeaderStyle, string: THR});
  	

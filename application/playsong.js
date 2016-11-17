@@ -16,9 +16,10 @@
  */
  
  
- import { SettingsTemplate } from "settings";
- import { StartRunTemplate } from "startrun";
- import { LibraryTemplate } from "library";
+import { SettingsTemplate } from "settings";
+import { StartRunTemplate } from "startrun";
+import { LibraryTemplate } from "library";
+import { AnalyticsTemplate } from "analytics";
  import Pins from "pins";
  import {remotePins} from "main";
 
@@ -150,7 +151,7 @@
 });
 
 let nextScreenButton = Container.template($ => ({
- 	right: 0, height: 10, skin: new Skin({ fill: "blue" }), active: true,
+ 	width: 10, height: 10, skin: new Skin({ fill: "blue" }), active: true,
  	contents: [
  	],
  	behavior: Behavior({
@@ -161,7 +162,7 @@ let nextScreenButton = Container.template($ => ({
  }));
 
 let prevScreenButton = Container.template($ => ({
- 	left: 0, height: 10, skin: new Skin({ fill: "blue" }), active: true,
+ 	width: 10, height: 10, skin: new Skin({ fill: "blue" }), active: true,
  	contents: [
  	],
  	behavior: Behavior({
@@ -231,8 +232,10 @@ let subButton = Container.template($ => ({
    }
  })
  }));
+
+
  var curr_cat = 90;
- var count = 0;
+ var count = -1;
  let playButton = Container.template($ => ({
    left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,
    contents: [
@@ -424,19 +427,21 @@ export var PlaySongTemplate = Column.template($ => ({
      			 }),
       		]
       }),
-      new finishRunButton(),
 	  new Line({
-      	top: 10, height: 20, skin: graySkin,
+      	top: 10, height: 50, skin: graySkin,
       		contents: [
       	      	new prevScreenButton(),
-      			new Line ({
-      				left: 0, right: 0, height: 20, top: 10, skin: centermenuDots,
-      			}),
+      			new finishRunButton(),
       			new nextScreenButton(),
       		]
-     }),  
+     }),
+	  new Line ({
+      		left: 0, right: 0, height: 20, top: 10, skin: centermenuDots,
+      }), 
     ]
   }),
+
+ 
 new finishRunButton(),
 new Line ({
   left: 0, right: 0, height: 20, top: 10, skin: centermenuDots,

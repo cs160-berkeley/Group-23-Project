@@ -1,0 +1,13 @@
+Our application is called Run To My Beat. It is connected to a fitbit device that reads user's heartrate and the application uses that information to play songs with certain bpm to either raise/lower heart rate. 
+
+The first task that I'm going to demo is changing the target heart rate. When the application first loads, up, it displays a screen where a user can adjust the heart rate. Here you can see the plus and minuses signs are working. For this demo, I'm going to set the heart rate to 85. 
+
+The second task that i'm going to show is user running faster/slower to change music. The fitbit's heartrate data is emulated here by this pin in the kinoma create. We've currently set the heart rate as 130 * the value that is displayed on the pin. For example, the slider at .5 would equal 65. 
+
+	When the user's heart rate is lower than the target heart rate by more than 15, the song bpm category increases after playing/skipping 3 songs. 
+	Vice versa, user's heart rate is higher than the target heart rate by more than 15, the song bpm category decreases.
+
+	Right now the user's heart rate is lower than the target by 20. so after 3 songs, the song category bpm changes to 100. 
+
+	I will increase the heart rate of the user to 130. Now, the song category bpm will change back to 90 and than 80.
+
