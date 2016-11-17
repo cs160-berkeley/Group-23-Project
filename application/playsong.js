@@ -16,6 +16,14 @@
  */
  
  
+ 
+ 
+
+ 
+
+ 
+
+ 
 import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
@@ -29,10 +37,16 @@ import { AnalyticsTemplate } from "analytics";
  let whiteSkin = new Skin ({fill: 'white'});
  let graySkin = new Skin ({fill: 'gray'});
  let blackSkin = new Skin ({fill: 'black'});
+ let pinkSkin = new Skin({fill: '#FFB6C1'});
+ let salmonSkin = new Skin({fill: '#FFA07A'});
 
- let whiteHeaderStyle = new Style({ font: "30px", color: "white" });
- let whiteMedStyle = new Style({ font: "20px", color: "white" });
- let whiteSmallStyle = new Style({ font: "10px", color: "white" });
+ let whiteHeaderStyle = new Style({ font: "30px Helvetica Neue", color: "white" });
+ let whiteMedStyle = new Style({ font: "20px Helvetica Neue", color: "white" });
+ let whiteSmallStyle = new Style({ font: "10px Helvetica Neue", color: "white" });
+ 
+ let blackHeaderStyle = new Style({ font: "30px Helvetica Neue bold", color: "black" });
+ let blackMedStyle = new Style({ font: "20px Helvetica Neue", color: "black" });
+ let blackSmallStyle = new Style({ font: "10px Helvetica Neue", color: "black" });
 
 
 
@@ -67,7 +81,7 @@ import { AnalyticsTemplate } from "analytics";
  var THR = 85;
  var CHR = 60;
  let targetHR = new Label({left: 0, right: 5, top: 0,
-  style: whiteHeaderStyle, string: THR});
+  style: blackHeaderStyle, string: THR});
 
 
  let set = new Texture("images/settings-cogwheel-button copy.png");
@@ -176,7 +190,7 @@ let finishRunButton = Container.template($ => ({
  	width: 200, height: 50, skin: new Skin({ fill: "#c4c4c4" }), active: true,
  	contents: [
  	new Label({
- 		left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
+ 		left: 0, right: 0, top: 0, bottom: 0, style: blackMedStyle,
  		string: "Finish Run"
  	}),
  	],
@@ -191,7 +205,7 @@ let finishRunButton = Container.template($ => ({
    left: 10, width: 87, height: 87, skin: heartIm, active: true,
    contents: [
    new Label({left: 10, right: 10, top: 10,
-    style: whiteMedStyle, string: "Target"}),
+    style: blackMedStyle, string: "Target"}),
    targetHR,
    ],
    //behavior: Behavior({
@@ -374,17 +388,17 @@ let nextButton = Container.template($ => ({
 
 /* Play screen layout */
 export var PlaySongTemplate = Column.template($ => ({
-  left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin,
+  left: 0, right: 0, top: 0, bottom: 0, skin: pinkSkin,
   contents: [
   new Line({
-    left: 0, right: 0, height: 30, skin: graySkin,
+    left: 0, right: 0, height: 30, skin: salmonSkin,
     contents: [
     new Label({left: 10, right: 10, top: 5,
       style: whiteMedStyle, string: "Now Playing"}),
     ]
   }),
   new Line({
-    left: 45, right: 45, top: 10, height: 90, skin: whiteSkin,
+    left: 45, right: 45, top: 10, height: 90, skin: pinkSkin,
     contents: [
     new subButton(),
     new heartButton(),
@@ -393,32 +407,32 @@ export var PlaySongTemplate = Column.template($ => ({
   }),
 
   new Column({
-    left: 0, right: 0, skin: graySkin,
+    left: 0, right: 0, skin: pinkSkin,
     contents: [
     new Label({left: 10, right: 10, top: 5, name: "curr_bpm_bar",
      style: whiteMedStyle, string: "Current Music BPM:"}),
 
     
     new Column({
-      left: 10, right: 10, height: 330, top: 5, bottom: 10, skin: blackSkin, name:"controls",
+      left: 10, right: 10, height: 330, top: 5, bottom: 10, skin: salmonSkin, name:"controls",
       contents: [
       new Column({
-        top: 5, left: 5, right: 5, height: 270, skin: graySkin,
+        top: 5, left: 5, right: 5, height: 270, skin: pinkSkin,
         contents: [
         new Line({
-          top: 10, left: 50, width: 180, height: 180, skin: whiteSkin,
+          top: 10, left: 50, width: 180, height: 180, skin: blackSkin,
           contents: [
           ]
         }),
      			 		//having trouble making these labels appear
      			 		new Label({left: 10, right: 10, top: 10,
-          					style: whiteMedStyle, string: "Song Title"}),
+          					style: blackHeaderStyle, string: "Song Title"}),
           				new Label({left: 10, right: 10, top: 10,
-          					style: whiteMedStyle, string: "Song Artist"}),
+          					style: blackMedStyle, string: "Song Artist"}),
       				]
      			 }),
      			 new Line({
-      				top: 5, left: 5, right: 5, height: 45, skin: graySkin,
+      				top: 5, left: 5, right: 5, height: 45, skin: pinkSkin,
       				contents: [
       					new prevButton(),
       					new playButton(),
@@ -428,7 +442,7 @@ export var PlaySongTemplate = Column.template($ => ({
       		]
       }),
 	  new Line({
-      	top: 10, height: 50, skin: graySkin,
+      	top: 10, height: 50, skin: pinkSkin,
       		contents: [
       	      	new prevScreenButton(),
       			new finishRunButton(),
