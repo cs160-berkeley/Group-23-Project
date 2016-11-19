@@ -14,6 +14,11 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+ 
+ 
+ 
+
+ 
 
 import { PlaySongTemplate } from "playsong";
 import { SettingsTemplate } from "settings";
@@ -21,22 +26,38 @@ import { LibraryTemplate } from "library";
 	//import { currentScreen } from "main";
 
  
- let whiteMedStyle = new Style({ font: "20px", color: "white" });
- let whiteHeaderStyle = new Style({ font: "30px", color: "white" });
+ let whiteMedStyle = new Style({ font: "25px Lato", color: "white" });
+ let whiteHeaderStyle = new Style({ font: "30px Lato Black", color: "white" });
  let whiteSkin = new Skin ({fill: 'white'});
  let blackSkin = new Skin ({fill: 'black'});
  
- let add = new Texture("images/round-add-button copy.png");
+ let add = new Texture("images/plus-icon.png");
  let addIm = new Skin({
- 	width: 550, height: 550,
+ 	width: 80, height: 80,
  	texture: add,
  	fill: "white",
  	aspect: "fit"
  });
 
- let sub = new Texture("images/round-remove-button copy.png");
+ let sub = new Texture("images/minus-icon.png");
  let subIm = new Skin({
- 	width: 550, height: 550,
+ 	width: 80, height: 80,
+ 	texture: sub,
+ 	fill: "white",
+ 	aspect: "fit"
+ });
+
+ let addPush = new Texture("images/plus-icon-depressed.png");
+ let addPushIm = new Skin({
+ 	width: 80, height: 80,
+ 	texture: add,
+ 	fill: "white",
+ 	aspect: "fit"
+ });
+
+ let subPush = new Texture("images/minus-icon-depressed.png");
+ let subPushIm = new Skin({
+ 	width: 80, height: 80,
  	texture: sub,
  	fill: "white",
  	aspect: "fit"
@@ -51,7 +72,7 @@ import { LibraryTemplate } from "library";
  });
 
  let addButton = Container.template($ => ({
- 	left: 10, width: 50, height: 50, skin: addIm, active: true,
+ 	left: 5, width: 40, height: 40, skin: addIm, active: true,
  	contents: [
  	],
  	behavior: Behavior({
@@ -65,13 +86,17 @@ import { LibraryTemplate } from "library";
 
 
  let subButton = Container.template($ => ({
- 	left: 10, width: 50, height: 50, skin: subIm, active: true,
+ 	left: 15, width: 40, height: 40, skin: subIm, active: true,
  	contents: [
  	],
  	behavior: Behavior({
+ 		//  onTouchBegan: function(container) {
+ 		// 	container.skin = subPushIm;
+ 		// },
  		onTouchEnded: function(container) {
  			THR = THR - 5;
  			targetHR.string = THR;
+ 			container.skin = subIm;
  		}
  	})
  }));
@@ -81,10 +106,10 @@ import { LibraryTemplate } from "library";
  	style: whiteHeaderStyle, string: THR});
  	
  let heartButton = Column.template($ => ({
- 	left: 10, width: 87, height: 87, skin: heartIm, active: true,
+ 	left: 10, width: 200, height: 200, skin: heartIm, active: true,
  	contents: [
- 	new Label({left: 10, right: 10, top: 10,
- 		style: whiteMedStyle, string: "Target"}),
+ 	new Label({left: 3, right: 10, top: 65,
+ 		style: whiteMedStyle, string: "Target HR"}),
  	targetHR,
  	]
  }));
@@ -115,7 +140,7 @@ import { LibraryTemplate } from "library";
  		skin: whiteSkin,
  		contents: [
  		new Line({
- 			top: 0, left: 0, right: 0, height: 40,
+ 			top: 0, left: 0, right: 0, height: 60,
  			skin: new Skin({ fill: "#7f7f7f" }),
  			contents: [
  			new Label({
@@ -125,7 +150,7 @@ import { LibraryTemplate } from "library";
  			]
  		}),
  		new Line({
- 			left: 45, right: 45, top: 150, height: 90, skin: whiteSkin,
+ 			left: 0, right: 0, top: 150, height: 90, skin: whiteSkin,
  			contents: [
  			new subButton(),
  			new heartButton(),
