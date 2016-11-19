@@ -135,7 +135,7 @@ import { LibraryTemplate } from "library";
  }));
 
 
- export var StartRunTemplate = Container.template($ => ({
+export var StartRunTemplate = Container.template($ => ({
  	left: 0, right: 0, top: 0, bottom: 0,
  	skin: new Skin({fill: "white"}),
  	contents: [

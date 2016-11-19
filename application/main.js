@@ -24,7 +24,7 @@ import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
 import { AnalyticsTemplate } from "analytics";
-var currentScreen;
+export var currentScreen;
 application.behavior = new AppBehavior();
 currentScreen = new StartRunTemplate();
 
