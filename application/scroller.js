@@ -14,13 +14,6 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
- 
- 
-import { PlaySongTemplate } from "playsong";
-import { SettingsTemplate } from "settings";
-import { StartRunTemplate } from "startrun";
-import { LibraryTemplate } from "library";
-
 let horizontalScrollbarTexture = new Texture('assets/horizontalScrollbar.png', 1);
 let horizontalScrollbarSkin = new Skin({ texture: horizontalScrollbarTexture, width: 40, height: 10, tiles: { left:10, right:10 }, });
 let horizontalScrollerShadowTexture = new Texture('assets/horizontalScrollerShadow.png', 1);
@@ -43,356 +36,303 @@ let easeOut = function(start, stop, fraction) {
 	v1	:	terminating velocity
 	k	:	coefficient of kinetic friction
 */
-var scrollerMode = Object.create(Object.prototype, {
-	absV1: { value: 0.005 },
-	k: { value: 0.0015 },
-	bind: { 
-		value: function(behavior, scroller) {
-			behavior.mode = this;
+class ScrollerMode {
+	constructor(params) {
+		this.absV1 = 0.005;
+		this.k = 0.0015;
+	}
+	bind(behavior, scroller) {
+		behavior.mode = this;
+	}
+	computeDistance(v0, v1, k) {
+		return (v0 - v1) / k
+	}
+	computeDuration(v0, v1, k) {
+		return Math.log(v0 / v1) / k
+	}
+	computePrediction(behavior, coordinate) {
+		var range = behavior.range;
+		var size = behavior.size;
+		range -= size;
+		if (behavior.direction > 0) {
+			coordinate += size;
 		}
-	},
-	computeDistance: {
-		value: function(v0, v1, k) {
-			return (v0 - v1) / k
+		else {
+			coordinate -= size;
 		}
-	},
-	computeDuration: {
-		value: function(v0, v1, k) {
-			return Math.log(v0 / v1) / k
-		}
-	},
-	computePrediction: { 
-		value: function(behavior, coordinate) {
-			var range = behavior.range;
-			var size = behavior.size;
-			range -= size;
-			if (behavior.direction > 0) {
-				coordinate += size;
-			}
-			else {
-				coordinate -= size;
-			}
-			if (coordinate < 0)
-				coordinate = 0;
-			else if (coordinate > range)
-				coordinate = range;
-			return coordinate;
-		}
-	},
-	evaluateBounceback: {
-		value: function(v0, duration, time) {
-			if (time >= duration)	
-				return 0
-			else if (time >= 0)		
-				return v0 * time * Math.exp(-10.0 * time / duration)
-			else 													
-				return NaN											
-		}
-	},
-	evaluatePositionAtTime: {
-		value: function(v0, v1, k, t) {
-			if (t >= this.computeDuration(v0, v1, k))
-				return this.computeDistance(v0, v1, k)
-			else if (t <= 0)					
-				return 0
-			else								
-				return (1.0 - Math.exp(-k * t)) * v0 / k
-		}
-	},
-	evaluateTimeAtPosition: {
-		value: function(v0, v1, k, position) {
-			var distance = this.computeDistance(v0, v1, k)
-			if (Math.abs(position) > Math.abs(distance))
-				return NaN
-			else if (position == 0)								
-				return NaN
-			else												
-				return - Math.log(1.0 - k * position / v0) / k
-		}
-	},
-	evaluateVelocityAtTime: {
-		value: function(v0, v1, k, time) {
-			if (time >= this.computeDuration(v0, v1, k))
-				return 0
-			else if (time < 0)						
-				return 0
-			else								
-				return Math.exp(-k * time) * v0
-		}
-	},
-	onFinished: { 
-		value: function(behavior, scroller) {
-		}
-	},
-	onTimeChanged: { 
-		value: function(behavior, scroller) {
-		}
-	},
-	onTouchBegan: { 
-		value: function(behavior, scroller, id, x, y, ticks) {
-		}
-	},
-	onTouchCancelled: { 
-		value: function(behavior, scroller, id, x, y, ticks) {
-			scroller.scroll = scroller.constraint;
-			scrollerStillMode.bind(behavior, scroller);
-		}
-	},
-	onTouchEnded: { 
-		value: function(behavior, scroller, id, x, y, ticks) {
-		}
-	},
-	onTouchMoved: {
-		value: function(behavior, scroller, id, x, y, ticks) {
-		}
-	},
-	onTouchScrolled: {
-		value: function(behavior, scroller, touched, dx, dy, ticks) {
-		}
-	},
-});
+		if (coordinate < 0)
+			coordinate = 0;
+		else if (coordinate > range)
+			coordinate = range;
+		return coordinate;
+	}
+	evaluateBounceback(v0, duration, time) {
+		if (time >= duration)	
+			return 0
+		else if (time >= 0)		
+			return v0 * time * Math.exp(-10.0 * time / duration)
+		else 													
+			return NaN											
+	}
+	evaluatePositionAtTime(v0, v1, k, t) {
+		if (t >= this.computeDuration(v0, v1, k))
+			return this.computeDistance(v0, v1, k)
+		else if (t <= 0)					
+			return 0
+		else								
+			return (1.0 - Math.exp(-k * t)) * v0 / k
+	}
+	evaluateTimeAtPosition(v0, v1, k, position) {
+		var distance = this.computeDistance(v0, v1, k)
+		if (Math.abs(position) > Math.abs(distance))
+			return NaN
+		else if (position == 0)								
+			return NaN
+		else												
+			return - Math.log(1.0 - k * position / v0) / k
+	}
+	evaluateVelocityAtTime(v0, v1, k, time) {
+		if (time >= this.computeDuration(v0, v1, k))
+			return 0
+		else if (time < 0)						
+			return 0
+		else								
+			return Math.exp(-k * time) * v0
+	}
+	onFinished(behavior, scroller) {}
+	onTimeChanged(behavior, scroller) {}
+	onTouchBegan(behavior, scroller, id, x, y, ticks) {}
+	onTouchCancelled(behavior, scroller, id, x, y, ticks) {
+		scroller.scroll = scroller.constraint;
+		scrollerStillMode.bind(behavior, scroller);
+	}
+	onTouchEnded(behavior, scroller, id, x, y, ticks) {}
+	onTouchMoved(behavior, scroller, id, x, y, ticks) {}
+	onTouchScrolled(behavior, scroller, touched, dx, dy, ticks) {}
+}
+let scrollerMode = new ScrollerMode();
 
-var scrollerStillMode = Object.create(scrollerMode, {
-	bind: { 
-		value: function(behavior, scroller) {
-			behavior.boost = 0.5;
-			behavior.direction = 0;
-			behavior.mode = this;
-			behavior.bouncing = false;
-			if (scroller.tracking) {
-				scroller.tracking = false;
-				scroller.distribute("onScrolled");
-			}
-		}
-	},
-	onTouchBegan: { 
-		value: function(behavior, scroller, id, x, y, ticks) {
-			if (scroller.running) {
-				scroller.stop();
-				behavior.scrollTo(scroller, behavior.stop);
-			}
-			behavior.anchor = behavior.selectParameter(x, y);
-			behavior.antiAnchor = behavior.selectParameter(y, x);
-			behavior.boost *= 2;
-			behavior.first = behavior.last = { previous: null, coordinate: behavior.selectParameter(x, y), ticks: ticks };
-			behavior.range = behavior.selectSize(scroller.first.size);
-			behavior.size = behavior.selectSize(scroller.size);
-			behavior.start = behavior.stop = behavior.selectPosition(scroller.scroll);
-		}
-	},
-	onTouchMoved: { 
-		value: function(behavior, scroller, id, x, y, ticks) {
-			var delta = Math.abs(behavior.selectParameter(x, y) - behavior.anchor);
-			var antiDelta = Math.abs(behavior.selectParameter(y, x) - behavior.antiAnchor);
-			if ((delta > antiDelta) && (delta > 8)) {
-				if (behavior.captureTouch(scroller, id, x, y, ticks)) {
-					scroller.tracking = true;
-					scrollerScrollMode.bind(behavior, scroller);
-					scrollerScrollMode.onTouchMoved(behavior, scroller, id, x, y, ticks);
-				}
-			}
-		}
-	},
-	onTouchScrolled: {
-		value: function(behavior, scroller, touched, dx, dy, ticks) {
-			var start = behavior.selectParameter(scroller.scroll.x, + scroller.scroll.y);
-			var stop = behavior.selectParameter(scroller.constraint.x, + scroller.constraint.y);
-			if (touched || ((dx || dy) && (start == stop) && !behavior.bouncing)) {
-				if (scroller.running)
-					scroller.stop();
-				scroller.tracking = true;
-				if (touched)
-					behavior.bouncing = false;
-				
-				var delta = behavior.selectParameter(dx, dy);
-				if (delta) {
-					if (start != stop)
-						delta = easeOut(delta, 0, Math.abs(stop - start) / scroller.height);
-					behavior.scrollBy(scroller, delta);
-				}
-			}
-			else if (!scroller.running && !behavior.bouncing) {
-				behavior.bouncing = start != stop;
-				behavior.start = start;
-				behavior.stop = stop;
-				scroller.time = 0;
-				scroller.duration = 500;
-				scroller.start();
-			}
-		}
-	},
-	onTimeChanged: { 
-		value: function(behavior, scroller) {
-			var fraction = scroller.fraction;
-			behavior.scrollTo(scroller, easeOut(behavior.start, behavior.stop, fraction));
-		}
-	},
-	onFinished: {
-		value: function(behavior, scroller) {
-			if (scroller.tracking) {
-				scroller.tracking = false;
-				scroller.distribute("onScrolled");
-				behavior.scrollTo(scroller, behavior.stop);
-			}
-		}
-	},
-});
 
-var scrollerScrollMode = Object.create(scrollerMode, {
-	onTouchEnded: { 
-		value: function(behavior, scroller, id, x, y, ticks) {
-			this.onTouchMoved(behavior, scroller, id, x, y, ticks);
-			scrollerTossMode.bind(behavior, scroller);
+class ScrollerStillMode extends ScrollerMode {
+	bind(behavior, scroller) {
+		behavior.boost = 0.5;
+		behavior.direction = 0;
+		behavior.mode = this;
+		behavior.bouncing = false;
+		if (scroller.tracking) {
+			scroller.tracking = false;
+			scroller.distribute("onScrolled");
 		}
-	},
-	onTouchMoved: { 
-		value: function(behavior, scroller, id, x, y, ticks) {
-			var points = behavior.peek(id);
-			var c = points.length;
-			for (var i = 0; i < c; i++) {
-				var point = points[i];
-				var coordinate = behavior.selectParameter(point.x, point.y);
-				ticks = point.ticks;
-				if (behavior.last.coordinate != coordinate) {
-					var direction = (coordinate > behavior.last.coordinate) ? -1 : 1
-					if (behavior.direction != direction) {
-						behavior.boost = 1;
-						behavior.direction = direction;
-						behavior.first = { previous: null, coordinate: coordinate, ticks: ticks };
-					}
-                        }
-                        behavior.last = { previous: behavior.last, coordinate: coordinate, ticks: ticks };
-			}
-			behavior.stop = behavior.start - behavior.last.coordinate + behavior.anchor;
+	}
+	onTouchBegan(behavior, scroller, id, x, y, ticks) {
+		if (scroller.running) {
+			scroller.stop();
 			behavior.scrollTo(scroller, behavior.stop);
 		}
-	},
-});
+		behavior.anchor = behavior.selectParameter(x, y);
+		behavior.antiAnchor = behavior.selectParameter(y, x);
+		behavior.boost *= 2;
+		behavior.first = behavior.last = { previous: null, coordinate: behavior.selectParameter(x, y), ticks: ticks };
+		behavior.range = behavior.selectSize(scroller.first.size);
+		behavior.size = behavior.selectSize(scroller.size);
+		behavior.start = behavior.stop = behavior.selectPosition(scroller.scroll);
+	}
+	onTouchMoved(behavior, scroller, id, x, y, ticks) {
+		var delta = Math.abs(behavior.selectParameter(x, y) - behavior.anchor);
+		var antiDelta = Math.abs(behavior.selectParameter(y, x) - behavior.antiAnchor);
+		if ((delta > antiDelta) && (delta > 8)) {
+			if (behavior.captureTouch(scroller, id, x, y, ticks)) {
+				scroller.tracking = true;
+				scrollerScrollMode.bind(behavior, scroller);
+				scrollerScrollMode.onTouchMoved(behavior, scroller, id, x, y, ticks);
+			}
+		}
+	}
+	onTouchScrolled(behavior, scroller, touched, dx, dy, ticks) {
+		var start = behavior.selectParameter(scroller.scroll.x, + scroller.scroll.y);
+		var stop = behavior.selectParameter(scroller.constraint.x, + scroller.constraint.y);
+		if (touched || ((dx || dy) && (start == stop) && !behavior.bouncing)) {
+			if (scroller.running)
+				scroller.stop();
+			scroller.tracking = true;
+			if (touched)
+				behavior.bouncing = false;
+			
+			var delta = behavior.selectParameter(dx, dy);
+			if (delta) {
+				if (start != stop)
+					delta = easeOut(delta, 0, Math.abs(stop - start) / scroller.height);
+				behavior.scrollBy(scroller, delta);
+			}
+		}
+		else if (!scroller.running && !behavior.bouncing) {
+			behavior.bouncing = start != stop;
+			behavior.start = start;
+			behavior.stop = stop;
+			scroller.time = 0;
+			scroller.duration = 500;
+			scroller.start();
+		}
+	}
+	onTimeChanged(behavior, scroller) {
+		var fraction = scroller.fraction;
+		behavior.scrollTo(scroller, easeOut(behavior.start, behavior.stop, fraction));
+	}
+	onFinished(behavior, scroller) {
+		if (scroller.tracking) {
+			scroller.tracking = false;
+			scroller.distribute("onScrolled");
+			behavior.scrollTo(scroller, behavior.stop);
+		}
+	}
+};
+let scrollerStillMode = new ScrollerStillMode();
 
-var scrollerTossMode = Object.create(scrollerMode, {
-	bind: { 
-		value: function(behavior, scroller) {
-			var speed = 0;
-			var start = behavior.stop;
-			var stop;
-			if (scroller.loop)
-				stop = start;
-			else
-				stop = behavior.selectPosition(scroller.constraint);
-			if (start == stop) {
-				var delta = 0;
-				var duration = 60;
-				var former = behavior.last;
-				var coordinate = former.coordinate;
-				var ticks = former.ticks - duration;
-				var sample = behavior.first;
-				if (ticks < sample.ticks) {
-					delta = coordinate - sample.coordinate;
-					speed = delta / (former.ticks - sample.ticks);
+class ScrollerScrollMode extends ScrollerMode {
+	onTouchEnded(behavior, scroller, id, x, y, ticks) {
+		this.onTouchMoved(behavior, scroller, id, x, y, ticks);
+		scrollerTossMode.bind(behavior, scroller);
+	}
+	onTouchMoved(behavior, scroller, id, x, y, ticks) {
+		var points = behavior.peek(id);
+		var c = points.length;
+		for (var i = 0; i < c; i++) {
+			var point = points[i];
+			var coordinate = behavior.selectParameter(point.x, point.y);
+			ticks = point.ticks;
+			if (behavior.last.coordinate != coordinate) {
+				var direction = (coordinate > behavior.last.coordinate) ? -1 : 1
+				if (behavior.direction != direction) {
+					behavior.boost = 1;
+					behavior.direction = direction;
+					behavior.first = { previous: null, coordinate: coordinate, ticks: ticks };
 				}
-				else {
-					sample = former.previous;
-					while (sample) {
-						if (ticks >= sample.ticks) {
-							delta = (coordinate - sample.coordinate) + ((former.coordinate - sample.coordinate) * (ticks - sample.ticks) / (former.ticks - sample.ticks))
-							speed = delta / duration;
-							break;
-						}
-						former = sample;
-						sample = former.previous;
+                        }
+                        behavior.last = { previous: behavior.last, coordinate: coordinate, ticks: ticks };
+		}
+		behavior.stop = behavior.start - behavior.last.coordinate + behavior.anchor;
+		behavior.scrollTo(scroller, behavior.stop);
+	}
+};
+let scrollerScrollMode = new ScrollerScrollMode();
+
+class ScrollerTossMode extends ScrollerMode {
+	bind(behavior, scroller) {
+		var speed = 0;
+		var start = behavior.stop;
+		var stop;
+		if (scroller.loop)
+			stop = start;
+		else
+			stop = behavior.selectPosition(scroller.constraint);
+		if (start == stop) {
+			var delta = 0;
+			var duration = 60;
+			var former = behavior.last;
+			var coordinate = former.coordinate;
+			var ticks = former.ticks - duration;
+			var sample = behavior.first;
+			if (ticks < sample.ticks) {
+				delta = coordinate - sample.coordinate;
+				speed = delta / (former.ticks - sample.ticks);
+			}
+			else {
+				sample = former.previous;
+				while (sample) {
+					if (ticks >= sample.ticks) {
+						delta = (coordinate - sample.coordinate) + ((former.coordinate - sample.coordinate) * (ticks - sample.ticks) / (former.ticks - sample.ticks))
+						speed = delta / duration;
+						break;
 					}
+					former = sample;
+					sample = former.previous;
 				}
-				if (Math.abs(delta) > 20)
-					speed *= behavior.boost
-				else
-					speed = 0;
-			}	
-			if (speed) {
-				behavior.mode = this;
-				behavior.v0 = speed
-				behavior.v1 = (speed < 0) ? -this.absV1 : this.absV1
-				var scroll = start - this.computeDistance(behavior.v0, behavior.v1, this.k);
-				var stop = behavior.snap(scroller, scroll, scroll - start);
-				var duration;
-				if (scroll != stop)
-					duration = this.evaluateTimeAtPosition(behavior.v0, behavior.v1, this.k, start - stop);
-				else
-					duration = this.computeDuration(behavior.v0, behavior.v1, this.k);
-				if (duration > 0) {
-					behavior.start = start;
-					behavior.stop = stop;
-					behavior.time = 0;
-					scroller.duration = duration;
-					scroller.time = 0;
-					scroller.start();
-				}
-				else {
-					this.onFinished(behavior, scroller);
-				}
+			}
+			if (Math.abs(delta) > 20)
+				speed *= behavior.boost
+			else
+				speed = 0;
+		}	
+		if (speed) {
+			behavior.mode = this;
+			behavior.v0 = speed
+			behavior.v1 = (speed < 0) ? -this.absV1 : this.absV1
+			var scroll = start - this.computeDistance(behavior.v0, behavior.v1, this.k);
+			var stop = behavior.snap(scroller, scroll, scroll - start);
+			var duration;
+			if (scroll != stop)
+				duration = this.evaluateTimeAtPosition(behavior.v0, behavior.v1, this.k, start - stop);
+			else
+				duration = this.computeDuration(behavior.v0, behavior.v1, this.k);
+			if (duration > 0) {
+				behavior.start = start;
+				behavior.stop = stop;
+				behavior.time = 0;
+				scroller.duration = duration;
+				scroller.time = 0;
+				scroller.start();
 			}
 			else {
 				this.onFinished(behavior, scroller);
 			}
 		}
-	},
-	onFinished: {
-		value: function(behavior, scroller) {
-			scrollerBounceMode.bind(behavior, scroller);
+		else {
+			this.onFinished(behavior, scroller);
 		}
-	},
-	onTouchBegan: { 
-		value: function(behavior, scroller, id, x, y, ticks) {
-			var scroll = behavior.selectPosition(scroller.scroll);			
-			var stop = behavior.snap(scroller, scroller.scroll, behavior.direction);
-			if (scroll != stop) {
-				if (behavior.captureTouch(scroller, id, x, y, ticks)) {
-					behavior.boost = 0.5;
-					behavior.direction = 0;
-					
-					behavior.first = behavior.last = { previous: null, coordinate: behavior.selectParameter(x, y), ticks: ticks };
-					behavior.range = behavior.selectSize(scroller.first.size);
-					behavior.size = behavior.selectSize(scroller.size);
-					behavior.start = behavior.stop = behavior.selectPosition(scroller.scroll);
-			
-					behavior.anchor = behavior.selectParameter(x, y);
-					behavior.antiAnchor = behavior.selectParameter(y, x);
-					scroller.tracking = true;
-					scrollerScrollMode.bind(behavior, scroller);
-					scrollerScrollMode.onTouchMoved(behavior, scroller, id, x, y, ticks);
-				}
+	}
+	onFinished(behavior, scroller) {
+		scrollerBounceMode.bind(behavior, scroller);
+	}
+	onTouchBegan(behavior, scroller, id, x, y, ticks) {
+		var scroll = behavior.selectPosition(scroller.scroll);			
+		var stop = behavior.snap(scroller, scroller.scroll, behavior.direction);
+		if (scroll != stop) {
+			if (behavior.captureTouch(scroller, id, x, y, ticks)) {
+				behavior.boost = 0.5;
+				behavior.direction = 0;
+				
+				behavior.first = behavior.last = { previous: null, coordinate: behavior.selectParameter(x, y), ticks: ticks };
+				behavior.range = behavior.selectSize(scroller.first.size);
+				behavior.size = behavior.selectSize(scroller.size);
+				behavior.start = behavior.stop = behavior.selectPosition(scroller.scroll);
+		
+				behavior.anchor = behavior.selectParameter(x, y);
+				behavior.antiAnchor = behavior.selectParameter(y, x);
+				scroller.tracking = true;
+				scrollerScrollMode.bind(behavior, scroller);
+				scrollerScrollMode.onTouchMoved(behavior, scroller, id, x, y, ticks);
 			}
-			else {						
+		}
+		else {						
+			scroller.stop();
+			var boost = behavior.boost;
+			scrollerStillMode.bind(behavior, scroller);
+			behavior.boost = boost;
+			scrollerStillMode.onTouchBegan(behavior, scroller, id, x, y, ticks);
+		}
+	}
+	onTimeChanged(behavior, scroller) {
+		var time = scroller.time;
+		var position = this.evaluatePositionAtTime(behavior.v0, behavior.v1, this.k, time);
+		behavior.scrollTo(scroller, behavior.start - position);
+		if (!scroller.loop) {
+			var scroll = behavior.selectPosition(scroller.scroll);
+			var constraint = behavior.selectPosition(scroller.constraint);
+			if (scroll != constraint) {
 				scroller.stop();
-				var boost = behavior.boost;
-				scrollerStillMode.bind(behavior, scroller);
-				behavior.boost = boost;
-				scrollerStillMode.onTouchBegan(behavior, scroller, id, x, y, ticks);
+				position = behavior.start - constraint;
+				time = this.evaluateTimeAtPosition(behavior.v0, behavior.v1, this.k, position);
+				behavior.v0 = this.evaluateVelocityAtTime(behavior.v0, behavior.v1, this.k, time);
+				behavior.stop = behavior.start = constraint;
+				scrollerElasticMode.bind(behavior, scroller);
+				return;
 			}
 		}
-	},
-	onTimeChanged: { 
-		value: function(behavior, scroller) {
-			var time = scroller.time;
-			var position = this.evaluatePositionAtTime(behavior.v0, behavior.v1, this.k, time);
-			behavior.scrollTo(scroller, behavior.start - position);
-			if (!scroller.loop) {
-				var scroll = behavior.selectPosition(scroller.scroll);
-				var constraint = behavior.selectPosition(scroller.constraint);
-				if (scroll != constraint) {
-					scroller.stop();
-					position = behavior.start - constraint;
-					time = this.evaluateTimeAtPosition(behavior.v0, behavior.v1, this.k, position);
-					behavior.v0 = this.evaluateVelocityAtTime(behavior.v0, behavior.v1, this.k, time);
-					behavior.stop = behavior.start = constraint;
-					scrollerElasticMode.bind(behavior, scroller);
-					return;
-				}
-			}
-			var delta = time - behavior.time;
-			behavior.time = time;
-		}
-	},
-});
+		var delta = time - behavior.time;
+		behavior.time = time;
+	}
+};
+let scrollerTossMode = new ScrollerTossMode();
 
 var scrollerElasticMode = Object.create(scrollerTossMode, {
 	bind: { 
@@ -417,40 +357,34 @@ var scrollerElasticMode = Object.create(scrollerTossMode, {
 	},
 });
 
-var scrollerBounceMode = Object.create(scrollerTossMode, {
-	bind: { 
-		value: function(behavior, scroller) {
-			var start = behavior.stop;
-			var stop;
-			if (scroller.loop)
-				stop = behavior.snap(scroller, start, 0);
-			else
-				stop = behavior.snap(scroller, behavior.selectPosition(scroller.constraint), 0);
-			if (start != stop) {
-				behavior.mode = this;
-				behavior.start = start;
-				behavior.stop = stop;
-				scroller.duration = 500;
-				scroller.time = 0;
-				scroller.start();
-			}
-			else 
-				this.onFinished(behavior, scroller);
+class ScrollerBounceMode extends ScrollerMode {
+	bind(behavior, scroller) {
+		var start = behavior.stop;
+		var stop;
+		if (scroller.loop)
+			stop = behavior.snap(scroller, start, 0);
+		else
+			stop = behavior.snap(scroller, behavior.selectPosition(scroller.constraint), 0);
+		if (start != stop) {
+			behavior.mode = this;
+			behavior.start = start;
+			behavior.stop = stop;
+			scroller.duration = 500;
+			scroller.time = 0;
+			scroller.start();
 		}
-	},
-	onFinished: {
-		value: function(behavior, scroller) {
-			scrollerStillMode.bind(behavior, scroller);
-		}
-	},
-	onTimeChanged: { 
-		value: function(behavior, scroller) {
-			var fraction = scroller.fraction;
-			behavior.scrollTo(scroller, easeOut(behavior.start, behavior.stop, fraction));
-		}
-	},
-});
-
+		else 
+			this.onFinished(behavior, scroller);
+	}
+	onFinished(behavior, scroller) {
+		scrollerStillMode.bind(behavior, scroller);
+	}
+	onTimeChanged(behavior, scroller) {
+		var fraction = scroller.fraction;
+		behavior.scrollTo(scroller, easeOut(behavior.start, behavior.stop, fraction));
+	}
+};
+let scrollerBounceMode = new ScrollerBounceMode();
 
 class ScrollerBehavior extends Behavior {
 	captureTouch(scroller, id, x, y, ticks) {
@@ -462,7 +396,7 @@ class ScrollerBehavior extends Behavior {
 		scrollerStillMode.bind(this, scroller);
 	}
 	onDisplaying(scroller) {
-		if ("scroll" in this.data)
+		if ((this.data) && ("scroll" in this.data))
 			scroller.scroll = this.data.scroll;
 	}
 	onFinished(scroller) {
@@ -592,7 +526,6 @@ export var HorizontalScrollbar = Content.template($ => ({ left: 0, width: 20, he
 export var LeftScrollerShadow = Content.template($ => ({ left: 0, width: 20, top: 0, bottom: 0, skin: leftScrollerShadowSkin, state: 0, Behavior: LeftScrollerShadowBehavior }));
 export var RightScrollerShadow = Content.template($ => ({ width: 20, right: 0, top: 0, bottom: 0, skin: rightScrollerShadowSkin, state: 1, Behavior: RightScrollerShadowBehavior }));
 
-
 class VerticalScrollerBehavior extends ScrollerBehavior {
 	predictTo(scroller, coordinate) {
 		scroller.predictTo(0, coordinate);
@@ -686,3 +619,18 @@ export var VerticalScroller = Scroller.template($ => ({ left: 0, right: 0, top: 
 export var VerticalScrollbar = Content.template($ => ({ width: 10, right: 0, top: 0, height: 20, skin: verticalScrollbarSkin, Behavior: VerticalScrollbarBehavior }));
 export var TopScrollerShadow = Content.template($ => ({ left: 0, right: 0, top: 0, height: 20, skin: topScrollerShadowSkin, state: 0, Behavior: TopScrollerShadowBehavior }));
 export var BottomScrollerShadow = Content.template($ => ({ left: 0, right: 0, height: 20, bottom: 0, skin: bottomScrollerShadowSkin, state: 1, Behavior: BottomScrollerShadowBehavior }));
+
+
+export default {
+	HorizontalScroller,
+	HorizontalScrollbar,
+	LeftScrollerShadow,
+	RightScrollerShadow,
+	VerticalScroller,
+	VerticalScrollbar,
+	TopScrollerShadow,
+	BottomScrollerShadow
+}
+
+
+0
