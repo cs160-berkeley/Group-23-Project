@@ -14,43 +14,18 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
- 
- 
- 
 
+ 
 
 import Pins from "pins";
-export var remotePins;
-class AppBehavior extends Behavior {
-    onLaunch(application) {
-        let discoveryInstance = Pins.discover(
-            connectionDesc => {
-                if (connectionDesc.name == "pins-share-led") {
-                    trace("Connecting to remote pins\n");
-                    remotePins = Pins.connect(connectionDesc);
-                }
-            }, 
-            connectionDesc => {
-                if (connectionDesc.name == "pins-share-led") {
-                    trace("Disconnected from remote pins\n");
-                    remotePins = undefined;
-                }
-            }
-        );
-        // application.add(new ScreenContainer());
-    }
-
-}
+export var remotePins;class AppBehavior extends Behavior {    onLaunch(application) {        let discoveryInstance = Pins.discover(            connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Connecting to remote pins\n");                    remotePins = Pins.connect(connectionDesc);                }            },             connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Disconnected from remote pins\n");                    remotePins = undefined;                }            }        );    }}
 import { PlaySongTemplate } from "playsong";
 import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
 import { AnalyticsTemplate } from "analytics";
-import { HistoricalAnalyticsTemplate } from "analytics_historical";
-import { ScreenContainer } from "scroller_test";
-
 var currentScreen;
 application.behavior = new AppBehavior();
-currentScreen = new ScreenContainer();
-//currentScreen = new PlaySongTemplate();
+currentScreen = new StartRunTemplate();
+
 application.add(currentScreen);

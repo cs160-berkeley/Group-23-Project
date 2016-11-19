@@ -164,9 +164,14 @@ import { AnalyticsTemplate } from "analytics";
   aspect: "fit"
 });
 
+
 let nextScreenButton = Container.template($ => ({
- 	width: 10, height: 10, skin: new Skin({ fill: "blue" }), active: true,
+ 	width: 100, height: 50, skin: salmonSkin, active: true,string: "Analysis",
  	contents: [
+
+      new Label({left: 10, right: 10, top: 5,
+      style: blackMedStyle, string: "Analysis"}),
+
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
@@ -176,8 +181,11 @@ let nextScreenButton = Container.template($ => ({
  }));
 
 let prevScreenButton = Container.template($ => ({
- 	width: 10, height: 10, skin: new Skin({ fill: "blue" }), active: true,
+ 	width: 100, height: 50, skin: salmonSkin, active: true,
  	contents: [
+
+     new Label({left: 10, right: 10, top: 5,
+      style: blackMedStyle, string: "Songs"}),
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
@@ -187,7 +195,7 @@ let prevScreenButton = Container.template($ => ({
  }));
 
 let finishRunButton = Container.template($ => ({
- 	width: 200, height: 50, skin: new Skin({ fill: "#c4c4c4" }), active: true,
+ 	width: 100, height: 50, skin: new Skin({ fill: "#c4c4c4" }), active: true,
  	contents: [
  	new Label({
  		left: 0, right: 0, top: 0, bottom: 0, style: blackMedStyle,
