@@ -50,7 +50,7 @@ import { LibraryTemplate } from "library";
  let addPush = new Texture("images/plus-icon-depressed.png");
  let addPushIm = new Skin({
  	width: 80, height: 80,
- 	texture: add,
+ 	texture: addPush,
  	fill: "white",
  	aspect: "fit"
  });
@@ -58,7 +58,7 @@ import { LibraryTemplate } from "library";
  let subPush = new Texture("images/minus-icon-depressed.png");
  let subPushIm = new Skin({
  	width: 80, height: 80,
- 	texture: sub,
+ 	texture: subPush,
  	fill: "white",
  	aspect: "fit"
  });
@@ -76,9 +76,13 @@ import { LibraryTemplate } from "library";
  	contents: [
  	],
  	behavior: Behavior({
+ 		 onTouchBegan: function(container) {
+ 			container.skin = addPushIm;
+ 		},
  		onTouchEnded: function(container) {
  			THR = THR + 5;
  			targetHR.string = THR;
+ 			container.skin = addIm;
  		}
  	})
  }));
@@ -90,9 +94,9 @@ import { LibraryTemplate } from "library";
  	contents: [
  	],
  	behavior: Behavior({
- 		//  onTouchBegan: function(container) {
- 		// 	container.skin = subPushIm;
- 		// },
+ 		 onTouchBegan: function(container) {
+ 			container.skin = subPushIm;
+ 		},
  		onTouchEnded: function(container) {
  			THR = THR - 5;
  			targetHR.string = THR;
