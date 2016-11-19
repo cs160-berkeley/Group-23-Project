@@ -37,8 +37,8 @@ import { AnalyticsTemplate } from "analytics";
  let whiteSkin = new Skin ({fill: 'white'});
  let graySkin = new Skin ({fill: 'gray'});
  let blackSkin = new Skin ({fill: 'black'});
- let pinkSkin = new Skin({fill: '#FFB6C1'});
- let salmonSkin = new Skin({fill: '#FFA07A'});
+ let pinkSkin = new Skin({fill: 'white'});
+ let salmonSkin = new Skin({fill: '#FE1B53'});
 
  let whiteHeaderStyle = new Style({ font: "30px Helvetica Neue", color: "white" });
  let whiteMedStyle = new Style({ font: "20px Helvetica Neue", color: "white" });
@@ -95,7 +95,7 @@ import { AnalyticsTemplate } from "analytics";
  let pause = new Texture("images/pause-button copy.png");
  let pauseIm = new Skin({
   width: 50, height: 50,
-  texture: set,
+  texture: pause,
   fill: "white",
   aspect: "fit"
 });
@@ -418,11 +418,13 @@ export var PlaySongTemplate = Column.template($ => ({
     left: 0, right: 0, skin: pinkSkin,
     contents: [
     new Label({left: 10, right: 10, top: 5, name: "curr_bpm_bar",
-     style: whiteMedStyle, string: "Current Music BPM:"}),
+     style: blackMedStyle, string: "Current Music BPM:"}),
 
     
     new Column({
-      left: 10, right: 10, height: 330, top: 5, bottom: 10, skin: salmonSkin, name:"controls",
+
+   
+      left: 10, right: 10, height: 330, top: 5, bottom: 10, skin: whiteSkin, name:"controls",
       contents: [
       new Column({
         top: 5, left: 5, right: 5, height: 270, skin: pinkSkin,
