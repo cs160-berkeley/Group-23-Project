@@ -28,11 +28,12 @@ import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
 import { AnalyticsTemplate } from "analytics";
- import Pins from "pins";
- import {remotePins} from "main";
+import Pins from "pins";
+import {remotePins, currentScreen} from "main";
 
 
- let blueSkin = new Skin ({fill: 'blue'});
+
+let blueSkin = new Skin ({fill: 'blue'});
 
  let whiteSkin = new Skin ({fill: 'white'});
  let graySkin = new Skin ({fill: 'gray'});
@@ -169,7 +170,7 @@ let nextScreenButton = Container.template($ => ({
  	width: 100, height: 50, skin: salmonSkin, active: true,string: "Analysis",
  	contents: [
 
-      new Label({left: 10, right: 10, top: 5,
+      new Label({left: 0, right: 0, top: 0,
       style: blackMedStyle, string: "Analysis"}),
 
  	],
@@ -184,7 +185,7 @@ let prevScreenButton = Container.template($ => ({
  	width: 100, height: 50, skin: salmonSkin, active: true,
  	contents: [
 
-     new Label({left: 10, right: 10, top: 5,
+     new Label({left: 0, right: 0, top: 0,
       style: blackMedStyle, string: "Songs"}),
  	],
  	behavior: Behavior({
@@ -202,17 +203,21 @@ let finishRunButton = Container.template($ => ({
  		string: "Finish Run"
  	}),
  	],
+
+ 
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      application.add(new StartRunTemplate());
+
+      		application.add(new StartRunTemplate());
     }
+
   })
  }));
 
  let heartButton = Column.template($ => ({
    left: 10, width: 87, height: 87, skin: heartIm, active: true,
    contents: [
-   new Label({left: 10, right: 10, top: 10,
+   new Label({left: 10, right: 10, top: 12,
     style: blackMedStyle, string: "Target"}),
    targetHR,
    ],
@@ -464,12 +469,6 @@ export var PlaySongTemplate = Column.template($ => ({
       }), 
     ]
   }),
-
- 
-new finishRunButton(),
-new Line ({
-  left: 0, right: 0, height: 20, top: 10, skin: centermenuDots,
-}),
 ]
 }));
 
