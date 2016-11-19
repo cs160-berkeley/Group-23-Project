@@ -15,9 +15,11 @@
  *     limitations under the License.
  */
 let graySkin = new Skin ({fill: 'gray'});
-let whiteSkin = new Skin ({fill: 'white'});
+let whiteSkin = new Skin ({fill: '#fcfcfc',
+						borders: {top: 1, bottom: 1}, 
+    					stroke: "#000000"});
 let blackSkin = new Skin ({fill: 'black'});
-var labelStyle = new Style( { font: "bold 40px", color:"black" } );
+var labelStyle = new Style( { font: "20px Lato", color:"black" } );
 var targetHR = 80;
 var songArrays = {};
 songArrays.songs60bpm = ["Here", "Love Gun", "Grapevine Fires", "If No One Will Listen", "My Love", "Beautiful War", "Culo", "No Good Deed", "Cold Desert"];
@@ -82,12 +84,7 @@ function getCurrHRArrays(hr, screen){
 	var songArr = songArrays[songArrName];
 	var artistArr = songArrays[artistArrName];
 	for(var i in songArr){
-		if(i%2==0){
 			screen.add(new SongNameWhite(songArr[i]));
-		}
-		else{
-			screen.add(new SongNameGray(songArr[i]));
-		}
 	}
 	/*for(var i in artistArr){
 		trace(artistArr[i]+"\n");
