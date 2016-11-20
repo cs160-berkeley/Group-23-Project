@@ -19,7 +19,6 @@ import { HistoricalAnalyticsTemplate } from "analytics_historical";
 import { PlaySongTemplate } from "playsong"; 
 import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
-import { LibraryTemplate } from "library";
 import { AnalyticsTemplate } from "analytics";
 import Pins from "pins";
 import {remotePins, currentScreen} from "main";
@@ -84,7 +83,9 @@ let nextScreenButton = Container.template($ => ({
     ],
     behavior: Behavior({
         onTouchEnded: function(container) {
-            application.add(new AnalyticsTemplate());
+            application.remove(currentScreen);
+            currentScreen = new AnalyticsTemplate();
+            application.add(currentScreen);
       }
   })
  }));
@@ -116,7 +117,9 @@ let finishRunButton = Container.template($ => ({
     ],
     behavior: Behavior({
         onTouchEnded: function(container) {
-            application.add(new PlaySongTemplate());
+            application.remove(currentScreen);
+            currentScreen = new PlaySongTemplate();
+            application.add(currentScreen);
     }
   })
  }));
@@ -200,8 +203,8 @@ let songScreen = Column.template($ => ({
 }));
 
 
-var currentScreen = new songScreen();
-getCurrHRArrays(targetHR, currentScreen);
+var currScreen = new songScreen();
+getCurrHRArrays(targetHR, currScreen);
 // application.add(currentScreen);
 
 export var LibraryTemplate = Container.template($ => ({
@@ -209,7 +212,7 @@ export var LibraryTemplate = Container.template($ => ({
     skin: new Skin({fill: "white"}),
     contents: [
         TOP_BAR,
-        currentScreen,
+        currScreen,
         new Line({
         top: 25, height: 30, skin: whiteSkin,
             contents: [

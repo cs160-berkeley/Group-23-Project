@@ -15,7 +15,6 @@
  *     limitations under the License.
  */
 import { HistoricalAnalyticsTemplate } from "analytics_historical";
-import { PlaySongTemplate } from "playsong"; 
 import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";

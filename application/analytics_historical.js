@@ -1,4 +1,3 @@
-import { HistoricalAnalyticsTemplate } from "analytics_historical";
 import { PlaySongTemplate } from "playsong"; 
 import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
@@ -76,7 +75,9 @@ let prevScreenButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new SettingsTemplate());
+          application.remove(currentScreen);
+          currentScreen = new SettingsTemplate();
+      		application.add(currentScreen);
       }
   })
  }));
@@ -92,7 +93,9 @@ let finishRunButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new StartRunTemplate());
+          application.remove(currentScreen);
+          currentScreen = new StartRunTemplate();
+          application.add(currentScreen);
     }
   })
  }));

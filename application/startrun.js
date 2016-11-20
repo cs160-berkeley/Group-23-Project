@@ -18,7 +18,6 @@
 import { HistoricalAnalyticsTemplate } from "analytics_historical";
 import { PlaySongTemplate } from "playsong"; 
 import { SettingsTemplate } from "settings";
-import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
 import { AnalyticsTemplate } from "analytics";
 import Pins from "pins";
@@ -116,7 +115,9 @@ let runningp = new Texture("images/running-icon-push.png");
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new HistoricalAnalyticsTemplate());
+      		application.remove(currentScreen);
+        	currentScreen = new HistoricalAnalyticsTemplate();
+            application.add(currentScreen);
       }
   })
  }));
@@ -132,7 +133,9 @@ let prevScreenButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new SettingsTemplate());
+ 			application.remove(currentScreen);
+        	currentScreen = new SettingsTemplate();
+            application.add(currentScreen);
       }
   })
  }));
@@ -148,7 +151,9 @@ let finishRunButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new StartRunTemplate());
+      		application.remove(currentScreen);
+        	currentScreen = new StartRunTemplate();
+            application.add(currentScreen);
     }
   })
  }));

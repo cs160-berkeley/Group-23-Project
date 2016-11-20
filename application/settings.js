@@ -16,7 +16,6 @@
  */
 import { HistoricalAnalyticsTemplate } from "analytics_historical";
 import { PlaySongTemplate } from "playsong"; 
-import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
 import { AnalyticsTemplate } from "analytics";
@@ -78,7 +77,9 @@ let nextScreenButton = Container.template($ => ({
     ],
     behavior: Behavior({
         onTouchEnded: function(container) {
-            application.add(new HistoricalAnalyticsTemplate());
+        	application.remove(currentScreen);
+        	currentScreen = new HistoricalAnalyticsTemplate();
+            application.add(currentScreen);
       }
   })
  }));
@@ -110,7 +111,9 @@ let finishRunButton = Container.template($ => ({
     ],
     behavior: Behavior({
         onTouchEnded: function(container) {
-            application.add(new StartRunTemplate());
+            application.remove(currentScreen);
+        	currentScreen = new StartRunTemplate();
+            application.add(currentScreen);
     }
   })
  }));
