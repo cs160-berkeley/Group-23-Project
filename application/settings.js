@@ -14,6 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { HistoricalAnalyticsTemplate } from "analytics_historical";
 import { PlaySongTemplate } from "playsong";
 import { LibraryTemplate } from "library";
 import { StartRunTemplate } from "startrun";
@@ -27,6 +28,78 @@ import { StartRunTemplate } from "startrun";
  /*import {
  	SystemKeyboard
  } from 'assets/keyboard';*/
+
+ let listp = new Texture("images/list-icon-push.png");
+ let listPink = new Skin({
+  width: 250, height: 250,
+  texture: listp,
+  fill: "white",
+  aspect: "fit"
+});
+
+let graphg = new Texture("images/graph-icon.png");
+ let graphGray = new Skin({
+  width: 250, height: 250,
+  texture: graphg,
+  fill: "white",
+  aspect: "fit"
+});
+
+let runningg = new Texture("images/running-icon.png");
+ let runningGray = new Skin({
+  width: 250, height: 250,
+  texture: runningg,
+  fill: "white",
+  aspect: "fit"
+});
+
+let nextScreenButton = Container.template($ => ({
+    width: 100, height: 30, skin: whiteSkin, active: true,
+    contents: [
+    new Line({
+      top: 5, left: 0, right: 0, width: 30, height: 30, skin: graphGray,
+      contents: [
+      ]
+    }),
+    ],
+    behavior: Behavior({
+        onTouchEnded: function(container) {
+            application.add(new HistoricalAnalyticsTemplate());
+      }
+  })
+ }));
+
+let prevScreenButton = Container.template($ => ({
+    width: 100, height: 30, skin: whiteSkin, active: true,
+    contents: [
+    new Line({
+      top: 5, left: 0, right: 0, width: 25, height: 25, skin: listPink,
+      contents: [
+      ]
+    }),
+    ],
+    //behavior: Behavior({
+      //  onTouchEnded: function(container) {
+        //    application.add(new LibraryTemplate());
+      //}
+  //})
+ }));
+
+let finishRunButton = Container.template($ => ({
+    width: 100, height: 30, skin: whiteSkin, active: true,
+    contents: [
+    new Line({
+      top: 5, left: 0, right: 0, width: 30, height: 30, skin: runningGray,
+      contents: [
+      ]
+    }),
+    ],
+    behavior: Behavior({
+        onTouchEnded: function(container) {
+            application.add(new StartRunTemplate());
+    }
+  })
+ }));
 
  let emailButton = Container.template($ => ({
  	width: 200, height: 50, top: 10, skin: new Skin({ fill: "#c4c4c4" }), active: true,
