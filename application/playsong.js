@@ -15,11 +15,6 @@
  *     limitations under the License.
  */
  
- 
- 
- 
-
- 
 
  
 import { SettingsTemplate } from "settings";
@@ -82,6 +77,29 @@ let blueSkin = new Skin ({fill: 'blue'});
  let targetHR = new Label({left: 0, right: 5, top: 0,
   style: blackHeaderStyle, string: THR});
 
+let listg = new Texture("images/list-icon.png");
+ let listGray = new Skin({
+  width: 250, height: 250,
+  texture: listg,
+  fill: "white",
+  aspect: "fit"
+});
+
+let graphg = new Texture("images/graph-icon.png");
+ let graphGray = new Skin({
+  width: 250, height: 250,
+  texture: graphg,
+  fill: "white",
+  aspect: "fit"
+});
+
+let runningp = new Texture("images/running-icon-push.png");
+ let runningPink = new Skin({
+  width: 250, height: 250,
+  texture: runningp,
+  fill: "white",
+  aspect: "fit"
+});
 
  let set = new Texture("images/settings-cogwheel-button copy.png");
  let settingsIm = new Skin({
@@ -165,12 +183,13 @@ let blueSkin = new Skin ({fill: 'blue'});
 
 
 let nextScreenButton = Container.template($ => ({
- 	width: 100, height: 50, skin: salmonSkin, active: true,string: "Analysis",
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
  	contents: [
-
-      new Label({left: 0, right: 0, top: 0,
-      style: blackMedStyle, string: "Analysis"}),
-
+    new Line({
+      top: 5, left: 0, right: 0, width: 30, height: 30, skin: graphGray,
+      contents: [
+      ]
+    }),
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
@@ -180,11 +199,13 @@ let nextScreenButton = Container.template($ => ({
  }));
 
 let prevScreenButton = Container.template($ => ({
- 	width: 100, height: 50, skin: salmonSkin, active: true,
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
  	contents: [
-
-     new Label({left: 0, right: 0, top: 0,
-      style: blackMedStyle, string: "Songs"}),
+    new Line({
+      top: 5, left: 0, right: 0, width: 25, height: 25, skin: listGray,
+      contents: [
+      ]
+    }),
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
@@ -194,21 +215,18 @@ let prevScreenButton = Container.template($ => ({
  }));
 
 let finishRunButton = Container.template($ => ({
- 	width: 100, height: 50, skin: new Skin({ fill: "#c4c4c4" }), active: true,
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
  	contents: [
- 	new Label({
- 		left: 0, right: 0, top: 0, bottom: 0, style: blackMedStyle,
- 		string: "Finish Run"
- 	}),
+    new Line({
+      top: 5, left: 0, right: 0, width: 30, height: 30, skin: runningPink,
+      contents: [
+      ]
+    }),
  	],
-
- 
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-
       		application.add(new StartRunTemplate());
     }
-
   })
  }));
 

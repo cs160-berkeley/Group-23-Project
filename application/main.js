@@ -18,14 +18,14 @@
  
 
 import Pins from "pins";
-export var remotePins;class AppBehavior extends Behavior {    onLaunch(application) {        let discoveryInstance = Pins.discover(            connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Connecting to remote pins\n");                    remotePins = Pins.connect(connectionDesc);                }            },             connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Disconnected from remote pins\n");                    remotePins = undefined;                }            }        );    }}
+export var remotePins;//class AppBehavior extends Behavior {  //  onLaunch(application) {    //    let discoveryInstance = Pins.discover(      //      connectionDesc => {        //        if (connectionDesc.name == "pins-share-led") {          //          trace("Connecting to remote pins\n");            //        remotePins = Pins.connect(connectionDesc);              //  }            //},             //connectionDesc => {              //  if (connectionDesc.name == "pins-share-led") {                //    trace("Disconnected from remote pins\n");                  //  remotePins = undefined;                //}            //}        //);    //}//}
 import { PlaySongTemplate } from "playsong";
 import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
 import { AnalyticsTemplate } from "analytics";
 export var currentScreen;
-application.behavior = new AppBehavior();
+//application.behavior = new AppBehavior();
 currentScreen = new StartRunTemplate();
 
 application.add(currentScreen);
