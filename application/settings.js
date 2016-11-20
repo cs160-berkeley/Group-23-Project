@@ -164,7 +164,15 @@ let finishRunButton = Container.template($ => ({
  			new passwordButton()
 
  			]
- 		})
+ 		}),
+ 		new Line({
+      	top: 25, height: 30, skin: whiteSkin,
+      		contents: [
+      	    	new prevScreenButton(),
+      			new finishRunButton(),
+      			new nextScreenButton(),
+      		]
+     	}),
  		]
  	})
 
