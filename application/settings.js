@@ -131,7 +131,13 @@ let finishRunButton = Container.template($ => ({
   })
  }));
  
-
+let TOP_BAR = new Line({
+    left: 0, right: 0, height: 30, skin: salmonSkin,
+    contents: [
+    new Label({left: 10, right: 10, top: 5,
+      style: whiteMedStyle, string: "Settings"}),
+    ]
+  }),
  export var SettingsTemplate = Container.template($ => ({
  	left: 0, right: 0, top: 0, bottom: 0,
  	skin: new Skin({fill: "white"}),
@@ -140,16 +146,7 @@ let finishRunButton = Container.template($ => ({
  		top: 0, left: 0, bottom: 0, right: 0,
  		skin: whiteSkin,
  		contents: [
- 		new Line({
- 			top: 0, left: 0, right: 0, height: 40,
- 			skin: new Skin({ fill: "#7f7f7f" }),
- 			contents: [
- 			new Label({
- 				left: 0, right: 0, top: 0, bottom: 0, style: whiteHeaderStyle,
- 				string: "Settings"
- 			})
- 			]
- 		}),
+ 		TOP_BAR,
  		new Label({
  			top: 100, left: 0, right: 0, height: 30,
  			style: new Style({ font: "30px", color: "black" }),

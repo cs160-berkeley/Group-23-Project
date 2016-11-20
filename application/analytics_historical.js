@@ -94,17 +94,17 @@ let rightmenuDots = new Skin({
 // let buttonStyle = new Style({font: '30px', color: 'black'}); 
 
 let TOP_BAR = new Line({
-          left: 0, right: 0, height: 30, skin: graySkin,
-          contents: [
-          	new Label({left: 10, right: 10, top: 5,
-          		style: whiteMedStyle, string: "Historical Analytics"})
-          ]
-      });
+    left: 0, right: 0, height: 30, skin: salmonSkin,
+    contents: [
+    new Label({left: 10, right: 10, top: 5,
+      style: whiteMedStyle, string: "Historical Analytics"}),
+    ]
+  }),
 
 let DOTS = new Line({
       	top: 25, height: 30, skin: whiteSkin,
       		contents: [
-      	    	new prevScreenButton(),
+      	    new prevScreenButton(),
       			new finishRunButton(),
       			new nextScreenButton(),
       		]

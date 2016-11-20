@@ -148,6 +148,13 @@ var SongNameGray = Container.template($ => ({
     }
 }));
 
+let TOP_BAR = new Line({
+    left: 0, right: 0, height: 30, skin: salmonSkin,
+    contents: [
+    new Label({left: 10, right: 10, top: 5,
+      style: whiteMedStyle, string: "Library"}),
+    ]
+  }),
 
 function getCurrHRArrays(hr, screen){
 	var songArrName = "songs"+hr+"bpm";
@@ -178,6 +185,7 @@ export var LibraryTemplate = Container.template($ => ({
     left: 0, right: 0, top: 0, bottom: 0,
     skin: new Skin({fill: "white"}),
     contents: [
+        TOP_BAR,
         currentScreen,
         new Line({
         top: 25, height: 30, skin: whiteSkin,
