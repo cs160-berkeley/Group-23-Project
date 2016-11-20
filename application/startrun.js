@@ -17,6 +17,11 @@
  
  
  
+ 
+
+ 
+
+ 
 
  
 import { HistoricalAnalyticsTemplate } from "analytics_historical";
