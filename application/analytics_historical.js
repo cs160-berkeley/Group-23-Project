@@ -11,6 +11,78 @@ var graySkin = new Skin ({fill: 'gray'});
 let darkGraySkin = new Skin({ fill: "#202020" });
 var whiteMedStyle = new Style({ font: "20px", color: "white" });
 
+let listg = new Texture("images/list-icon.png");
+ let listGray = new Skin({
+  width: 250, height: 250,
+  texture: listg,
+  fill: "white",
+  aspect: "fit"
+});
+
+let graphp = new Texture("images/graph-icon-push.png");
+ let graphPink = new Skin({
+  width: 250, height: 250,
+  texture: graphp,
+  fill: "white",
+  aspect: "fit"
+});
+
+let runningg = new Texture("images/running-icon.png");
+ let runningGray = new Skin({
+  width: 250, height: 250,
+  texture: runningg,
+  fill: "white",
+  aspect: "fit"
+});
+
+let nextScreenButton = Container.template($ => ({
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
+ 	contents: [
+    	new Line({
+      		top: 5, left: 0, right: 0, width: 30, height: 30, skin: graphPink,
+      		contents: [
+      		]
+    	}),
+ 	],
+ 	//behavior: Behavior({
+ 	//	onTouchEnded: function(container) {
+      //		application.add(new AnalyticsTemplate());
+      //}
+  //})
+ }));
+
+let prevScreenButton = Container.template($ => ({
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
+ 	contents: [
+    new Line({
+      top: 5, left: 0, right: 0, width: 25, height: 25, skin: listGray,
+      contents: [
+      ]
+    }),
+ 	],
+ 	behavior: Behavior({
+ 		onTouchEnded: function(container) {
+      		application.add(new LibraryTemplate());
+      }
+  })
+ }));
+
+let finishRunButton = Container.template($ => ({
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
+ 	contents: [
+    new Line({
+      top: 5, left: 0, right: 0, width: 30, height: 30, skin: runningGray,
+      contents: [
+      ]
+    }),
+ 	],
+ 	behavior: Behavior({
+ 		onTouchEnded: function(container) {
+      		application.add(new PlaySongTemplate());
+    }
+  })
+ }));
+
 let rightdots = new Texture("images/dot-menu-right.png");
 let rightmenuDots = new Skin({
       width: 150, height: 50,
@@ -29,9 +101,14 @@ let TOP_BAR = new Line({
           ]
       });
 
-let DOTS = new Line ({
-      		width: 640, height: 20, top: 10, skin: rightmenuDots
-      });
+let DOTS = new Line({
+      	top: 25, height: 30, skin: whiteSkin,
+      		contents: [
+      	    	new prevScreenButton(),
+      			new finishRunButton(),
+      			new nextScreenButton(),
+      		]
+     }),   
       
 let list_of_songs = new Column({ 
     top: 0, left: 0, right: 0, 
