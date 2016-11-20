@@ -62,7 +62,7 @@ let prevScreenButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new LibraryTemplate());
+      		application.add(new SettingsTemplate());
       }
   })
  }));
@@ -78,7 +78,7 @@ let finishRunButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new PlaySongTemplate());
+      		application.add(new StartRunTemplate());
     }
   })
  }));
