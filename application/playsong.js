@@ -14,9 +14,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
- 
-
- 
+import { HistoricalAnalyticsTemplate } from "analytics_historical";
+import { PlaySongTemplate } from "playsong"; 
 import { SettingsTemplate } from "settings";
 import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
@@ -27,7 +26,6 @@ import {remotePins, currentScreen} from "main";
 
 
 let blueSkin = new Skin ({fill: 'blue'});
-
  let whiteSkin = new Skin ({fill: 'white'});
  let graySkin = new Skin ({fill: 'gray'});
  let blackSkin = new Skin ({fill: 'black'});
@@ -193,7 +191,9 @@ let nextScreenButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new AnalyticsTemplate());
+          application.remove(currentScreen);
+          currentScreen = new AnalyticsTemplate();
+      		application.add(currentScreen);
       }
   })
  }));
@@ -209,7 +209,9 @@ let prevScreenButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new LibraryTemplate());
+          application.remove(currentScreen);
+          currentScreen = new LibraryTemplate();
+      		application.add(currentScreen);
       }
   })
  }));
@@ -225,7 +227,9 @@ let finishRunButton = Container.template($ => ({
  	],
  	behavior: Behavior({
  		onTouchEnded: function(container) {
-      		application.add(new StartRunTemplate());
+          application.remove(currentScreen);
+          currentScreen = new StartRunTemplate()
+      		application.add(currentScreen);
     }
   })
  }));

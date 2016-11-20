@@ -15,26 +15,31 @@
  *     limitations under the License.
  */
  
- 
- 
- 
-
- 
-
- 
-
- 
 import { HistoricalAnalyticsTemplate } from "analytics_historical";
-import { PlaySongTemplate } from "playsong";
+import { PlaySongTemplate } from "playsong"; 
 import { SettingsTemplate } from "settings";
+import { StartRunTemplate } from "startrun";
 import { LibraryTemplate } from "library";
+import { AnalyticsTemplate } from "analytics";
+import Pins from "pins";
+import {remotePins, currentScreen} from "main";
 	//import { currentScreen } from "main";
 
  
- let whiteMedStyle = new Style({ font: "25px Lato", color: "white" });
- let whiteHeaderStyle = new Style({ font: "30px Lato Black", color: "white" });
+ let blueSkin = new Skin ({fill: 'blue'});
  let whiteSkin = new Skin ({fill: 'white'});
+ let graySkin = new Skin ({fill: 'gray'});
  let blackSkin = new Skin ({fill: 'black'});
+ let pinkSkin = new Skin({fill: 'white'});
+ let salmonSkin = new Skin({fill: '#FE1B53'});
+
+ let whiteHeaderStyle = new Style({ font: "30px Helvetica Neue", color: "white" });
+ let whiteMedStyle = new Style({ font: "20px Helvetica Neue", color: "white" });
+ let whiteSmallStyle = new Style({ font: "10px Helvetica Neue", color: "white" });
+ 
+ let blackHeaderStyle = new Style({ font: "30px Helvetica Neue bold", color: "black" });
+ let blackMedStyle = new Style({ font: "20px Helvetica Neue", color: "black" });
+ let blackSmallStyle = new Style({ font: "10px Helvetica Neue", color: "black" });
  
  let listg = new Texture("images/list-icon.png");
  let listGray = new Skin({

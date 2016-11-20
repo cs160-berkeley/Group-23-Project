@@ -14,11 +14,34 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+
+import { HistoricalAnalyticsTemplate } from "analytics_historical";
+import { PlaySongTemplate } from "playsong"; 
+import { SettingsTemplate } from "settings";
+import { StartRunTemplate } from "startrun";
+import { LibraryTemplate } from "library";
+import { AnalyticsTemplate } from "analytics";
+import Pins from "pins";
+import {remotePins, currentScreen} from "main";
+
 let graySkin = new Skin ({fill: 'gray'});
 let whiteSkin = new Skin ({fill: '#fcfcfc',
 						borders: {top: 1, bottom: 1}, 
     					stroke: "#000000"});
 let blackSkin = new Skin ({fill: 'black'});
+var pinkSkin = new Skin({fill: 'white'});
+var salmonSkin = new Skin({fill: '#FE1B53'});
+
+let blueSkin = new Skin ({fill: 'blue'});
+
+ let whiteHeaderStyle = new Style({ font: "30px Helvetica Neue", color: "white" });
+ let whiteMedStyle = new Style({ font: "20px Helvetica Neue", color: "white" });
+ let whiteSmallStyle = new Style({ font: "10px Helvetica Neue", color: "white" });
+ 
+ let blackHeaderStyle = new Style({ font: "30px Helvetica Neue bold", color: "black" });
+ let blackMedStyle = new Style({ font: "20px Helvetica Neue", color: "black" });
+ let blackSmallStyle = new Style({ font: "10px Helvetica Neue", color: "black" });
+
 var labelStyle = new Style( { font: "20px Lato", color:"black" } );
 var targetHR = 80;
 var songArrays = {};
