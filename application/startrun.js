@@ -19,7 +19,7 @@
  
 
  
-
+import { HistoricalAnalyticsTemplate } from "analytics_historical";
 import { PlaySongTemplate } from "playsong";
 import { SettingsTemplate } from "settings";
 import { LibraryTemplate } from "library";
@@ -31,6 +31,30 @@ import { LibraryTemplate } from "library";
  let whiteSkin = new Skin ({fill: 'white'});
  let blackSkin = new Skin ({fill: 'black'});
  
+ let listg = new Texture("images/list-icon.png");
+ let listGray = new Skin({
+  width: 250, height: 250,
+  texture: listg,
+  fill: "white",
+  aspect: "fit"
+});
+
+let graphg = new Texture("images/graph-icon.png");
+ let graphGray = new Skin({
+  width: 250, height: 250,
+  texture: graphg,
+  fill: "white",
+  aspect: "fit"
+});
+
+let runningp = new Texture("images/running-icon-push.png");
+ let runningPink = new Skin({
+  width: 250, height: 250,
+  texture: runningp,
+  fill: "white",
+  aspect: "fit"
+});
+
  let add = new Texture("images/plus-icon.png");
  let addIm = new Skin({
  	width: 80, height: 80,
@@ -70,6 +94,54 @@ import { LibraryTemplate } from "library";
  	fill: "white",
  	aspect: "fit"
  });
+
+ let nextScreenButton = Container.template($ => ({
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
+ 	contents: [
+    new Line({
+      top: 5, left: 0, right: 0, width: 30, height: 30, skin: graphGray,
+      contents: [
+      ]
+    }),
+ 	],
+ 	behavior: Behavior({
+ 		onTouchEnded: function(container) {
+      		application.add(new HistoricalAnalyticsTemplate());
+      }
+  })
+ }));
+
+let prevScreenButton = Container.template($ => ({
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
+ 	contents: [
+    new Line({
+      top: 5, left: 0, right: 0, width: 25, height: 25, skin: listGray,
+      contents: [
+      ]
+    }),
+ 	],
+ 	behavior: Behavior({
+ 		onTouchEnded: function(container) {
+      		application.add(new SettingsTemplate());
+      }
+  })
+ }));
+
+let finishRunButton = Container.template($ => ({
+ 	width: 100, height: 30, skin: whiteSkin, active: true,
+ 	contents: [
+    new Line({
+      top: 5, left: 0, right: 0, width: 30, height: 30, skin: runningPink,
+      contents: [
+      ]
+    }),
+ 	],
+ 	behavior: Behavior({
+ 		onTouchEnded: function(container) {
+      		application.add(new StartRunTemplate());
+    }
+  })
+ }));
 
  let addButton = Container.template($ => ({
  	left: 5, width: 40, height: 40, skin: addIm, active: true,
@@ -166,7 +238,15 @@ export var StartRunTemplate = Container.template($ => ({
  			contents: [
  			new startButton()
  			]
- 		})
+ 		}),
+ 		new Line({
+      	top: 25, height: 30, skin: whiteSkin,
+      		contents: [
+      	    new prevScreenButton(),
+      			new finishRunButton(),
+      			new nextScreenButton(),
+      		]
+     	}),
  		]
  	})
 

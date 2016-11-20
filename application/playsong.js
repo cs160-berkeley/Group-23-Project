@@ -472,8 +472,8 @@ export var PlaySongTemplate = Column.template($ => ({
      			 }),
       		]
       }),
-	  new Line({
-      	top: 25, height: 30, skin: pinkSkin,
+	   new Line({
+      	top: 25, height: 30, skin: whiteSkin,
       		contents: [
       	    new prevScreenButton(),
       			new finishRunButton(),
