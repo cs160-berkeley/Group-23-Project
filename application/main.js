@@ -14,8 +14,8 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-
  
+   
 
 import Pins from "pins";
 export var remotePins;
@@ -37,7 +37,7 @@ class AppBehavior extends Behavior {
         );
     }
 
-}
+} 
 import { HistoricalAnalyticsTemplate } from "analytics_historical";
 import { PlaySongTemplate } from "playsong"; 
 import { SettingsTemplate } from "settings";
@@ -48,5 +48,5 @@ import { AnalyticsTemplate } from "analytics";
 export var currentScreen;
 application.behavior = new AppBehavior();
 currentScreen = new StartRunTemplate();
-
+                     
 application.add(currentScreen);

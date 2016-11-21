@@ -26,6 +26,7 @@ import {remotePins, currentScreen} from "main";
 
 let blueSkin = new Skin ({fill: 'blue'});
  let whiteSkin = new Skin ({fill: 'white'});
+ let lightGraySkin = new Skin ({fill: '#FAFAFA'});
  let graySkin = new Skin ({fill: 'gray'});
  let blackSkin = new Skin ({fill: 'black'});
  let pinkSkin = new Skin({fill: 'white'});
@@ -91,7 +92,7 @@ let graphg = new Texture("images/graph-icon.png");
 });
 
 let runningp = new Texture("images/running-icon-push.png");
- let runningPink = new Skin({
+let runningPink = new Skin({
   width: 250, height: 250,
   texture: runningp,
   fill: "white",
@@ -476,7 +477,7 @@ export var PlaySongTemplate = Column.template($ => ({
       		]
       }),
 	   new Line({
-      	top: 25, height: 30, skin: whiteSkin,
+      	bottom: 0, top: 25, height: 30, skin: lightGraySkin,
       		contents: [
       	    new prevScreenButton(),
       			new finishRunButton(),
