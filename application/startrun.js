@@ -15,6 +15,9 @@
  *     limitations under the License.
  */
  
+ 
+ 
+ 
 import { HistoricalAnalyticsTemplate } from "analytics_historical";
 import { PlaySongTemplate } from "playsong"; 
 import { SettingsTemplate } from "settings";
@@ -100,6 +103,22 @@ let runningp = new Texture("images/running-icon-push.png");
  let heartIm = new Skin({
  	width: 550, height: 550,
  	texture: heart,
+ 	fill: "white",
+ 	aspect: "fit"
+ });
+
+ let startBtn = new Texture("images/start-run-button.png");
+ let startBtnIm = new Skin({
+ 	width: 497, height: 137,
+ 	texture: startBtn,
+ 	fill: "white",
+ 	aspect: "fit"
+ });
+
+ let startBtnPush = new Texture("images/start-run-button-depressed.png");
+ let startBtnImPush = new Skin({
+ 	width: 497, height: 137,
+ 	texture: startBtnPush,
  	fill: "white",
  	aspect: "fit"
  });
@@ -207,17 +226,21 @@ let finishRunButton = Container.template($ => ({
 
 
  let startButton = Container.template($ => ({
- 	width: 200, height: 50, skin: new Skin({ fill: "#c4c4c4" }), active: true,
+ 	width: 200, height: 50, skin: startBtnIm, active: true,
  	contents: [
  	new Label({
- 		left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
+ 		left: 0, right: 0, top: 0, bottom: 0, style: whiteHeaderStyle,
  		string: "Start Run"
  	}),
  	],
  	behavior: Behavior({
+ 		onTouchBegan: function(container) {
+ 			container.skin = startBtnImPush;
+      	},
  		onTouchEnded: function(container) {
+ 			container.skin = startBtnIm;
       		application.add(new PlaySongTemplate());
-      }
+      	}
   })
  }));
 
