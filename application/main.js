@@ -706,7 +706,7 @@ var LibraryTemplate = Container.template($ => ({
         top: 0, left: 0, bottom: 0, right: 0,
         skin: whiteSkin,
         contents: [
-        TOP_BAR,
+        HEADER("Settings"),
         new Label({
             top: 100, left: 0, right: 0, height: 30,
             style: new Style({ font: "30px", color: "black" }),
@@ -741,112 +741,112 @@ var LibraryTemplate = Container.template($ => ({
  /******************************************************************************************************************
                                    Start Run
 *******************************************************************************************************************/
- let add = new Texture("images/plus-icon.png");
- let addIm = new Skin({
+ let addSR = new Texture("images/plus-icon.png");
+ let addImSR = new Skin({
     width: 80, height: 80,
-    texture: add,
+    texture: addSR,
     fill: "white",
     aspect: "fit"
  });
 
- let sub = new Texture("images/minus-icon.png");
- let subIm = new Skin({
+ let subSR = new Texture("images/minus-icon.png");
+ let subImSR = new Skin({
     width: 80, height: 80,
-    texture: sub,
+    texture: subSR,
     fill: "white",
     aspect: "fit"
  });
 
- let addPush = new Texture("images/plus-icon-depressed.png");
- let addPushIm = new Skin({
+ let addPushSR = new Texture("images/plus-icon-depressed.png");
+ let addPushImSR = new Skin({
     width: 80, height: 80,
-    texture: addPush,
+    texture: addPushSR,
     fill: "white",
     aspect: "fit"
  });
 
- let subPush = new Texture("images/minus-icon-depressed.png");
- let subPushIm = new Skin({
+ let subPushSR = new Texture("images/minus-icon-depressed.png");
+ let subPushImSR = new Skin({
     width: 80, height: 80,
-    texture: subPush,
+    texture: subPushSR,
     fill: "white",
     aspect: "fit"
  });
 
- let heart = new Texture("images/favorite-heart-button copy.png");
- let heartIm = new Skin({
+ let heartSR = new Texture("images/favorite-heart-button copy.png");
+ let heartImSR = new Skin({
     width: 550, height: 550,
-    texture: heart,
+    texture: heartSR,
     fill: "white",
     aspect: "fit"
  });
 
- let startBtn = new Texture("images/start-run-button.png");
- let startBtnIm = new Skin({
+ let startBtnSR = new Texture("images/start-run-button.png");
+ let startBtnImSR = new Skin({
     width: 497, height: 137,
-    texture: startBtn,
+    texture: startBtnSR,
     fill: "white",
     aspect: "fit"
  });
 
- let startBtnPush = new Texture("images/start-run-button-depressed.png");
- let startBtnImPush = new Skin({
+ let startBtnPushSR = new Texture("images/start-run-button-depressed.png");
+ let startBtnImPushSR = new Skin({
     width: 497, height: 137,
-    texture: startBtnPush,
+    texture: startBtnPushSR,
     fill: "white",
     aspect: "fit"
  });
 
- let addButton = Container.template($ => ({
-    left: 5, width: 40, height: 40, skin: addIm, active: true,
+ let addButtonSR = Container.template($ => ({
+    left: 5, width: 40, height: 40, skin: addImSR, active: true,
     contents: [
     ],
     behavior: Behavior({
          onTouchBegan: function(container) {
-            container.skin = addPushIm;
+            container.skin = addPushImSR;
         },
         onTouchEnded: function(container) {
             THR = THR + 5;
-            targetHR.string = THR;
-            container.skin = addIm;
+            targetHRSR.string = THR;
+            container.skin = addImSR;
         }
     })
  }));
 
 
 
- let subButton = Container.template($ => ({
-    left: 15, width: 40, height: 40, skin: subIm, active: true,
+ let subButtonSR = Container.template($ => ({
+    left: 15, width: 40, height: 40, skin: subImSR, active: true,
     contents: [
     ],
     behavior: Behavior({
          onTouchBegan: function(container) {
-            container.skin = subPushIm;
+            container.skin = subPushImSR;
         },
         onTouchEnded: function(container) {
             THR = THR - 5;
-            targetHR.string = THR;
-            container.skin = subIm;
+            targetHRSR.string = THR;
+            container.skin = subImSR;
         }
     })
  }));
 
 
- let targetHR = new Label({left: 0, right: 5, top: 0,
+ let targetHRSR = new Label({left: 0, right: 5, top: 0,
     style: whiteHeaderStyle, string: THR});
     
- let heartButton = Column.template($ => ({
-    left: 10, width: 200, height: 200, skin: heartIm, active: true,
+ let heartButtonSR = Column.template($ => ({
+    left: 10, width: 200, height: 200, skin: heartImSR, active: true,
     contents: [
     new Label({left: 3, right: 10, top: 65,
         style: whiteMedStyle, string: "Target HR"}),
-    targetHR,
+    targetHRSR,
     ]
  }));
 
 
- let startButton = Container.template($ => ({
-    width: 200, height: 50, skin: startBtnIm, active: true,
+ let startButtonSR = Container.template($ => ({
+    width: 200, height: 50, skin: startBtnImSR, active: true,
     contents: [
     new Label({
         left: 0, right: 0, top: 0, bottom: 0, style: whiteHeaderStyle,
@@ -855,10 +855,10 @@ var LibraryTemplate = Container.template($ => ({
     ],
     behavior: Behavior({
         onTouchBegan: function(container) {
-            container.skin = startBtnImPush;
+            container.skin = startBtnImPushSR;
         },
         onTouchEnded: function(container) {
-            container.skin = startBtnIm;
+            container.skin = startBtnImSR;
             application.add(new PlaySongTemplate());
         }
   })
@@ -872,19 +872,19 @@ var StartRunTemplate = Container.template($ => ({
         top: 0, left: 0, bottom: 0, right: 0,
         skin: whiteSkin,
         contents: [
-        TOP_BAR,
+        HEADER("Set Target Heart Rate"),
         new Line({
             left: 0, right: 0, top: 150, height: 90, skin: whiteSkin,
             contents: [
-            new subButton(),
-            new heartButton(),
-            new addButton(),
+            new subButtonSR(),
+            new heartButtonSR(),
+            new addButtonSR(),
             ]
         }),
         new Line({
             left: 60, right: 60, top: 150, height: 30, skin: whiteSkin,
             contents: [
-            new startButton()
+            new startButtonSR()
             ]
         }),
         new Line({
