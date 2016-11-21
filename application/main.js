@@ -14,6 +14,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+ 
 
 /******************************************************************************************************************
                                             Imports
@@ -39,6 +40,7 @@
  var curr_index = 0;
  var first = 0;
  var song = 0;
+
 
 let blackHeaderStyle = new Style({ font: "30px Helvetica Neue bold", color: "black" }); //TODO: moved this out of Styles; resolve later
 
@@ -72,6 +74,10 @@ var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', verti
  let whiteMedStyle = new Style({ font: "20px Helvetica Neue", color: "white" });
  let whiteSmallStyle = new Style({ font: "10px Helvetica Neue", color: "white" });
  
+ 
+ let targetHRSR = new Label({left: 0, right: 5, top: 0,
+    style: whiteHeaderStyle, string: THR});
+    
  
  let blackMedStyle = new Style({ font: "20px Helvetica Neue", color: "black" });
  let blackSmallStyle = new Style({ font: "10px Helvetica Neue", color: "black" });
@@ -166,6 +172,7 @@ let runningPink = new Skin({
   fill: "white",
   aspect: "fit"
 });
+
 
 let nextScreenButton = Container.template($ => ({
     width: 100, height: 30, skin: whiteSkin, active: true,
@@ -727,7 +734,7 @@ var LibraryTemplate = Container.template($ => ({
         new Line({
         top: 25, height: 30, skin: whiteSkin,
             contents: [
-                new prevScreenButton(listPink, new SettingsTemplate),
+                //new prevScreenButton(listPink, new SettingsTemplate),
                 new finishRunButton(runningGray, new StartRunTemplate()),
                 new nextScreenButton(graphGray, new HistoricalAnalyticsTemplate()),
             ]
@@ -833,9 +840,6 @@ var LibraryTemplate = Container.template($ => ({
     })
  }));
 
-
- let targetHRSR = new Label({left: 0, right: 5, top: 0,
-    style: whiteHeaderStyle, string: THR});
     
  let heartButtonSR = Column.template($ => ({
     left: 10, width: 200, height: 200, skin: heartImSR, active: true,
@@ -892,9 +896,9 @@ var StartRunTemplate = Container.template($ => ({
         new Line({
         top: 25, height: 30, skin: whiteSkin,
             contents: [
-                new prevScreenButton(listGray, new SettingsTemplate()),
-                new finishRunButton(runningPink, new StartRunTemplate()),
-                new nextScreenButton(graphGray, new HistoricalAnalyticsTemplate()),
+                //new prevScreenButton(listGray, new SettingsTemplate()),
+              //  new finishRunButton(runningPink, new StartRunTemplate()),
+                //new nextScreenButton(graphGray, new HistoricalAnalyticsTemplate()),
             ]
         }),
         ]
@@ -999,7 +1003,7 @@ var AnalyticsTemplate = Container.template($ => ({
             contents: [
                 new prevScreenButton(listGray, new LibraryTemplate()),
                 new finishRunButton(runningGray, new PlaySongTemplate()),
-                new nextScreenButton(graphPink, new AnalyticsTemplate()),
+                //new nextScreenButton(graphPink, new AnalyticsTemplate()),
             ]
         }),
     ]
@@ -1044,8 +1048,6 @@ var HistoricalAnalyticsTemplate = Container.template($ => ({
                                     Main Screen
 *******************************************************************************************************************/
 
-   
-
 import Pins from "pins";
 export var remotePins;
 class AppBehavior extends Behavior {
@@ -1068,8 +1070,10 @@ class AppBehavior extends Behavior {
 
 } 
 
+
 export var currentScreen;
 application.behavior = new AppBehavior();
+
 currentScreen = new StartRunTemplate();
                      
 application.add(currentScreen);
