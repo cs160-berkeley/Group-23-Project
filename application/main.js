@@ -40,9 +40,11 @@
  var first = 0;
  var song = 0;
 
+let blackHeaderStyle = new Style({ font: "30px Helvetica Neue bold", color: "black" }); //TODO: moved this out of Styles; resolve later
+
  // two target heart rates???????????
  var THR = 85;
- var targetHR = 80;
+ //var targetHRInt = 80;
  var CHR = 60;
  let targetHR = new Label({left: 0, right: 5, top: 0,
   style: blackHeaderStyle, string: THR});
@@ -70,7 +72,7 @@ var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', verti
  let whiteMedStyle = new Style({ font: "20px Helvetica Neue", color: "white" });
  let whiteSmallStyle = new Style({ font: "10px Helvetica Neue", color: "white" });
  
- let blackHeaderStyle = new Style({ font: "30px Helvetica Neue bold", color: "black" });
+ 
  let blackMedStyle = new Style({ font: "20px Helvetica Neue", color: "black" });
  let blackSmallStyle = new Style({ font: "10px Helvetica Neue", color: "black" });
 
@@ -596,7 +598,7 @@ var SongNameWhite = Container.template($ => ({
         onTouchEnded(content){
             var songStr = $.replace(/\s/g, "-").toLowerCase();
             if(song!=0) song.stop();
-            song = new Media({url: mergeURI(application.url, "songs/"+targetHR+"/"+songStr+".mp3")});
+            song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
             song.start();
         }
     }
@@ -614,7 +616,7 @@ var SongNameGray = Container.template($ => ({
         onTouchEnded(content){
             var songStr = $.replace(/\s/g, "-").toLowerCase();
             if(song!=0) song.stop();
-            song = new Media({url: mergeURI(application.url, "songs/"+targetHR+"/"+songStr+".mp3")});
+            song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
             song.start();
         }
     }
@@ -643,7 +645,7 @@ let songScreen = Column.template($ => ({
 
 
 var currScreen = new songScreen();
-getCurrHRArrays(targetHR, currScreen);
+getCurrHRArrays(THR, currScreen);
 // application.add(currentScreen);
 
 var LibraryTemplate = Container.template($ => ({
