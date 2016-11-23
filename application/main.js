@@ -228,9 +228,9 @@ let startButtonSR = Container.template($ => ({
             application.remove(currentScreen);
             // currentScreen = new PlaySongTemplate();
             currentScreen = nowPlayingTemp;
-            // application.remove(navBar);
+            application.remove(navBar);
             application.add(currentScreen);
-            // application.add(navBar2);
+            application.add(navBar2);
         }
     })
 }));
@@ -1031,7 +1031,7 @@ let libraryTempVar = new LibraryTemplate();
 let nowPlayingTemp = new PlaySongTemplate();
 
 let screen2Var = new Screen2Template();
-//NAVBAR STUFF
+
 
 var currentScreen = startRunTemplateVar;
 application.add(currentScreen);
@@ -1045,12 +1045,12 @@ var navBar = new Line({ bottom: 0, height: 55, left: 0, right: 0,
     ]
 });
 
-// var navBar2 = new Line({ bottom: 0, height: 55, left: 0, right: 0,
-//     skin: new Skin({ fill: "white" }),
-//     contents: [
-//     new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
-//     new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: nowPlayingTemp}),
-//     //new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: analyticsTempVar})
-//     ]
-// });
+var navBar2 = new Line({ bottom: 0, height: 55, left: 0, right: 0,
+    skin: new Skin({ fill: "white" }),
+    contents: [
+    new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
+    new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: nowPlayingTemp}),
+    new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: analyticsTempVar})
+    ]
+});
  application.add(navBar);
