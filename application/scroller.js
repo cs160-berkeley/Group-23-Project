@@ -420,10 +420,10 @@ class ScrollerBehavior extends Behavior {
 	onTouchScrolled(scroller, touched, dx, dy, ticks) {
 		this.mode.onTouchScrolled(this, scroller, touched, - Math.round(dx), - Math.round(dy), ticks);
 	}
-	onUndisplayed(scroller) {
-		if ("scroll" in this.data)
-			this.data.scroll = scroller.scroll;
-	}
+	//onUndisplayed(scroller) {
+	//	if ("scroll" in this.data)
+	//		this.data.scroll = scroller.scroll;
+	//}
 	peek(id) {
 		return touches.peek(id);
 	}

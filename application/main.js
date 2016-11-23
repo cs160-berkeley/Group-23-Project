@@ -5,6 +5,13 @@
     BottomScrollerShadow
 } from 'scroller';
 
+import Pins from "pins";
+export var remotePins;
+
+var index;
+var curr_index = 0;
+var first = 0;
+var song = 0;
 
 var productDescriptionStyle = new Style({  font: '18px', horizontal: 'left', vertical: 'middle', left: 1, color: 'white' });
 var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', vertical: 'middle', lines: 1, color: 'black' });
@@ -12,20 +19,21 @@ var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', verti
 let whiteHeaderStyle = new Style({ font: "30px Helvetica Neue", color: "white" });
 let whiteMedStyle = new Style({ font: "20px Helvetica Neue", color: "white" });
 let whiteSmallStyle = new Style({ font: "10px Helvetica Neue", color: "white" });
+let blackHeaderStyle = new Style({ font: "30px Helvetica Neue bold", color: "black" }); //TODO: moved this out of Styles; resolve later
 
-let THR = 90;
+let THR = 80;
 
 // let targetHRSR = new Label({left: 0, right: 5, top: 0,
 //     style: whiteHeaderStyle, string: THR});
 
-let targetHRSR = Label.template($ => ({left: 0, right: 5, top: 0,
+ let targetHRSR = Label.template($ => ({left: 0, right: 5, top: 0,
      style: whiteHeaderStyle, string: THR}));
 
 
-let blackMedStyle = new Style({ font: "20px Helvetica Neue", color: "black" });
-let blackSmallStyle = new Style({ font: "10px Helvetica Neue", color: "black" });
+ let blackMedStyle = new Style({ font: "20px Helvetica Neue", color: "black" });
+ let blackSmallStyle = new Style({ font: "10px Helvetica Neue", color: "black" });
 
-var labelStyle = new Style( { font: "20px Lato", color:"black" } );
+ var labelStyle = new Style( { font: "20px Lato", color:"black" } );
 
 // FOOTER BUTTONS
 let lineSkin = new Skin({ 
@@ -199,7 +207,7 @@ let heartButtonSR = Column.template($ => ({
     new Label({left: 3, right: 10, top: 65,
         style: whiteMedStyle, string: "Target HR "}),
     new Label({left: 0, right: 5, top: 0,
-    style: whiteHeaderStyle, string: THR})
+        style: whiteHeaderStyle, string: THR})
     ]
 }));
 
@@ -218,7 +226,9 @@ let startButtonSR = Container.template($ => ({
         },
         onTouchEnded: function(container) {
             container.skin = startBtnImSR;
-            application.add(new PlaySongTemplate());
+            application.remove(currentScreen);
+            currentScreen = new PlaySongTemplate();
+            application.add(currentScreen);
         }
     })
 }));
@@ -377,36 +387,487 @@ var navButton = Container.template($ => ({
 //     ]
 // })
 
+  /******************************************************************************************************************
+                                    Library
+   *******************************************************************************************************************/
+   var songArrays = {};
+songArrays.songs60bpm = ["Here", "Love Gun", "Grapevine Fires", "If No One Will Listen", "My Love", "Beautiful War", "Culo", "No Good Deed", "Cold Desert"];
+//songArrays.artists60bpm = ["Alessia Cara", "Cee Lo Green", "Death Cab for Cutie", "Kelly Clarkson", "Sia"];
+songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again", "Complicated", "You Shook Me All Night Long", "Come And Get It", "We Cant Stop", "Rehab", "Halo"];
+
+                                    var labelStuff = Container.template($ => ({ 
+                                        skin: graySkin, 
+                                        contents: [
+                                        new Label($, { width: 640, height:60, string:"TEST", style: labelStyle })
+                                        ],
+                                        Behavior: class extends Behavior {
+                                            onTouchBegan(content){
+
+                                            }
+                                        }
+                                    }));
+
+                                    var song = 0;
+
+                                    var SongNameWhite = Container.template($ => ({
+                                        left: 0, right: 0, top: 0, height: 60, active: true, skin: whiteSkin, state:0,
+                                        contents: [
+                                        new Label({name:"songNameWhite", left:0, right:0, height:60, string:$, style: labelStyle})
+                                        ],
+                                        Behavior: class extends Behavior {
+                                            onTouchBegan(content){
+                                                content.state = 1;
+                                            }
+                                            onTouchEnded(content){
+                                                var songStr = $.replace(/\s/g, "-").toLowerCase();
+                                                if(song!=0) song.stop();
+                                                song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+                                                song.start();
+                                            }
+                                        }
+                                    }));
+
+ var SongNameGray = Container.template($ => ({
+    left: 0, right: 0, top: 0, height: 60, active: true, skin: graySkin, state:0,
+    contents: [
+    new Label({name:"songNameGray", left:0, right:0, height:60, string:$, style: labelStyle})
+    ],
+    Behavior: class extends Behavior {
+        onTouchBegan(content){
+            content.state = 1;
+        }
+        onTouchEnded(content){
+            var songStr = $.replace(/\s/g, "-").toLowerCase();
+            if(song!=0) song.stop();
+            song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+            song.start();
+        }
+    }
+}));
+
+
+ function getCurrHRArrays(hr, screen){
+  trace("getCurrHRArrays\n");
+    var songArrName = "songs"+hr+"bpm";
+    var artistArrName = "artists"+hr+"bpm";
+    var songArr = songArrays[songArrName];
+    var artistArr = songArrays[artistArrName];
+    for(var i in songArr){
+    trace(songArr[i] + "\n");
+        screen.add(new SongNameWhite(songArr[i]));
+    }
+    /*for(var i in artistArr){
+        trace(artistArr[i]+"\n");
+    }*/
+    var content = new Content({ width: 640, height:500, skin: blackSkin });
+    screen.add(content);
+}
+
+/* Song screen layout */
+let songScreen = Column.template($ => ({
+    left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin
+}));
+
+
+var currScreen = new songScreen();
+getCurrHRArrays(THR, currScreen);
+// application.add(currentScreen);
+
+var LibraryTemplate = Container.template($ => ({
+    left: 0, right: 0, top: 0, bottom: 55,
+    skin: new Skin({fill: "white"}),
+    contents: [
+    HEADER("Library"),
+    currScreen,
+    // new Line({
+    //     top: 25, height: 30, skin: whiteSkin,
+    //     contents: [
+    //     new prevScreenButton(listPink, new LibraryTemplate()),
+    //     new finishRunButton(runningGray, new PlaySongTemplate()),
+    //     new nextScreenButton(graphGray, new AnalyticsTemplate()),
+    //     ]
+    // }),
+    ]
+}));
+
+/******************************************************************************************************************
+                                    Play Screen
+*******************************************************************************************************************/
+
+
+                                    var dictionary = {};
+                                    dictionary['80'] = ["21guns" , "HeyHo","SeeYouAgain"];
+                                    dictionary['90'] = ["GoldDigger" , "Diamonds","WeAreYoung"];
+                                    dictionary['100'] = ["Riptide" , "ManintheMirror","TurnDownForWhat"];
+
+                                    var name_artist_dict = {};
+                                    name_artist_dict["21guns"] = ["21 Guns", "Green Day"];
+                                    name_artist_dict["HeyHo"] = ["Hey Ho", "The Lumineers"];
+                                    name_artist_dict["SeeYouAgain"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth"];
+                                    name_artist_dict["GoldDigger"] = ["Gold Digger", "Kanye West"];
+                                    name_artist_dict["Diamonds"] = ["Diamonds", "Rihanna"];
+                                    name_artist_dict["WeAreYoung"] = ["We Are Young", "Fun ft. Janelle Monáe"];
+                                    name_artist_dict["Riptide"] = ["Riptide", "Vance Joy"];
+                                    name_artist_dict["ManintheMirror"] = ["Man in the Mirror", "Green Day"];
+                                    name_artist_dict["TurnDownForWhat"] = ["Turn Down For What", "DJ Snake, Lil Jon"];
+
+
+                                    let set = new Texture("images/settings-cogwheel-button copy.png");
+                                    let settingsIm = new Skin({
+                                      width: 50, height: 50,
+                                      texture: set,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let pause = new Texture("images/pause-button copy.png");
+                                    let pauseIm = new Skin({
+                                      width: 50, height: 50,
+                                      texture: pause,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let rewind = new Texture("images/rewind-button copy.png");
+                                    let rewindIm = new Skin({
+                                      width: 50, height: 50,
+                                      texture: rewind,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let fforward = new Texture("images/fast-forward-button copy.png");
+                                    let fforwardIm = new Skin({
+                                      width: 50, height: 50,
+                                      texture: fforward,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let next = new Texture("images/play-next-button copy.png");
+                                    let nextIm = new Skin({
+                                      width: 500, height: 500,
+                                      texture: next,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let prev = new Texture("images/previous-track copy.png");
+                                    let prevIm = new Skin({
+                                      width: 500, height: 500,
+                                      texture: prev,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let play = new Texture("images/play-arrow copy.png");
+                                    let playIm = new Skin({
+                                      width: 500, height: 500,
+                                      texture: play,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let heart = new Texture("images/favorite-heart-button copy.png");
+                                    let heartIm = new Skin({
+                                      width: 550, height: 550,
+                                      texture: heart,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let add = new Texture("images/round-add-button copy.png");
+                                    let addIm = new Skin({
+                                      width: 550, height: 550,
+                                      texture: add,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let sub = new Texture("images/round-remove-button copy.png");
+                                    let subIm = new Skin({
+                                      width: 550, height: 550,
+                                      texture: sub,
+                                      fill: "white",
+                                      aspect: "fit"
+                                  });
+
+                                    let heartButton = Column.template($ => ({
+                                       left: 10, width: 87, height: 87, skin: heartIm, active: true,
+                                       contents: [
+                                       new Label({left: 10, right: 10, top: 12,
+                                        style: blackMedStyle, string: "Target"}),
+                                       THR,
+                                       ],
+   //behavior: Behavior({
+     // onTouchEnded: function(container) {
+       // application.remove(currentScreen);
+        //currentScreen = new playScreen();
+    //  application.add(currentScreen);
+      //}
+   //})
+                                }));
+
+                                    let addButton = Container.template($ => ({
+                                       left: 10, width: 50, height: 50, skin: addIm, active: true,
+                                       contents: [
+                                       ],
+                                       behavior: Behavior({
+                                        onTouchEnded: function(container) {
+                                         THR = THR + 10;
+                                         targetHR.string = THR;
+                                         container.container.container.controls[1][1].delegate("onTouchEnded");
+                                         first = 0;
+                                         container.container.container.controls[1][1].delegate("onTouchEnded");
+                                     }
+                                 })
+                                   }));
+
+                                    let subButton = Container.template($ => ({
+                                       left: 10, width: 50, height: 50, skin: subIm, active: true,
+                                       contents: [
+                                       ],
+                                       behavior: Behavior({
+                                        onTouchEnded: function(container) {
+                                         THR = THR - 10;
+                                         targetHR.string = THR;
+                                         container.container.container.controls[1][1].delegate("onTouchEnded");
+                                         first = 0;
+                                         container.container.container.controls[1][1].delegate("onTouchEnded");
+                                     }
+                                 })
+                                   }));
+
+
+                                    var curr_cat = 90;
+                                    var count = -1;
+                                    let playButton = Container.template($ => ({
+                                       left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,
+                                       contents: [
+                                       ],
+                                       behavior: Behavior({
+                                        onCreate: function(container){
+                                          if (remotePins) {
+                                            remotePins.repeat("/heartRate/read", 100, (HR) => {
+                                              CHR = HR * 130;
+                                              container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
+
+                                              trace(curr_cat+"\n");
+
+
+                                          });
+                                        }
+                                    },
+                                    onTouchEnded: function(container) {
+                                     if (container.skin ==pauseIm){
+                                      container.skin = playIm;
+                                      song.stop();
+
+                                  } else{
+                                      container.skin = pauseIm;
+                                      if (count == 2){
+                                        count = 0;
+                                        if (THR - CHR >= 10){
+                                          curr_cat +=10;
+                                      } else if( CHR - THR >= 10){
+                                          curr_cat -= 10;
+                                      } 
+                                  } else{
+                                   count +=1;
+                               }
+
+                               index = dictionary[curr_cat.toString()].length;
+            if (first == 0){ // when the application first loads up, play the first song in the correct HB category.
+               first = 1;
+               curr_index = 0;
+               song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".mp3"),width: 0, height: 0});
+               let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+               container.container.container[0][0].empty();
+               container.container.container[0][0].add(picture);
+
+               container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+
+               container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+               song.start();
+
+           } else{
+               song.start();
+           }
+       }
+   }
+})
+}));
+
+
+ let prevButton = Container.template($ => ({
+     left: 50, width: 20, height: 20, skin: prevIm, active: true,
+     contents: [
+     ],
+     behavior: Behavior({
+      onTouchEnded: function(container) {
+       song.stop();
+
+       curr_index = curr_index -1;
+       index = dictionary[curr_cat.toString()].length;
+       if (curr_index < 0){
+         curr_index = index -1;
+     }
+
+     if (count == 2){
+        count = 0;
+        if (THR - CHR >= 10){
+          curr_cat +=10;
+      } else if( CHR - THR >= 10){
+          curr_cat -= 10;
+      } 
+  } else{
+   count +=1;
+}
+song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
+let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+container.container.container[0][0].empty();
+
+container.container.container[0][0].add(picture);
+
+container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+
+container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+
+song.start();
+}
+})
+}));
+
+ let nextButton = Container.template($ => ({
+     right: 50, width: 20, height: 20, skin: nextIm, active: true,
+     contents: [
+     ],
+     behavior: Behavior({
+      onTouchEnded: function(container) {
+        song.stop();
+
+        curr_index = curr_index +1;
+
+        if (count == 2){
+            count = 0;
+            if (THR - CHR >= 10){
+              curr_cat +=10;
+          } else if( CHR - THR >= 10){
+              curr_cat -= 10;
+          } 
+      } else{
+       count +=1;
+   }
+   if (curr_index >= index){
+     curr_index = 0;
+ }
+ song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
+ let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+
+ container.container.container[0][0].empty();
+ container.container.container[0][0].add(picture);
+
+ container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+
+ container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+
+ song.start();
+}
+})
+}));
+
+
+ /* Play screen layout */
+ export var PlaySongTemplate = Column.template($ => ({
+  left: 0, right: 0, top: 0, bottom: 55, skin: pinkSkin,
+  contents: [
+  HEADER("Now Playing"),
+  new Line({
+    left: 45, right: 45, top: 10, height: 90, skin: pinkSkin,
+    contents: [
+    new subButton(),
+    new heartButton(),
+    new addButton(),
+    ]
+}),
+
+  new Column({
+    left: 0, right: 0, skin: pinkSkin,
+    contents: [
+    new Label({left: 10, right: 10, top: 5, name: "curr_bpm_bar",
+     style: blackMedStyle, string: "Current Music BPM:"}),
+
+    new Column({
+      left: 10, right: 10, height: 350, top: 5, bottom: 10, skin: whiteSkin, name:"controls",
+      contents: [
+      new Column({
+        top: 5, left: 5, right: 5, height: 270, skin: pinkSkin,
+        contents: [
+        new Line({
+            top: 10, left: 50, width: 180, height: 180, skin: blackSkin,
+            contents: [
+            ]
+        }),
+                        //having trouble making these labels appear
+                        new Label({left: 10, right: 10, top: 10,
+                            style: blackHeaderStyle, string: "Song Title"}),
+                        new Label({left: 10, right: 10, top: 10,
+                            style: blackMedStyle, string: "Song Artist"}),
+                        ]
+                    }),
+      new Line({
+        top: 5, left: 5, right: 5, height: 45, skin: pinkSkin,
+        contents: [
+        new prevButton(),
+        new playButton(),
+        new nextButton(),
+        ]
+    }),
+      ]
+  }),
+    // new Line({
+    //     bottom: 0, top: 25, height: 30, skin: graySkin,
+    //     contents: [
+    //             // new prevScreenButton(listGray, new LibraryTemplate()),
+    //             // new finishRunButton(runningPink, new StartRunTemplate()),
+    //             // new nextScreenButton(graphGray, new AnalyticsTemplate()),
+    //             ]
+    //         }),
+ ]
+}),
+ ]
+}));
+
 
 
  /******************************************************************************************************************
                                     Analytics
-*******************************************************************************************************************/
-var menuItems = [
-    {title: 'Closer', button: '80 bpm'},
-    {title: 'Dream On', button: '60 bpm'},
-    {title: 'Gagnam Style', button: '120 bpm'},
-    {title: 'Fly', button: '60 bpm'},
-    {title: 'Baby', button: '90 bpm'},
-    {title: 'One Time Comin', button: '200 bpm'},
-    {title: 'No Vasaline', button: '150 bpm'},
-    {title: 'Lose Yourself', button: '120 bpm'},
-    {title: 'All Eyez On Me', button: '22 bpm'},
-    {title: 'Heartless', button: '90 bpm'},
-    {title: 'Baby', button: '90 bpm'},
-    {title: 'One Time Comin', button: '200 bpm'},
-    {title: 'No Vasaline', button: '150 bpm'},
-    {title: 'Lose Yourself', button: '120 bpm'},
-    {title: 'All Eyez On Me', button: '22 bpm'},
-    {title: 'Heartless', button: '90 bpm'}
-];
+                                    *******************************************************************************************************************/
+                                    var menuItems = [
+                                    {title: 'Closer', button: '80 bpm'},
+                                    {title: 'Dream On', button: '60 bpm'},
+                                    {title: 'Gagnam Style', button: '120 bpm'},
+                                    {title: 'Fly', button: '60 bpm'},
+                                    {title: 'Baby', button: '90 bpm'},
+                                    {title: 'One Time Comin', button: '200 bpm'},
+                                    {title: 'No Vasaline', button: '150 bpm'},
+                                    {title: 'Lose Yourself', button: '120 bpm'},
+                                    {title: 'All Eyez On Me', button: '22 bpm'},
+                                    {title: 'Heartless', button: '90 bpm'},
+                                    {title: 'Baby', button: '90 bpm'},
+                                    {title: 'One Time Comin', button: '200 bpm'},
+                                    {title: 'No Vasaline', button: '150 bpm'},
+                                    {title: 'Lose Yourself', button: '120 bpm'},
+                                    {title: 'All Eyez On Me', button: '22 bpm'},
+                                    {title: 'Heartless', button: '90 bpm'}
+                                    ];
 
 /* Changing the state in the touch events gives the user
  * visual feedback on which entry they have tapped by changing
  * the background color of the line. Note that the skin turns 
  * yellow when the state is 1 (while it's being tapped)
  * and reverts back to white when the state is 0. */
-class ProcessorLineBehavior extends Behavior {
+ class ProcessorLineBehavior extends Behavior {
     /* data is an object from the menuItems array */
     onCreate(line, data) {
         this.data = data;
@@ -418,7 +879,7 @@ class ProcessorLineBehavior extends Behavior {
         line.state = 0;
     }
     /* Traces out the value of the first Label's string, which we 
-     * get by referencing this.data.title */
+    * get by referencing this.data.title */
     onTouchEnded(line, id, x,  y, ticks) {  
         line.state = 0;
         trace(this.data.title+"\n");
@@ -428,7 +889,7 @@ class ProcessorLineBehavior extends Behavior {
 /* The 'button' property of each item in the menuItems array
  * is used as the string of a label. Each of those labels 
  * is assigned an instance of the following behavior. */
-class ProductDescriptionButtonBehavior extends Behavior {
+ class ProductDescriptionButtonBehavior extends Behavior {
     /* When this label is touched, simply trace out its string. */
     onTouchEnded(label, id, x,  y, ticks) { 
         trace(label.string+"\n");
@@ -438,7 +899,7 @@ class ProductDescriptionButtonBehavior extends Behavior {
 /* This is a template that will be used to for each entry populating the list. 
  * Note that it is anticipating an object each time it is instantiated; the
  * object it gets is an item from the menuItems array. */
-var ProcessorLine = Line.template($ =>  ({
+ var ProcessorLine = Line.template($ =>  ({
     left: 0, right: 0, height: 52, active: true, skin: lineSkin, 
     behavior: new ProcessorLineBehavior($),
     contents: [
@@ -446,46 +907,46 @@ var ProcessorLine = Line.template($ =>  ({
          * includes a value for title.  Note that this Label is not marked
          * as active. Touches registered here will bubble back up through
          * the parent objects until it hits one which is active. */
-        Label($, { left: 14, right: 0, style: productNameStyle, string: $.title,}),
-                        
+         Label($, { left: 14, right: 0, style: productNameStyle, string: $.title,}),
+
         /* This label is expecting a value for button.  Note that this Label
          * is marked active. Touches registered here will be handled by its
          * own behavior */
-        Label($, { 
+         Label($, { 
             right: 14, style: productDescriptionStyle, skin: salmonSkin, 
             active: true, string: $.button, behavior: new ProductDescriptionButtonBehavior()
         })                          
-     ]
- }));
+         ]
+     }));
  
-let scroll_header = new Line({
-top: 30, left: 0, right: 0, height: 50, skin: whiteSkin,
-contents: [
-new Label({left: 10, right: 10,
-  style: blackMedStyle, string: "Most HR Boosting Songs"}),
-]
+ let scroll_header = new Line({
+    top: 30, left: 0, right: 0, height: 50, skin: whiteSkin,
+    contents: [
+    new Label({left: 10, right: 10,
+      style: blackMedStyle, string: "Most HR Boosting Songs"}),
+    ]
 });
 
 
 /* This is a template for a container which takes up the
  * whole screen.  It contains only a single object,
  * a VerticalScroller. */
-var AnalyticsTemplate = Container.template($ => ({
+ var AnalyticsTemplate = Container.template($ => ({
     left: 0, right: 0, top: 0, bottom: 55,
     contents: [
-        HEADER("Analytics"),
-        VerticalScroller($, {
-            top: 30 , bottom: 30,
-            name: 'scroller',
-            contents: [
-                Column($, { 
-                    left: 0, right: 0, top: 0, name: 'menu',
-                    /* Add a ProcessorLine object for each item in the menuItems array */
-                    contents: menuItems.map(element => new ProcessorLine(element))
-                })                      
-            ]
-        }),
-        scroll_header,
+    HEADER("Analytics"),
+    VerticalScroller($, {
+        top: 30 , bottom: 30,
+        name: 'scroller',
+        contents: [
+        Column($, { 
+            left: 0, right: 0, top: 0, name: 'menu',
+            /* Add a ProcessorLine object for each item in the menuItems array */
+            contents: menuItems.map(element => new ProcessorLine(element))
+        })                      
+        ]
+    }),
+    scroll_header,
         // new Line({
         // top: 25, height: 30, skin: whiteSkin,
         //     contents: [
@@ -494,33 +955,33 @@ var AnalyticsTemplate = Container.template($ => ({
         //         //new nextScreenButton(graphPink, new AnalyticsTemplate()),
         //     ]
         // }),
-    ]
+ ]
 }));
 
  /******************************************************************************************************************
                                     Analytics Historical
-*******************************************************************************************************************/
+                                    *******************************************************************************************************************/
 
 /* This is a template for a container which takes up the
  * whole screen.  It contains only a single object,
  * a VerticalScroller. */
-var HistoricalAnalyticsTemplate = Container.template($ => ({
+ var HistoricalAnalyticsTemplate = Container.template($ => ({
   left: 0, right: 0, top: 0, bottom: 0,
   contents: [
-    
-    VerticalScroller($, {
+
+  VerticalScroller($, {
       top: 30 , bottom: 30,
       name: 'scroller',
       contents: [
-        Column($, { 
+      Column($, { 
           left: 0, right: 0, top: 0, name: 'menu',
           /* Add a ProcessorLine object for each item in the menuItems array */
           contents: menuItems.map(element => new ProcessorLine(element))
-        })                  
+      })                  
       ]
-    }),
-    HEADER,
-    scroll_header,
+  }),
+  HEADER,
+  scroll_header,
     // new Line({
     //     top: 25, height: 30, skin: whiteSkin,
     //         contents: [
@@ -529,96 +990,99 @@ var HistoricalAnalyticsTemplate = Container.template($ => ({
     //             // new nextScreenButton(graphPink, new HistoricalAnalyticsTemplate()),
     //         ]
     //     }),
-  ]
+ ]
 }));
 
  /******************************************************************************************************************
                                     Settings
-*******************************************************************************************************************/
+                                    *******************************************************************************************************************/
 
 
- let emailButton = Container.template($ => ({
-    width: 200, height: 50, top: 10, skin: new Skin({ fill: "#c4c4c4" }), active: true,
-    contents: [
-    new Label({
-        left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
-        string: "Email"
-    }),
-    ],
-    behavior: Behavior({
-        onTouchEnded: function(container) {
+                                    let emailButton = Container.template($ => ({
+                                        width: 200, height: 50, top: 10, skin: new Skin({ fill: "#c4c4c4" }), active: true,
+                                        contents: [
+                                        new Label({
+                                            left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
+                                            string: "Email"
+                                        }),
+                                        ],
+                                        behavior: Behavior({
+                                            onTouchEnded: function(container) {
         //go to running screen
-      }
-  })
- }));
+    }
+})
+                                    }));
 
- let passwordButton = Container.template($ => ({
-    width: 200, height: 50, top: 15, skin: new Skin({ fill: "#c4c4c4" }), active: true,
-    contents: [
-    new Label({
-        left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
-        string: "Password"
-    }),
-    ],
-    behavior: Behavior({
-        onTouchEnded: function(container) {
+                                    let passwordButton = Container.template($ => ({
+                                        width: 200, height: 50, top: 15, skin: new Skin({ fill: "#c4c4c4" }), active: true,
+                                        contents: [
+                                        new Label({
+                                            left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
+                                            string: "Password"
+                                        }),
+                                        ],
+                                        behavior: Behavior({
+                                            onTouchEnded: function(container) {
         //go to running screen
-      }
-  })
- }));
- 
- var SettingsTemplate = Container.template($ => ({
-    left: 0, right: 0, top: 0, bottom: 55,
-    skin: new Skin({fill: "white"}),
-    contents: [
-    new Column({
-        top: 0, left: 0, bottom: 0, right: 0,
-        skin: whiteSkin,
-        contents: [
-        HEADER("Settings"),
-        new Label({
-            top: 100, left: 0, right: 0, height: 30,
-            style: new Style({ font: "30px", color: "black" }),
-            string: "Spotify Account"
+    }
+})
+                                    }));
 
-        }),
-        new Column({
-            top: 0, left: 0, right: 0, height: 80,
-            skin: whiteSkin,
-            contents: [
-            new emailButton(),
-            new passwordButton()
+                                    var SettingsTemplate = Container.template($ => ({
+                                        left: 0, right: 0, top: 0, bottom: 55,
+                                        skin: new Skin({fill: "white"}),
+                                        contents: [
+                                        new Column({
+                                            top: 0, left: 0, bottom: 0, right: 0,
+                                            skin: whiteSkin,
+                                            contents: [
+                                            HEADER("Settings"),
+                                            new Label({
+                                                top: 100, left: 0, right: 0, height: 30,
+                                                style: new Style({ font: "30px", color: "black" }),
+                                                string: "Spotify Account"
 
-            ]
-        }),
-        new Line({
-        top: 25, height: 30, skin: whiteSkin,
-            contents: [
+                                            }),
+                                            new Column({
+                                                top: 0, left: 0, right: 0, height: 80,
+                                                skin: whiteSkin,
+                                                contents: [
+                                                new emailButton(),
+                                                new passwordButton()
+
+                                                ]
+                                            }),
+                                            new Line({
+                                                top: 25, height: 30, skin: whiteSkin,
+                                                contents: [
                 //new prevScreenButton(listPink, new SettingsTemplate),
                 // new finishRunButton(runningGray, new StartRunTemplate()),
                 // new nextScreenButton(graphGray, new HistoricalAnalyticsTemplate()),
-            ]
-        }),
-        ]
-    })
-
-    
-    ]
- }));
+                ]
+            }),
+                                            ]
+                                        })
 
 
+ ]
+}));
 
-let startRunTemplateVar = new StartRunTemplate();
-let screen1Var = new SettingsTemplate();
+
+
+ let startRunTemplateVar = new StartRunTemplate();
+ let settingsTempVar = new SettingsTemplate();
+ let analyticsTempVar = new AnalyticsTemplate();
+ let libraryTempVar = new LibraryTemplate();
+
 let screen2Var = new Screen2Template();
 //NAVBAR STUFF
 
 var navBar = new Line({ bottom: 0, height: 55, left: 0, right: 0,
     skin: new Skin({ fill: "black" }),
     contents: [
-    new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: screen1Var}),
+    new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
     new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: startRunTemplateVar}),
-    new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: screen2Var})
+    new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: analyticsTempVar})
     ]
 });
 application.add(navBar);
