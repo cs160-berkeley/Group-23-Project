@@ -178,12 +178,13 @@ let addButtonSR = Container.template($ => ({
     contents: [
     ],
     behavior: Behavior({
-     onTouchBegan: function(container) {
+       onTouchBegan: function(container) {
         container.skin = addPushImSR;
     },
     onTouchEnded: function(container) {
         THR = THR + 5;
         targetHRSR.string = THR;
+        targetHR.string = THR;
         container.skin = addImSR;
         // heartButtonSR.prototype.empty(0);
     }
@@ -197,12 +198,13 @@ let subButtonSR = Container.template($ => ({
     contents: [
     ],
     behavior: Behavior({
-     onTouchBegan: function(container) {
+       onTouchBegan: function(container) {
         container.skin = subPushImSR;
     },
     onTouchEnded: function(container) {
         THR = THR - 5;
         targetHRSR.string = THR;
+        targetHR.string = THR;
         container.skin = subImSR;
     }
 })
@@ -387,7 +389,7 @@ var SongNameWhite = Container.template($ => ({
 // }));
 
 
-function getCurrHRArrays(hr, screen){
+ function getCurrHRArrays(hr, screen){
   trace("getCurrHRArrays\n");
   var songArrName = "songs"+hr+"bpm";
   var artistArrName = "artists"+hr+"bpm";
@@ -421,7 +423,7 @@ var LibraryTemplate = Container.template($ => ({
     contents: [
     // HEADER({string: "Library"}),
     currScreen
-]
+    ]
 }));
 
 //******************************************************************************************************************
@@ -543,56 +545,55 @@ let subImPush = new Skin({
 });
 
 let heartButton = Column.template($ => ({
- left: 48, width: 70, height: 70, skin: heartIm, active: true,
- contents: [
- new Label({left: 0, right: 0, top: 12,
+   left: 48, width: 70, height: 70, skin: heartIm, active: true,
+   contents: [
+   new Label({left: 0, right: 0, top: 12,
     style: whiteMedStyle, string: "Target"}),
- targetHR,
- ],
-   //behavior: Behavior({
+   targetHR,
+   ]
      // onTouchEnded: function(container) {
-       // application.remove(currentScreen);
-        //currentScreen = new playScreen();
-    //  application.add(currentScreen);
-      //}
-   //})
+     //   application.remove(currentScreen);
+     //    currentScreen = new playScreen();
+     // application.add(currentScreen);
+     //  }
+     // })
 }));
 
 let addButton = Container.template($ => ({
- left: 47, width: 30, height: 30, skin: addIm, active: true,
- contents: [
- ],
- behavior: Behavior({
+   left: 47, width: 30, height: 30, skin: addIm, active: true,
+   contents: [
+   ],
+   behavior: Behavior({
     onTouchBegan: function(container) {
         container.skin = addImPush;
     },
     onTouchEnded: function(container) {
         container.skin = addIm;
-       THR = THR + 10;
-       targetHR.string = THR;
-       container.container.container.controls[1][1].delegate("onTouchEnded");
-       first = 0;
-       container.container.container.controls[1][1].delegate("onTouchEnded");
-   }
+        THR = THR + 10;
+        targetHR.string = THR;
+        container.container.container.controls[1][1].delegate("onTouchEnded");
+        first = 0;
+        container.container.container.controls[1][1].delegate("onTouchEnded");
+    }
 })
 }));
 
 let subButton = Container.template($ => ({
- left: 47, width: 30, height: 30, skin: subIm, active: true,
- contents: [
- ],
- behavior: Behavior({
-        onTouchBegan: function(container) {
+   left: 47, width: 30, height: 30, skin: subIm, active: true,
+   contents: [
+   ],
+   behavior: Behavior({
+    onTouchBegan: function(container) {
         container.skin = subImPush;
     },
     onTouchEnded: function(container) {
         container.skin = subIm;
-       THR = THR - 10;
-       targetHR.string = THR;
-       container.container.container.controls[1][1].delegate("onTouchEnded");
-       first = 0;
-       container.container.container.controls[1][1].delegate("onTouchEnded");
-   }
+        THR = THR - 10;
+        targetHR.string = THR;
+        container.container.container.controls[1][1].delegate("onTouchEnded");
+        first = 0;
+        container.container.container.controls[1][1].delegate("onTouchEnded");
+    }
 })
 }));
 
@@ -600,10 +601,10 @@ let subButton = Container.template($ => ({
 var curr_cat = 90;
 var count = -1;
 let playButton = Container.template($ => ({
- left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,
- contents: [
- ],
- behavior: Behavior({
+   left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,
+   contents: [
+   ],
+   behavior: Behavior({
     onCreate: function(container){
       if (remotePins) {
         remotePins.repeat("/heartRate/read", 100, (HR) => {
@@ -615,38 +616,38 @@ let playButton = Container.template($ => ({
     }
 },
 onTouchEnded: function(container) {
-   if (container.skin ==pauseIm){
-      container.skin = playIm;
-      song.stop();
+ if (container.skin ==pauseIm){
+  container.skin = playIm;
+  song.stop();
 
-  } else{
-      container.skin = pauseIm;
-      if (count == 2){
-        count = 0;
-        if (THR - CHR >= 10){
-          curr_cat +=10;
-      } else if( CHR - THR >= 10){
-          curr_cat -= 10;
-      } 
-  } else{
-     count +=1;
- }
+} else{
+  container.skin = pauseIm;
+  if (count == 2){
+    count = 0;
+    if (THR - CHR >= 10){
+      curr_cat +=10;
+  } else if( CHR - THR >= 10){
+      curr_cat -= 10;
+  } 
+} else{
+   count +=1;
+}
 
- index = dictionary[curr_cat.toString()].length;
+index = dictionary[curr_cat.toString()].length;
             if (first == 0){ // when the application first loads up, play the first song in the correct HB category.
-             first = 1;
-             curr_index = 0;
-             song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".mp3"),width: 0, height: 0});
-             let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
-             container.container.container[0][0].empty();
-             container.container.container[0][0].add(picture);
+               first = 1;
+               curr_index = 0;
+               song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".mp3"),width: 0, height: 0});
+               let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+               container.container.container[0][0].empty();
+               container.container.container[0][0].add(picture);
 
-             container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+               container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
 
-             container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
-             song.start();
+               container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+               song.start();
 
-         } else if(initial_song.length > 0){
+           } else if(initial_song.length > 0){
             trace("it worked\n");
             song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + initial_song +".mp3"),width: 0, height: 0});
             let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + initial_song +".jpg"),width: 180, height: 180});
@@ -659,29 +660,29 @@ onTouchEnded: function(container) {
             song.start();
 
         } else{
-         song.start();
-     }
- }
+           song.start();
+       }
+   }
 }
 })
 }));
 
 
  let prevButton = Container.template($ => ({
-   left: 50, width: 20, height: 20, skin: prevIm, active: true,
-   contents: [
-   ],
-   behavior: Behavior({
+     left: 50, width: 20, height: 20, skin: prevIm, active: true,
+     contents: [
+     ],
+     behavior: Behavior({
       onTouchEnded: function(container) {
-         song.stop();
+       song.stop();
 
-         curr_index = curr_index -1;
-         index = dictionary[curr_cat.toString()].length;
-         if (curr_index < 0){
-           curr_index = index -1;
-       }
+       curr_index = curr_index -1;
+       index = dictionary[curr_cat.toString()].length;
+       if (curr_index < 0){
+         curr_index = index -1;
+     }
 
-       if (count == 2){
+     if (count == 2){
         count = 0;
         if (THR - CHR >= 10){
           curr_cat +=10;
@@ -689,28 +690,28 @@ onTouchEnded: function(container) {
           curr_cat -= 10;
       } 
   } else{
-     count +=1;
- }
- song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
- let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
- container.container.container[0][0].empty();
+   count +=1;
+}
+song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
+let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+container.container.container[0][0].empty();
 
- container.container.container[0][0].add(picture);
+container.container.container[0][0].add(picture);
 
- container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
 
- container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
 
- song.start();
+song.start();
 }
 })
 }));
 
  let nextButton = Container.template($ => ({
-   right: 50, width: 20, height: 20, skin: nextIm, active: true,
-   contents: [
-   ],
-   behavior: Behavior({
+     right: 50, width: 20, height: 20, skin: nextIm, active: true,
+     contents: [
+     ],
+     behavior: Behavior({
       onTouchEnded: function(container) {
         song.stop();
 
@@ -724,22 +725,22 @@ onTouchEnded: function(container) {
               curr_cat -= 10;
           } 
       } else{
-         count +=1;
-     }
-     if (curr_index >= index){
-       curr_index = 0;
+       count +=1;
    }
-   song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
-   let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+   if (curr_index >= index){
+     curr_index = 0;
+ }
+ song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
+ let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
 
-   container.container.container[0][0].empty();
-   container.container.container[0][0].add(picture);
+ container.container.container[0][0].empty();
+ container.container.container[0][0].add(picture);
 
-   container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+ container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
 
-   container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+ container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
 
-   song.start();
+ song.start();
 }
 })
 }));
@@ -787,28 +788,28 @@ onTouchEnded: function(container) {
     left: 0, right: 0, skin: pinkSkin,
     contents: [
     new Label({left: 10, right: 10, top: 0, name: "curr_bpm_bar",
-       style: blackMedStyle, string: "Current Music BPM:"}),
+     style: blackMedStyle, string: "Current Music BPM:"}),
 
     new Column({
-      left: 10, right: 10, height: 320, top: 0, bottom: 0, skin: whiteSkin, name:"controls",
+      left: 10, right: 10, height: 300, top: 0, bottom: 0, skin: whiteSkin, name:"controls",
       contents: [
       new Column({
-        top: 0, left: 5, right: 5, height: 270, skin: pinkSkin,
+        top: 0, left: 5, right: 5, height: 250, skin: pinkSkin,
         contents: [
         new Line({
             top: 10, left: 50, width: 180, height: 180, skin: blackSkin,
             contents: [
             ]
         }),
-                        //having trouble making these labels appear
-                        new Label({left: 10, right: 10, top: 0,
-                            style: blackHeaderStyle, string: ""}),
-                        new Label({left: 10, right: 10, top: 0,
-                            style: blackMedStyle, string: ""}),
-                        ]
-                    }),
+        //having trouble making these labels appear
+        new Label({left: 10, right: 10, top: 0,
+            style: blackHeaderStyle, string: ""}),
+        new Label({left: 10, right: 10, top: 0,
+            style: blackMedStyle, string: ""}),
+        ]
+    }),
       new Line({
-        top: 0, left: 5, right: 5, height: 45, skin: pinkSkin,
+        top: 0, left: 5, right: 5, height: 30, skin: pinkSkin,
         contents: [
         new prevButton(),
         new playButton(),
@@ -960,7 +961,7 @@ var menuItems = [
   }),
   new HEADER({string: "Historical Analytics"}),
   new scroll_header(),
- ]
+  ]
 }));
 
 //******************************************************************************************************************
