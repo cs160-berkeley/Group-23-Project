@@ -16,10 +16,10 @@ var song = 0;
 var productDescriptionStyle = new Style({  font: '18px', horizontal: 'left', vertical: 'middle', left: 1, color: 'white' });
 var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', vertical: 'middle', lines: 1, color: 'black' });
 
-let whiteHeaderStyle = new Style({ font: "30px Helvetica Neue", color: "white" });
-let whiteMedStyle = new Style({ font: "20px Helvetica Neue", color: "white" });
-let whiteSmallStyle = new Style({ font: "10px Helvetica Neue", color: "white" });
-let blackHeaderStyle = new Style({ font: "30px Helvetica Neue bold", color: "black" }); //TODO: moved this out of Styles; resolve later
+let whiteHeaderStyle = new Style({ font: "30px Lato Black", color: "white" });
+let whiteMedStyle = new Style({ font: "20px Lato", color: "white" });
+let whiteSmallStyle = new Style({ font: "10px Lato", color: "white" });
+let blackHeaderStyle = new Style({ font: "30px Lato bold", color: "black" }); //TODO: moved this out of Styles; resolve later
 
 let THR = 80;
 
@@ -30,8 +30,8 @@ let targetHRSR = new Label({left: 0, right: 5, top: 0,
  //   style: whiteHeaderStyle, string: THR}));
 
 
- let blackMedStyle = new Style({ font: "20px Helvetica Neue", color: "black" });
- let blackSmallStyle = new Style({ font: "10px Helvetica Neue", color: "black" });
+ let blackMedStyle = new Style({ font: "20px Lato", color: "black" });
+ let blackSmallStyle = new Style({ font: "10px Lato", color: "black" });
 
  var labelStyle = new Style( { font: "20px Lato", color:"black" } );
 
@@ -101,10 +101,10 @@ let runningPink = new Skin({
 
 //HEADER CODE FOR ALL SCREENS
 let HEADER = Container.template($ => ({
-    top: 0, left: 0, right: 0, height: 30, skin: salmonSkin,
+    top: 0, left: 0, right: 0, height: 40, skin: salmonSkin,
     contents: [
     new Label({left: 10, right: 10, top: 5,
-      style: whiteMedStyle, string: "$"}),
+      style: whiteHeaderStyle, string: $.string}),
     ]
 }));
 
@@ -249,7 +249,7 @@ var StartRunTemplate = Container.template($ => ({
         top: 0, left: 0, bottom: 0, right: 0,
         skin: whiteSkin,
         contents: [
-        new HEADER("Set Target Heart Rate"),
+        new HEADER({string: "Set Target Heart Rate"}),
         new Line({
             left: 0, right: 0, top: 150, height: 90, skin: whiteSkin,
             contents: [
@@ -365,23 +365,23 @@ var SongNameWhite = Container.template($ => ({
     }
 }));
 
-var SongNameGray = Container.template($ => ({
-    left: 0, right: 0, top: 0, height: 60, active: true, skin: graySkin, state:0,
-    contents: [
-    new Label({name:"songNameGray", left:0, right:0, height:60, string:$, style: labelStyle})
-    ],
-    Behavior: class extends Behavior {
-        onTouchBegan(content){
-            content.state = 1;
-        }
-        onTouchEnded(content){
-            var songStr = $.replace(/\s/g, "-").toLowerCase();
-            if(song!=0) song.stop();
-            song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
-            song.start();
-        }
-    }
-}));
+// var SongNameGray = Container.template($ => ({
+//     left: 0, right: 0, top: 0, height: 60, active: true, skin: graySkin, state:0,
+//     contents: [
+//     new Label({name:"songNameGray", left:0, right:0, height:60, string:$, style: labelStyle})
+//     ],
+//     Behavior: class extends Behavior {
+//         onTouchBegan(content){
+//             content.state = 1;
+//         }
+//         onTouchEnded(content){
+//             var songStr = $.replace(/\s/g, "-").toLowerCase();
+//             if(song!=0) song.stop();
+//             song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+//             song.start();
+//         }
+//     }
+// }));
 
 
 function getCurrHRArrays(hr, screen){
@@ -390,6 +390,7 @@ function getCurrHRArrays(hr, screen){
   var artistArrName = "artists"+hr+"bpm";
   var songArr = songArrays[songArrName];
   var artistArr = songArrays[artistArrName];
+  screen.add(HEADER({string: "Library"}));
   for(var i in songArr){
     // trace(songArr[i] + "\n");
     screen.add(new SongNameWhite(songArr[i]));
@@ -415,7 +416,7 @@ var LibraryTemplate = Container.template($ => ({
     left: 0, right: 0, top: 0, bottom: 55,
     skin: new Skin({fill: "white"}),
     contents: [
-    HEADER("Library"),
+    // HEADER({string: "Library"}),
     currScreen,
     // new Line({
     //     top: 25, height: 30, skin: whiteSkin,
@@ -753,7 +754,7 @@ onTouchEnded: function(container) {
  export var PlaySongTemplate = Column.template($ => ({
   left: 0, right: 0, top: 0, bottom: 55, skin: pinkSkin,
   contents: [
-  HEADER("Now Playing"),
+  HEADER({string: "Now Playing"}),
   new Line({
     left: 0, right: 0, top: 10, height: 70, skin: pinkSkin,
     contents: [
@@ -885,9 +886,10 @@ var menuItems = [
      }));
  
  let scroll_header = new Line({
-    top: 30, left: 0, right: 0, height: 50, skin: whiteSkin,
+    top: 40, left: 0, right: 0, height: 50, skin: new Skin({ fill: "#c4c4c4" }),
     contents: [
     new Label({left: 10, right: 10,
+
       style: blackMedStyle, string: "Most HR Boosting Songs"}),
     ]
 });
@@ -899,7 +901,6 @@ var menuItems = [
  var AnalyticsTemplate = Container.template($ => ({
     left: 0, right: 0, top: 0, bottom: 55,
     contents: [
-    HEADER("Analytics"),
     VerticalScroller($, {
         top: 30 , bottom: 30,
         name: 'scroller',
@@ -911,6 +912,7 @@ var menuItems = [
         })                      
         ]
     }),
+    HEADER({string: "Analytics"}),
     scroll_header,
     ]
 }));
@@ -937,7 +939,7 @@ var menuItems = [
       })                  
       ]
   }),
-  HEADER,
+  HEADER({string: "Historical Analytics"}),
   scroll_header,
     // new Line({
     //     top: 25, height: 30, skin: whiteSkin,
@@ -993,7 +995,7 @@ var SettingsTemplate = Container.template($ => ({
         top: 0, left: 0, bottom: 0, right: 0,
         skin: whiteSkin,
         contents: [
-        HEADER("Settings"),
+        HEADER({string: "Settings"}),
         new Label({
             top: 100, left: 0, right: 0, height: 30,
             style: new Style({ font: "30px", color: "black" }),
