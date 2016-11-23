@@ -183,11 +183,13 @@ let TOP_BAR = new Line({
   }),
 
 function getCurrHRArrays(hr, screen){
+  trace("getCurrHRArrays\n");
 	var songArrName = "songs"+hr+"bpm";
 	var artistArrName = "artists"+hr+"bpm";
 	var songArr = songArrays[songArrName];
 	var artistArr = songArrays[artistArrName];
 	for(var i in songArr){
+    trace(songArr[i] + "\n");
 			screen.add(new SongNameWhite(songArr[i]));
 	}
 	/*for(var i in artistArr){

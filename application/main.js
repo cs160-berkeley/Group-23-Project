@@ -227,7 +227,8 @@ let startButtonSR = Container.template($ => ({
         onTouchEnded: function(container) {
             container.skin = startBtnImSR;
             application.remove(currentScreen);
-            currentScreen = new PlaySongTemplate();
+            // currentScreen = new PlaySongTemplate();
+            currentScreen = nowPlayingTemp;
             application.add(currentScreen);
         }
     })
@@ -344,56 +345,14 @@ var navButton = Container.template($ => ({
     })
 }));
 
-// var NavButton = Container.template($ => ({
-//     active: true, top: 2, bottom: 2, right: 2, left: 2,
-//     behavior: Behavior({
-//         onCreate: function(content){
-//             this.upSkin = new Skin({
-//                 fill: "transparent", 
-//                 borders: {left: 1, right: 1, top: 1, bottom: 1}, 
-//                 stroke: "white"
-//             });
-//             this.downSkin = new Skin({
-//                 fill: "#3AFF3E", 
-//                 borders: {left: 1, right: 1, top: 1, bottom: 1}, 
-//                 stroke: "white"
-//             });
-//             content.skin = this.upSkin;
-//         },
-//         onTouchBegan: function(content){
-//             content.skin = this.downSkin;
-//         },
-//         onTouchEnded: function(content){
-//             content.skin = this.upSkin;
-//             application.remove(currentScreen);  // Remove the old screen from the application
-//             currentScreen = new $.nextScreen;  // Make the new screen
-//             application.add(currentScreen);  // Add the new screen to the application
-//         },
-//     }),
-//     contents: [
-//     Label($, { top: 0, bottom: 0, left: 0, right: 0, 
-//         style: new Style({ font: "20px", color: "white" }), 
-//         string: $.string})
-//     ]
-// }));
-
-
-// new Line({
-//     top: 25, height: 30, skin: whiteSkin,
-//     contents: [
-//     new prevScreenButton(listPink, new LibraryTemplate()),
-//     new finishRunButton(runningGray, new PlaySongTemplate()),
-//     new nextScreenButton(graphGray, new AnalyticsTemplate()),
-//     ]
-// })
 
   /******************************************************************************************************************
                                     Library
    *******************************************************************************************************************/
    var songArrays = {};
-songArrays.songs60bpm = ["Here", "Love Gun", "Grapevine Fires", "If No One Will Listen", "My Love", "Beautiful War", "Culo", "No Good Deed", "Cold Desert"];
-//songArrays.artists60bpm = ["Alessia Cara", "Cee Lo Green", "Death Cab for Cutie", "Kelly Clarkson", "Sia"];
-songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again", "Complicated", "You Shook Me All Night Long", "Come And Get It", "We Cant Stop", "Rehab", "Halo"];
+songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again"];
+songArrays.songs90bpm = ["Gold Digger", "Diamonds", "We Are Young"];
+var initial_song = "";
 
                                     var labelStuff = Container.template($ => ({ 
                                         skin: graySkin, 
@@ -419,10 +378,17 @@ songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again", "Complicated", "Y
                                                 content.state = 1;
                                             }
                                             onTouchEnded(content){
-                                                var songStr = $.replace(/\s/g, "-").toLowerCase();
-                                                if(song!=0) song.stop();
-                                                song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
-                                                song.start();
+                                                trace("hi\n");
+                                                first = 1;
+                                                initial_song = $;
+                                                application.remove(currentScreen);
+                                                currentScreen = nowPlayingTemp;
+                                                application.add(nowPlayingTemp);
+                                                
+                                                // var songStr = $.replace(/\s/g, "-").toLowerCase();
+                                                // if(song!=0) song.stop();
+                                                // song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+                                                // song.start();
                                             }
                                         }
                                     }));
@@ -437,10 +403,15 @@ songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again", "Complicated", "Y
             content.state = 1;
         }
         onTouchEnded(content){
-            var songStr = $.replace(/\s/g, "-").toLowerCase();
-            if(song!=0) song.stop();
-            song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
-            song.start();
+            trace("hi\n");
+            initial_song = $;
+            application.remove(currentScreen);
+            currentScreen = nowPlayingTemp;
+            application.add(nowPlayingTemp);
+            // var songStr = $.replace(/\s/g, "-").toLowerCase();
+            // if(song!=0) song.stop();
+            // song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+            // song.start();
         }
     }
 }));
@@ -459,7 +430,7 @@ songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again", "Complicated", "Y
     /*for(var i in artistArr){
         trace(artistArr[i]+"\n");
     }*/
-    var content = new Content({ width: 640, height:500, skin: blackSkin });
+    var content = new Content({ width: 640, height:400, skin: blackSkin });
     screen.add(content);
 }
 
@@ -478,15 +449,7 @@ var LibraryTemplate = Container.template($ => ({
     skin: new Skin({fill: "white"}),
     contents: [
     HEADER("Library"),
-    currScreen,
-    // new Line({
-    //     top: 25, height: 30, skin: whiteSkin,
-    //     contents: [
-    //     new prevScreenButton(listPink, new LibraryTemplate()),
-    //     new finishRunButton(runningGray, new PlaySongTemplate()),
-    //     new nextScreenButton(graphGray, new AnalyticsTemplate()),
-    //     ]
-    // }),
+    currScreen
     ]
 }));
 
@@ -496,20 +459,20 @@ var LibraryTemplate = Container.template($ => ({
 
 
                                     var dictionary = {};
-                                    dictionary['80'] = ["21guns" , "HeyHo","SeeYouAgain"];
-                                    dictionary['90'] = ["GoldDigger" , "Diamonds","WeAreYoung"];
-                                    dictionary['100'] = ["Riptide" , "ManintheMirror","TurnDownForWhat"];
+                                    dictionary['80'] = ["21 Guns" , "Hey Ho","See You Again"];
+                                    dictionary['90'] = ["Gold Digger" , "Diamonds","We Are Young"];
+                                    dictionary['100'] = ["Riptide" , "Man in the Mirror","Turn Down For What"];
 
                                     var name_artist_dict = {};
-                                    name_artist_dict["21guns"] = ["21 Guns", "Green Day"];
-                                    name_artist_dict["HeyHo"] = ["Hey Ho", "The Lumineers"];
-                                    name_artist_dict["SeeYouAgain"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth"];
-                                    name_artist_dict["GoldDigger"] = ["Gold Digger", "Kanye West"];
+                                    name_artist_dict["21 Guns"] = ["21 Guns", "Green Day"];
+                                    name_artist_dict["Hey Ho"] = ["Hey Ho", "The Lumineers"];
+                                    name_artist_dict["See You Again"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth"];
+                                    name_artist_dict["Gold Digger"] = ["Gold Digger", "Kanye West"];
                                     name_artist_dict["Diamonds"] = ["Diamonds", "Rihanna"];
-                                    name_artist_dict["WeAreYoung"] = ["We Are Young", "Fun ft. Janelle Monáe"];
+                                    name_artist_dict["We Are Young"] = ["We Are Young", "Fun ft. Janelle Monáe"];
                                     name_artist_dict["Riptide"] = ["Riptide", "Vance Joy"];
-                                    name_artist_dict["ManintheMirror"] = ["Man in the Mirror", "Green Day"];
-                                    name_artist_dict["TurnDownForWhat"] = ["Turn Down For What", "DJ Snake, Lil Jon"];
+                                    name_artist_dict["Man in the Mirror"] = ["Man in the Mirror", "Green Day"];
+                                    name_artist_dict["Turn Down For What"] = ["Turn Down For What", "DJ Snake, Lil Jon"];
 
 
                                     let set = new Texture("images/settings-cogwheel-button copy.png");
@@ -653,8 +616,6 @@ var LibraryTemplate = Container.template($ => ({
                                               container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
 
                                               trace(curr_cat+"\n");
-
-
                                           });
                                         }
                                     },
@@ -682,6 +643,18 @@ var LibraryTemplate = Container.template($ => ({
                curr_index = 0;
                song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".mp3"),width: 0, height: 0});
                let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+               container.container.container[0][0].empty();
+               container.container.container[0][0].add(picture);
+
+               container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+
+               container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+               song.start();
+
+           } else if(initial_song.length > 0){
+                trace("it worked\n");
+                song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + initial_song +".mp3"),width: 0, height: 0});
+               let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + initial_song +".jpg"),width: 180, height: 180});
                container.container.container[0][0].empty();
                container.container.container[0][0].add(picture);
 
@@ -824,15 +797,7 @@ song.start();
         ]
     }),
       ]
-  }),
-    // new Line({
-    //     bottom: 0, top: 25, height: 30, skin: graySkin,
-    //     contents: [
-    //             // new prevScreenButton(listGray, new LibraryTemplate()),
-    //             // new finishRunButton(runningPink, new StartRunTemplate()),
-    //             // new nextScreenButton(graphGray, new AnalyticsTemplate()),
-    //             ]
-    //         }),
+  })
  ]
 }),
  ]
@@ -947,14 +912,6 @@ song.start();
         ]
     }),
     scroll_header,
-        // new Line({
-        // top: 25, height: 30, skin: whiteSkin,
-        //     contents: [
-        //         // new prevScreenButton(listGray, new LibraryTemplate()),
-        //         // new finishRunButton(runningGray, new PlaySongTemplate()),
-        //         //new nextScreenButton(graphPink, new AnalyticsTemplate()),
-        //     ]
-        // }),
  ]
 }));
 
@@ -1055,9 +1012,7 @@ song.start();
                                             new Line({
                                                 top: 25, height: 30, skin: whiteSkin,
                                                 contents: [
-                //new prevScreenButton(listPink, new SettingsTemplate),
-                // new finishRunButton(runningGray, new StartRunTemplate()),
-                // new nextScreenButton(graphGray, new HistoricalAnalyticsTemplate()),
+
                 ]
             }),
                                             ]
@@ -1073,6 +1028,7 @@ song.start();
  let settingsTempVar = new SettingsTemplate();
  let analyticsTempVar = new AnalyticsTemplate();
  let libraryTempVar = new LibraryTemplate();
+ let nowPlayingTemp = new PlaySongTemplate();
 
 let screen2Var = new Screen2Template();
 //NAVBAR STUFF
