@@ -109,6 +109,10 @@ let HEADER = Container.template($ => ({
 }));
 
 
+//******************************************************************************************************************
+//                                    Start Run
+//******************************************************************************************************************
+
 
 let addSR = new Texture("images/plus-icon.png");
 let addImSR = new Skin({
@@ -259,15 +263,7 @@ var StartRunTemplate = Container.template($ => ({
             contents: [
             new startButtonSR()
             ]
-        }),
-        new Line({
-            top: 25, height: 30, skin: whiteSkin,
-            contents: [
-                //new prevScreenButton(listGray, new SettingsTemplate()),
-              //  new finishRunButton(runningPink, new StartRunTemplate()),
-                //new nextScreenButton(graphGray, new HistoricalAnalyticsTemplate()),
-                ]
-            }),
+        })
         ]
     })
 
@@ -326,33 +322,13 @@ var Screen3Template = Column.template($ => ({
 }));
 
 
-
-var navButton = Container.template($ => ({
-    active: true,
-    fill: "transparent", 
-    width: 20, height: 20,
-    skin: $.btnSkin,
-    behavior: Behavior({
-        onTouchBegan: function(container) {
-            container.skin = $.pushSkin;
-        },
-        onTouchEnded: function(container){
-            container.skin = $.btnSkin;
-            application.remove(currentScreen);  // Remove the old screen from the application
-            currentScreen = $.nextScreen;  // Make the new screen
-            application.add(currentScreen);  // Add the new screen to the application
-        }
-    })
-}));
-
-
 //******************************************************************************************************************
 //                                Library
 //******************************************************************************************************************
 var songArrays = {};
-songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again"];
-songArrays.songs90bpm = ["Gold Digger", "Diamonds", "We Are Young"];
-var initial_song = "";
+songArrays.songs60bpm = ["Here", "Love Gun", "Grapevine Fires", "If No One Will Listen", "My Love", "Beautiful War", "Culo", "No Good Deed", "Cold Desert"];
+//songArrays.artists60bpm = ["Alessia Cara", "Cee Lo Green", "Death Cab for Cutie", "Kelly Clarkson", "Sia"];
+songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again", "Complicated", "You Shook Me All Night Long", "Come And Get It", "We Cant Stop", "Rehab", "Halo"];
 
 var labelStuff = Container.template($ => ({ 
     skin: graySkin, 
@@ -378,22 +354,18 @@ var SongNameWhite = Container.template($ => ({
             content.state = 1;
         }
         onTouchEnded(content){
-            trace("hi\n");
-            first = 1;
-            initial_song = $;
+            var songStr = $.replace(/\s/g, "-").toLowerCase();
+            if(song!=0) song.stop();
+            song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+            song.start();
             application.remove(currentScreen);
             currentScreen = nowPlayingTemp;
             application.add(nowPlayingTemp);
+        }
+    }
+}));
 
-                                                // var songStr = $.replace(/\s/g, "-").toLowerCase();
-                                                // if(song!=0) song.stop();
-                                                // song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
-                                                // song.start();
-                                            }
-                                        }
-                                    }));
-
- var SongNameGray = Container.template($ => ({
+var SongNameGray = Container.template($ => ({
     left: 0, right: 0, top: 0, height: 60, active: true, skin: graySkin, state:0,
     contents: [
     new Label({name:"songNameGray", left:0, right:0, height:60, string:$, style: labelStyle})
@@ -403,21 +375,16 @@ var SongNameWhite = Container.template($ => ({
             content.state = 1;
         }
         onTouchEnded(content){
-            trace("hi\n");
-            initial_song = $;
-            application.remove(currentScreen);
-            currentScreen = nowPlayingTemp;
-            application.add(nowPlayingTemp);
-            // var songStr = $.replace(/\s/g, "-").toLowerCase();
-            // if(song!=0) song.stop();
-            // song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
-            // song.start();
+            var songStr = $.replace(/\s/g, "-").toLowerCase();
+            if(song!=0) song.stop();
+            song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+            song.start();
         }
     }
 }));
 
 
- function getCurrHRArrays(hr, screen){
+function getCurrHRArrays(hr, screen){
   trace("getCurrHRArrays\n");
   var songArrName = "songs"+hr+"bpm";
   var artistArrName = "artists"+hr+"bpm";
@@ -430,7 +397,7 @@ var SongNameWhite = Container.template($ => ({
     /*for(var i in artistArr){
         trace(artistArr[i]+"\n");
     }*/
-    var content = new Content({ width: 640, height:400, skin: blackSkin });
+    var content = new Content({ width: 640, height:500, skin: blackSkin });
     screen.add(content);
 }
 
@@ -449,13 +416,21 @@ var LibraryTemplate = Container.template($ => ({
     skin: new Skin({fill: "white"}),
     contents: [
     HEADER("Library"),
-    currScreen
-    ]
+    currScreen,
+    // new Line({
+    //     top: 25, height: 30, skin: whiteSkin,
+    //     contents: [
+    //     new prevScreenButton(listPink, new LibraryTemplate()),
+    //     new finishRunButton(runningGray, new PlaySongTemplate()),
+    //     new nextScreenButton(graphGray, new AnalyticsTemplate()),
+    //     ]
+    // }),
+]
 }));
 
 //******************************************************************************************************************
 //                                    Play Screen
-//*******************************************************************************************************************
+//******************************************************************************************************************
 
 
 var dictionary = {};
@@ -539,24 +514,24 @@ let heartIm = new Skin({
   aspect: "fit"
 });
 
-let add = new Texture("images/round-add-button copy.png");
+let add = new Texture("images/plus-icon.png");
 let addIm = new Skin({
-  width: 550, height: 550,
+  width: 80, height: 80,
   texture: add,
   fill: "white",
   aspect: "fit"
 });
 
-let sub = new Texture("images/round-remove-button copy.png");
+let sub = new Texture("images/minus-icon.png");
 let subIm = new Skin({
-  width: 550, height: 550,
+  width: 80, height: 80,
   texture: sub,
   fill: "white",
   aspect: "fit"
 });
 
 let heartButton = Column.template($ => ({
- left: 10, width: 87, height: 87, skin: heartIm, active: true,
+ left: 10, width: 70, height: 70, skin: heartIm, active: true,
  contents: [
  new Label({left: 10, right: 10, top: 12,
     style: blackMedStyle, string: "Target"}),
@@ -572,7 +547,7 @@ let heartButton = Column.template($ => ({
 }));
 
 let addButton = Container.template($ => ({
- left: 10, width: 50, height: 50, skin: addIm, active: true,
+ left: 10, width: 30, height: 30, skin: addIm, active: true,
  contents: [
  ],
  behavior: Behavior({
@@ -587,7 +562,7 @@ let addButton = Container.template($ => ({
 }));
 
 let subButton = Container.template($ => ({
- left: 10, width: 50, height: 50, skin: subIm, active: true,
+ left: 10, width: 30, height: 30, skin: subIm, active: true,
  contents: [
  ],
  behavior: Behavior({
@@ -749,6 +724,30 @@ onTouchEnded: function(container) {
 })
 }));
 
+ let finishButton = Container.template($ => ({
+    width: 200, height: 50, skin: startBtnImSR, active: true,
+    contents: [
+    new Label({
+        left: 0, right: 0, top: 0, bottom: 0, style: whiteHeaderStyle,
+        string: "Finish Run"
+    }),
+    ],
+    behavior: Behavior({
+        onTouchBegan: function(container) {
+            container.skin = startBtnImPushSR;
+        },
+        onTouchEnded: function(container) {
+            container.skin = startBtnImSR;
+            application.remove(currentScreen);
+
+            currentScreen = analyticsTempVar;
+            application.remove(navBar2);
+            application.add(currentScreen);
+            application.add(navBar);
+        }
+    })
+}));
+
 
  /* Play screen layout */
  export var PlaySongTemplate = Column.template($ => ({
@@ -756,7 +755,7 @@ onTouchEnded: function(container) {
   contents: [
   HEADER("Now Playing"),
   new Line({
-    left: 45, right: 45, top: 10, height: 90, skin: pinkSkin,
+    left: 45, right: 45, top: 10, height: 70, skin: pinkSkin,
     contents: [
     new subButton(),
     new heartButton(),
@@ -767,14 +766,14 @@ onTouchEnded: function(container) {
   new Column({
     left: 0, right: 0, skin: pinkSkin,
     contents: [
-    new Label({left: 10, right: 10, top: 5, name: "curr_bpm_bar",
+    new Label({left: 10, right: 10, top: 0, name: "curr_bpm_bar",
        style: blackMedStyle, string: "Current Music BPM:"}),
 
     new Column({
-      left: 10, right: 10, height: 350, top: 5, bottom: 10, skin: whiteSkin, name:"controls",
+      left: 10, right: 10, height: 320, top: 0, bottom: 0, skin: whiteSkin, name:"controls",
       contents: [
       new Column({
-        top: 5, left: 5, right: 5, height: 270, skin: pinkSkin,
+        top: 0, left: 5, right: 5, height: 270, skin: pinkSkin,
         contents: [
         new Line({
             top: 10, left: 50, width: 180, height: 180, skin: blackSkin,
@@ -782,14 +781,14 @@ onTouchEnded: function(container) {
             ]
         }),
                         //having trouble making these labels appear
-                        new Label({left: 10, right: 10, top: 10,
+                        new Label({left: 10, right: 10, top: 0,
                             style: blackHeaderStyle, string: "Song Title"}),
-                        new Label({left: 10, right: 10, top: 10,
+                        new Label({left: 10, right: 10, top: 0,
                             style: blackMedStyle, string: "Song Artist"}),
                         ]
                     }),
       new Line({
-        top: 5, left: 5, right: 5, height: 45, skin: pinkSkin,
+        top: 0, left: 5, right: 5, height: 45, skin: pinkSkin,
         contents: [
         new prevButton(),
         new playButton(),
@@ -800,6 +799,7 @@ onTouchEnded: function(container) {
   })
     ]
 }),
+ new finishButton()
  ]
 }));
 
@@ -1036,6 +1036,25 @@ let screen2Var = new Screen2Template();
 var currentScreen = startRunTemplateVar;
 application.add(currentScreen);
 
+
+var navButton = Container.template($ => ({
+    active: true,
+    fill: "transparent", 
+    width: 30, height: 30,
+    skin: $.btnSkin,
+    behavior: Behavior({
+        onTouchBegan: function(container) {
+            container.skin = $.pushSkin;
+        },
+        onTouchEnded: function(container){
+            container.skin = $.btnSkin;
+            application.remove(currentScreen);  // Remove the old screen from the application
+            currentScreen = $.nextScreen;  // Make the new screen
+            application.add(currentScreen);  // Add the new screen to the application
+        }
+    })
+}));
+
 var navBar = new Line({ bottom: 0, height: 55, left: 0, right: 0,
     skin: new Skin({ fill: "white" }),
     contents: [
@@ -1053,4 +1072,4 @@ var navBar2 = new Line({ bottom: 0, height: 55, left: 0, right: 0,
     new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: analyticsTempVar})
     ]
 });
- application.add(navBar);
+application.add(navBar);
