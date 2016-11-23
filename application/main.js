@@ -6,25 +6,28 @@
 } from 'scroller';
 
 import Pins from "pins";
-export var remotePins;
+var remotePins;
 
 var index;
 var curr_index = 0;
 var first = 0;
 var song = 0;
 
-var productDescriptionStyle = new Style({  font: '18px', horizontal: 'left', vertical: 'middle', left: 1, color: 'white' });
-var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', vertical: 'middle', lines: 1, color: 'black' });
+var productDescriptionStyle = new Style({  font: '18px Lato', horizontal: 'left', vertical: 'middle', left: 1, color: 'white' });
+var productNameStyle = new Style({  font: 'bold 22px Lato', horizontal: 'left', vertical: 'middle', lines: 1, color: 'black' });
 
 let whiteHeaderStyle = new Style({ font: "30px Lato Black", color: "white" });
 let whiteMedStyle = new Style({ font: "20px Lato", color: "white" });
 let whiteSmallStyle = new Style({ font: "10px Lato", color: "white" });
-let blackHeaderStyle = new Style({ font: "30px Lato bold", color: "black" }); //TODO: moved this out of Styles; resolve later
+let blackHeaderStyle = new Style({ font: "30px Lato", color: "black" }); //TODO: moved this out of Styles; resolve later
 
 let THR = 80;
+var CHR = 60;
 
 let targetHRSR = new Label({left: 0, right: 5, top: 0,
     style: whiteHeaderStyle, string: THR});
+let targetHR = new Label({left: 0, right: 5, top: 0,
+    style: whiteMedStyle, string: THR});
 
  // let targetHRSR = Label.template($ => ({left: 0, right: 5, top: 0,
  //   style: whiteHeaderStyle, string: THR}));
@@ -417,15 +420,7 @@ var LibraryTemplate = Container.template($ => ({
     skin: new Skin({fill: "white"}),
     contents: [
     // HEADER({string: "Library"}),
-    currScreen,
-    // new Line({
-    //     top: 25, height: 30, skin: whiteSkin,
-    //     contents: [
-    //     new prevScreenButton(listPink, new LibraryTemplate()),
-    //     new finishRunButton(runningGray, new PlaySongTemplate()),
-    //     new nextScreenButton(graphGray, new AnalyticsTemplate()),
-    //     ]
-    // }),
+    currScreen
 ]
 }));
 
@@ -461,7 +456,7 @@ let settingsIm = new Skin({
 
 let pause = new Texture("images/pause-button copy.png");
 let pauseIm = new Skin({
-  width: 50, height: 50,
+  width: 512, height: 512,
   texture: pause,
   fill: "white",
   aspect: "fit"
@@ -501,7 +496,7 @@ let prevIm = new Skin({
 
 let play = new Texture("images/play-arrow copy.png");
 let playIm = new Skin({
-  width: 500, height: 500,
+  width: 512, height: 512,
   texture: play,
   fill: "white",
   aspect: "fit"
@@ -531,12 +526,28 @@ let subIm = new Skin({
   aspect: "fit"
 });
 
+let addPush = new Texture("images/plus-icon-depressed.png");
+let addImPush = new Skin({
+  width: 80, height: 80,
+  texture: addPush,
+  fill: "white",
+  aspect: "fit"
+});
+
+let subPush = new Texture("images/minus-icon-depressed.png");
+let subImPush = new Skin({
+  width: 80, height: 80,
+  texture: subPush,
+  fill: "white",
+  aspect: "fit"
+});
+
 let heartButton = Column.template($ => ({
  left: 48, width: 70, height: 70, skin: heartIm, active: true,
  contents: [
- new Label({left: 10, right: 10, top: 12,
-    style: blackMedStyle, string: "Target"}),
- THR,
+ new Label({left: 0, right: 0, top: 12,
+    style: whiteMedStyle, string: "Target"}),
+ targetHR,
  ],
    //behavior: Behavior({
      // onTouchEnded: function(container) {
@@ -552,7 +563,11 @@ let addButton = Container.template($ => ({
  contents: [
  ],
  behavior: Behavior({
+    onTouchBegan: function(container) {
+        container.skin = addImPush;
+    },
     onTouchEnded: function(container) {
+        container.skin = addIm;
        THR = THR + 10;
        targetHR.string = THR;
        container.container.container.controls[1][1].delegate("onTouchEnded");
@@ -567,7 +582,11 @@ let subButton = Container.template($ => ({
  contents: [
  ],
  behavior: Behavior({
+        onTouchBegan: function(container) {
+        container.skin = subImPush;
+    },
     onTouchEnded: function(container) {
+        container.skin = subIm;
        THR = THR - 10;
        targetHR.string = THR;
        container.container.container.controls[1][1].delegate("onTouchEnded");
@@ -751,7 +770,7 @@ onTouchEnded: function(container) {
 
 
  /* Play screen layout */
- export var PlaySongTemplate = Column.template($ => ({
+ var PlaySongTemplate = Column.template($ => ({
   left: 0, right: 0, top: 0, bottom: 55, skin: pinkSkin,
   contents: [
   HEADER({string: "Now Playing"}),
@@ -783,9 +802,9 @@ onTouchEnded: function(container) {
         }),
                         //having trouble making these labels appear
                         new Label({left: 10, right: 10, top: 0,
-                            style: blackHeaderStyle, string: "Song Title"}),
+                            style: blackHeaderStyle, string: ""}),
                         new Label({left: 10, right: 10, top: 0,
-                            style: blackMedStyle, string: "Song Artist"}),
+                            style: blackMedStyle, string: ""}),
                         ]
                     }),
       new Line({
@@ -885,14 +904,14 @@ var menuItems = [
          ]
      }));
  
- let scroll_header = new Line({
+ let scroll_header = Line.template($ =>({
     top: 40, left: 0, right: 0, height: 50, skin: new Skin({ fill: "#c4c4c4" }),
     contents: [
     new Label({left: 10, right: 10,
 
-      style: blackMedStyle, string: "Most HR Boosting Songs"}),
+      style: whiteMedStyle, string: "Most HR Boosting Songs"}),
     ]
-});
+}));
 
 
 /* This is a template for a container which takes up the
@@ -913,7 +932,7 @@ var menuItems = [
         ]
     }),
     HEADER({string: "Analytics"}),
-    scroll_header,
+    new scroll_header(),
     ]
 }));
 
@@ -928,7 +947,7 @@ var menuItems = [
   left: 0, right: 0, top: 0, bottom: 0,
   contents: [
 
-  VerticalScroller($, {
+  new VerticalScroller($, {
       top: 30 , bottom: 30,
       name: 'scroller',
       contents: [
@@ -939,16 +958,8 @@ var menuItems = [
       })                  
       ]
   }),
-  HEADER({string: "Historical Analytics"}),
-  scroll_header,
-    // new Line({
-    //     top: 25, height: 30, skin: whiteSkin,
-    //         contents: [
-    //             // new prevScreenButton(listGray, new SettingsTemplate()),
-    //             // new finishRunButton(runningGray, new StartRunTemplate()),
-    //             // new nextScreenButton(graphPink, new HistoricalAnalyticsTemplate()),
-    //         ]
-    //     }),
+  new HEADER({string: "Historical Analytics"}),
+  new scroll_header(),
  ]
 }));
 
@@ -1025,7 +1036,7 @@ var SettingsTemplate = Container.template($ => ({
 }));
 
 
-// let histAnalyticsTemp = new AnalyticsTemplate(); //TODO: resolve historical analytics template
+let histAnalyticsTemp = new HistoricalAnalyticsTemplate(); //TODO: resolve historical analytics template
 let startRunTemplateVar = new StartRunTemplate();
 let settingsTempVar = new SettingsTemplate();
 let analyticsTempVar = new AnalyticsTemplate();
@@ -1063,7 +1074,7 @@ var navBar = new Line({ bottom: 0, height: 55, left: 0, right: 0,
     contents: [
     new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
     new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: startRunTemplateVar}),
-    new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: analyticsTempVar})
+    new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: histAnalyticsTemp})
     ]
 });
 
