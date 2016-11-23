@@ -345,7 +345,7 @@ var labelStuff = Container.template($ => ({
 var song = 0;
 
 var SongNameWhite = Container.template($ => ({
-    left: 0, right: 0, top: 0, height: 60, active: true, skin: whiteSkin, state:0,
+    left: 0, right: 0, top: 0, height: 50, active: true, skin: whiteSkin, state:0,
     contents: [
     new Label({name:"songNameWhite", left:0, right:0, height:60, string:$, style: labelStyle})
     ],
@@ -391,14 +391,14 @@ function getCurrHRArrays(hr, screen){
   var songArr = songArrays[songArrName];
   var artistArr = songArrays[artistArrName];
   for(var i in songArr){
-    trace(songArr[i] + "\n");
+    // trace(songArr[i] + "\n");
     screen.add(new SongNameWhite(songArr[i]));
 }
     /*for(var i in artistArr){
         trace(artistArr[i]+"\n");
     }*/
-    var content = new Content({ width: 640, height:500, skin: blackSkin });
-    screen.add(content);
+    // var content = new Content({ width: 640, height:500, skin: blackSkin });
+    // screen.add(content);
 }
 
 /* Song screen layout */
@@ -531,7 +531,7 @@ let subIm = new Skin({
 });
 
 let heartButton = Column.template($ => ({
- left: 10, width: 70, height: 70, skin: heartIm, active: true,
+ left: 48, width: 70, height: 70, skin: heartIm, active: true,
  contents: [
  new Label({left: 10, right: 10, top: 12,
     style: blackMedStyle, string: "Target"}),
@@ -547,7 +547,7 @@ let heartButton = Column.template($ => ({
 }));
 
 let addButton = Container.template($ => ({
- left: 10, width: 30, height: 30, skin: addIm, active: true,
+ left: 47, width: 30, height: 30, skin: addIm, active: true,
  contents: [
  ],
  behavior: Behavior({
@@ -562,7 +562,7 @@ let addButton = Container.template($ => ({
 }));
 
 let subButton = Container.template($ => ({
- left: 10, width: 30, height: 30, skin: subIm, active: true,
+ left: 47, width: 30, height: 30, skin: subIm, active: true,
  contents: [
  ],
  behavior: Behavior({
@@ -755,7 +755,7 @@ onTouchEnded: function(container) {
   contents: [
   HEADER("Now Playing"),
   new Line({
-    left: 45, right: 45, top: 10, height: 70, skin: pinkSkin,
+    left: 0, right: 0, top: 10, height: 70, skin: pinkSkin,
     contents: [
     new subButton(),
     new heartButton(),
@@ -1041,6 +1041,7 @@ var navButton = Container.template($ => ({
     active: true,
     fill: "transparent", 
     width: 30, height: 30,
+    left: 57,
     skin: $.btnSkin,
     behavior: Behavior({
         onTouchBegan: function(container) {
