@@ -1,8 +1,8 @@
  import {
-    VerticalScroller,
-    VerticalScrollbar,
-    TopScrollerShadow,
-    BottomScrollerShadow
+  VerticalScroller,
+  VerticalScrollbar,
+  TopScrollerShadow,
+  BottomScrollerShadow
 } from 'scroller';
 
 import Pins from "pins";
@@ -19,30 +19,27 @@ var productNameStyle = new Style({  font: 'bold 22px Lato', horizontal: 'left', 
 let whiteHeaderStyle = new Style({ font: "30px Lato Black", color: "white" });
 let whiteMedStyle = new Style({ font: "20px Lato", color: "white" });
 let whiteSmallStyle = new Style({ font: "10px Lato", color: "white" });
-let blackHeaderStyle = new Style({ font: "30px Lato", color: "black" }); //TODO: moved this out of Styles; resolve later
+let blackHeaderStyle = new Style({ font: "30px Lato", color: "black" });
 
 let THR = 80;
 var CHR = 60;
 
 let targetHRSR = new Label({left: 0, right: 5, top: 0,
-    style: whiteHeaderStyle, string: THR});
+  style: whiteHeaderStyle, string: THR});
 let targetHR = new Label({left: 0, right: 5, top: 0,
-    style: whiteMedStyle, string: THR});
-
- // let targetHRSR = Label.template($ => ({left: 0, right: 5, top: 0,
- //   style: whiteHeaderStyle, string: THR}));
+  style: whiteMedStyle, string: THR});
 
 
- let blackMedStyle = new Style({ font: "20px Lato", color: "black" });
- let blackSmallStyle = new Style({ font: "10px Lato", color: "black" });
+let blackMedStyle = new Style({ font: "20px Lato", color: "black" });
+let blackSmallStyle = new Style({ font: "10px Lato", color: "black" });
 
- var labelStyle = new Style( { font: "20px Lato", color:"black" } );
+var labelStyle = new Style( { font: "20px Lato", color:"black" } );
 
 // FOOTER BUTTONS
 let lineSkin = new Skin({ 
-    fill: [ 'white', 'yellow' ],
-    borders: { left: 0, right: 0, top: 0, bottom: 1 }, 
-    stroke: 'silver'    
+  fill: [ 'white', 'yellow' ],
+  borders: { left: 0, right: 0, top: 0, bottom: 1 }, 
+  stroke: 'silver'    
 });
 
 let blueSkin = new Skin ({fill: 'blue'});
@@ -104,11 +101,11 @@ let runningPink = new Skin({
 
 //HEADER CODE FOR ALL SCREENS
 let HEADER = Container.template($ => ({
-    top: 0, left: 0, right: 0, height: 40, skin: salmonSkin,
-    contents: [
-    new Label({left: 10, right: 10, top: 5,
-      style: whiteHeaderStyle, string: $.string}),
-    ]
+  top: 0, left: 0, right: 0, height: 40, skin: salmonSkin,
+  contents: [
+  new Label({left: 10, right: 10, top: 5,
+    style: whiteHeaderStyle, string: $.string}),
+  ]
 }));
 
 
@@ -119,211 +116,161 @@ let HEADER = Container.template($ => ({
 
 let addSR = new Texture("images/plus-icon.png");
 let addImSR = new Skin({
-    width: 80, height: 80,
-    texture: addSR,
-    fill: "white",
-    aspect: "fit"
+  width: 80, height: 80,
+  texture: addSR,
+  fill: "white",
+  aspect: "fit"
 });
 
 let subSR = new Texture("images/minus-icon.png");
 let subImSR = new Skin({
-    width: 80, height: 80,
-    texture: subSR,
-    fill: "white",
-    aspect: "fit"
+  width: 80, height: 80,
+  texture: subSR,
+  fill: "white",
+  aspect: "fit"
 });
 
 let addPushSR = new Texture("images/plus-icon-depressed.png");
 let addPushImSR = new Skin({
-    width: 80, height: 80,
-    texture: addPushSR,
-    fill: "white",
-    aspect: "fit"
+  width: 80, height: 80,
+  texture: addPushSR,
+  fill: "white",
+  aspect: "fit"
 });
 
 let subPushSR = new Texture("images/minus-icon-depressed.png");
 let subPushImSR = new Skin({
-    width: 80, height: 80,
-    texture: subPushSR,
-    fill: "white",
-    aspect: "fit"
+  width: 80, height: 80,
+  texture: subPushSR,
+  fill: "white",
+  aspect: "fit"
 });
 
 let heartSR = new Texture("images/favorite-heart-button copy.png");
 let heartImSR = new Skin({
-    width: 550, height: 550,
-    texture: heartSR,
-    fill: "white",
-    aspect: "fit"
+  width: 550, height: 550,
+  texture: heartSR,
+  fill: "white",
+  aspect: "fit"
 });
 
 let startBtnSR = new Texture("images/start-run-button.png");
 let startBtnImSR = new Skin({
-    width: 497, height: 137,
-    texture: startBtnSR,
-    fill: "white",
-    aspect: "fit"
+  width: 497, height: 137,
+  texture: startBtnSR,
+  fill: "white",
+  aspect: "fit"
 });
 
 let startBtnPushSR = new Texture("images/start-run-button-depressed.png");
 let startBtnImPushSR = new Skin({
-    width: 497, height: 137,
-    texture: startBtnPushSR,
-    fill: "white",
-    aspect: "fit"
+  width: 497, height: 137,
+  texture: startBtnPushSR,
+  fill: "white",
+  aspect: "fit"
 });
 
 let addButtonSR = Container.template($ => ({
-    left: 5, width: 40, height: 40, skin: addImSR, active: true,
-    contents: [
-    ],
-    behavior: Behavior({
-       onTouchBegan: function(container) {
-        container.skin = addPushImSR;
-    },
-    onTouchEnded: function(container) {
-        THR = THR + 5;
-        targetHRSR.string = THR;
-        targetHR.string = THR;
-        container.skin = addImSR;
+  left: 5, width: 40, height: 40, skin: addImSR, active: true,
+  contents: [
+  ],
+  behavior: Behavior({
+   onTouchBegan: function(container) {
+    container.skin = addPushImSR;
+  },
+  onTouchEnded: function(container) {
+    THR = THR + 5;
+    targetHRSR.string = THR;
+    targetHR.string = THR;
+    container.skin = addImSR;
         // heartButtonSR.prototype.empty(0);
-    }
-})
+      }
+    })
 }));
 
 
 
 let subButtonSR = Container.template($ => ({
-    left: 15, width: 40, height: 40, skin: subImSR, active: true,
-    contents: [
-    ],
-    behavior: Behavior({
-       onTouchBegan: function(container) {
-        container.skin = subPushImSR;
-    },
-    onTouchEnded: function(container) {
-        THR = THR - 5;
-        targetHRSR.string = THR;
-        targetHR.string = THR;
-        container.skin = subImSR;
-    }
+  left: 15, width: 40, height: 40, skin: subImSR, active: true,
+  contents: [
+  ],
+  behavior: Behavior({
+   onTouchBegan: function(container) {
+    container.skin = subPushImSR;
+  },
+  onTouchEnded: function(container) {
+    THR = THR - 5;
+    targetHRSR.string = THR;
+    targetHR.string = THR;
+    container.skin = subImSR;
+  }
 })
 }));
 
 
 let heartButtonSR = Column.template($ => ({
-    left: 10, width: 200, height: 200, skin: heartImSR, active: true,
-    contents: [
-    new Label({left: 3, right: 10, top: 65,
-        style: whiteMedStyle, string: "Target HR "}),
-    targetHRSR    ]
+  left: 10, width: 200, height: 200, skin: heartImSR, active: true,
+  contents: [
+  new Label({left: 3, right: 10, top: 65,
+    style: whiteMedStyle, string: "Target HR "}),
+  targetHRSR    ]
 }));
 
 
 let startButtonSR = Container.template($ => ({
-    width: 200, height: 50, skin: startBtnImSR, active: true,
-    contents: [
-    new Label({
-        left: 0, right: 0, top: 0, bottom: 0, style: whiteHeaderStyle,
-        string: "Start Run"
-    }),
-    ],
-    behavior: Behavior({
-        onTouchBegan: function(container) {
-            container.skin = startBtnImPushSR;
-        },
-        onTouchEnded: function(container) {
-            container.skin = startBtnImSR;
-            application.remove(currentScreen);
+  width: 200, height: 50, skin: startBtnImSR, active: true,
+  contents: [
+  new Label({
+    left: 0, right: 0, top: 0, bottom: 0, style: whiteHeaderStyle,
+    string: "Start Run"
+  }),
+  ],
+  behavior: Behavior({
+    onTouchBegan: function(container) {
+      container.skin = startBtnImPushSR;
+    },
+    onTouchEnded: function(container) {
+      container.skin = startBtnImSR;
+      application.remove(currentScreen);
             // currentScreen = new PlaySongTemplate();
             currentScreen = nowPlayingTemp;
             application.remove(navBar);
             application.add(currentScreen);
             application.add(navBar2);
-        }
-    })
+          }
+        })
 }));
 
 var heartBtn = new heartButtonSR();
 
 var StartRunTemplate = Container.template($ => ({
-    left: 0, right: 0, top: 0,  bottom: 55,
-    skin: new Skin({fill: "white"}),
+  left: 0, right: 0, top: 0,  bottom: 55,
+  skin: new Skin({fill: "white"}),
+  contents: [
+  new Column({
+    top: 0, left: 0, bottom: 0, right: 0,
+    skin: whiteSkin,
     contents: [
-    new Column({
-        top: 0, left: 0, bottom: 0, right: 0,
-        skin: whiteSkin,
-        contents: [
-        new HEADER({string: "Set Target Heart Rate"}),
-        new Line({
-            left: 0, right: 0, top: 150, height: 90, skin: whiteSkin,
-            contents: [
-            new subButtonSR(),
-            heartBtn,
-            new addButtonSR()
-            ]
-        }),
-        new Line({
-            left: 60, right: 60, top: 150, height: 30, skin: whiteSkin,
-            contents: [
-            new startButtonSR()
-            ]
-        })
-        ]
+    new HEADER({string: "Set Target Heart Rate"}),
+    new Line({
+      left: 0, right: 0, top: 150, height: 90, skin: whiteSkin,
+      contents: [
+      new subButtonSR(),
+      heartBtn,
+      new addButtonSR()
+      ]
+    }),
+    new Line({
+      left: 60, right: 60, top: 150, height: 30, skin: whiteSkin,
+      contents: [
+      new startButtonSR()
+      ]
     })
-
-    
     ]
-}));
-//
+  })
 
-var Screen1Template = Column.template($ => ({
-    top: 0, bottom: 55, left: 0, right: 0, 
-    skin: new Skin({fill: "#202020"}),
-    contents: [
-    new Label({ top: 20, height: 35, left: 0, right: 0, 
-        style: new Style({ font: "30px", color: "white" }), 
-        string: "Screen" }),
-    new Label({ top: 0, height: 100, left: 0, right: 0, 
-        style: new Style({ font: "bold 90px", color: "#3AFF3E" }), 
-        string: "1" }),
 
-    ]
-}));
-
-var Screen2Template = Column.template($ => ({
-    left: 0, right: 0, top: 0, bottom: 55,
-    skin: new Skin({fill: "#202020"}),
-    contents: [
-    Label($, {  
-        left: 0, right: 0, top: 20, height: 35, 
-        style: new Style({ font: "30px", color: "white" }), 
-        string: "Screen" 
-    }),
-    Label($, { 
-        left: 0, right: 0, top: 0, height: 100, 
-        style: new Style({ font: "bold 90px", color: "#3AFF3E" }), 
-        string: "2" 
-    }),
-
-    ]
-}));
-
-var Screen3Template = Column.template($ => ({
-    left: 0, right: 0, top: 0, bottom: 55,
-    skin: new Skin({fill: "#202020"}),
-    contents: [
-    Label($, {  
-        left: 0, right: 0, top: 20, height: 35, 
-        style: new Style({ font: "30px", color: "white" }), 
-        string: "Screen" 
-    }),
-    Label($, { 
-        left: 0, right: 0, top: 0, height: 100, 
-        style: new Style({ font: "bold 90px", color: "#3AFF3E" }), 
-        string: "3" 
-    }),
-    ]
+  ]
 }));
 
 
@@ -336,38 +283,38 @@ songArrays.songs60bpm = ["Here", "Love Gun", "Grapevine Fires", "If No One Will 
 songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again", "Complicated", "You Shook Me All Night Long", "Come And Get It", "We Cant Stop", "Rehab", "Halo"];
 
 var labelStuff = Container.template($ => ({ 
-    skin: graySkin, 
-    contents: [
-    new Label($, { width: 640, height:60, string:"TEST", style: labelStyle })
-    ],
-    Behavior: class extends Behavior {
-        onTouchBegan(content){
+  skin: graySkin, 
+  contents: [
+  new Label($, { width: 640, height:60, string:"TEST", style: labelStyle })
+  ],
+  Behavior: class extends Behavior {
+    onTouchBegan(content){
 
-        }
     }
+  }
 }));
 
 var song = 0;
 
 var SongNameWhite = Container.template($ => ({
-    left: 0, right: 0, top: 0, height: 50, active: true, skin: whiteSkin, state:0,
-    contents: [
-    new Label({name:"songNameWhite", left:0, right:0, height:60, string:$, style: labelStyle})
-    ],
-    Behavior: class extends Behavior {
-        onTouchBegan(content){
-            content.state = 1;
-        }
-        onTouchEnded(content){
-            var songStr = $.replace(/\s/g, "-").toLowerCase();
-            if(song!=0) song.stop();
-            song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
-            song.start();
-            application.remove(currentScreen);
-            currentScreen = nowPlayingTemp;
-            application.add(nowPlayingTemp);
-        }
+  left: 0, right: 0, top: 0, height: 50, active: true, skin: whiteSkin, state:0,
+  contents: [
+  new Label({name:"songNameWhite", left:0, right:0, height:60, string:$, style: labelStyle})
+  ],
+  Behavior: class extends Behavior {
+    onTouchBegan(content){
+      content.state = 1;
     }
+    onTouchEnded(content){
+      var songStr = $.replace(/\s/g, "-").toLowerCase();
+      if(song!=0) song.stop();
+      song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+      song.start();
+      application.remove(currentScreen);
+      currentScreen = nowPlayingTemp;
+      application.add(nowPlayingTemp);
+    }
+  }
 }));
 
 // var SongNameGray = Container.template($ => ({
@@ -399,32 +346,32 @@ var SongNameWhite = Container.template($ => ({
   for(var i in songArr){
     // trace(songArr[i] + "\n");
     screen.add(new SongNameWhite(songArr[i]));
-}
+  }
     /*for(var i in artistArr){
         trace(artistArr[i]+"\n");
-    }*/
+      }*/
     // var content = new Content({ width: 640, height:500, skin: blackSkin });
     // screen.add(content);
-}
+  }
 
-/* Song screen layout */
-let songScreen = Column.template($ => ({
+  /* Song screen layout */
+  let songScreen = Column.template($ => ({
     left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin
-}));
+  }));
 
 
-var currScreen = new songScreen();
-getCurrHRArrays(THR, currScreen);
+  var currScreen = new songScreen();
+  getCurrHRArrays(THR, currScreen);
 // application.add(currentScreen);
 
 var LibraryTemplate = Container.template($ => ({
-    left: 0, right: 0, top: 0, bottom: 55,
-    skin: new Skin({fill: "white"}),
-    contents: [
+  left: 0, right: 0, top: 0, bottom: 55,
+  skin: new Skin({fill: "white"}),
+  contents: [
     // HEADER({string: "Library"}),
     currScreen
     ]
-}));
+  }));
 
 //******************************************************************************************************************
 //                                    Play Screen
@@ -545,55 +492,49 @@ let subImPush = new Skin({
 });
 
 let heartButton = Column.template($ => ({
-   left: 48, width: 70, height: 70, skin: heartIm, active: true,
-   contents: [
-   new Label({left: 0, right: 0, top: 12,
-    style: whiteMedStyle, string: "Target"}),
-   targetHR,
-   ]
-     // onTouchEnded: function(container) {
-     //   application.remove(currentScreen);
-     //    currentScreen = new playScreen();
-     // application.add(currentScreen);
-     //  }
-     // })
+ left: 48, width: 70, height: 70, skin: heartIm, active: true,
+ contents: [
+ new Label({left: 0, right: 0, top: 12,
+  style: whiteMedStyle, string: "Target"}),
+ targetHR,
+ ]
 }));
 
 let addButton = Container.template($ => ({
-   left: 47, width: 30, height: 30, skin: addIm, active: true,
-   contents: [
-   ],
-   behavior: Behavior({
-    onTouchBegan: function(container) {
-        container.skin = addImPush;
-    },
-    onTouchEnded: function(container) {
-        container.skin = addIm;
-        THR = THR + 10;
-        targetHR.string = THR;
-        container.container.container.controls[1][1].delegate("onTouchEnded");
-        first = 0;
-        container.container.container.controls[1][1].delegate("onTouchEnded");
-    }
+ left: 47, width: 30, height: 30, skin: addIm, active: true,
+ contents: [
+ ],
+ behavior: Behavior({
+  onTouchBegan: function(container) {
+    container.skin = addImPush;
+  },
+  onTouchEnded: function(container) {
+    container.skin = addIm;
+    THR = THR + 10;
+    targetHR.string = THR;
+    container.container.container.controls[1][1].delegate("onTouchEnded");
+    first = 0;
+    container.container.container.controls[1][1].delegate("onTouchEnded");
+  }
 })
 }));
 
 let subButton = Container.template($ => ({
-   left: 47, width: 30, height: 30, skin: subIm, active: true,
-   contents: [
-   ],
-   behavior: Behavior({
-    onTouchBegan: function(container) {
-        container.skin = subImPush;
-    },
-    onTouchEnded: function(container) {
-        container.skin = subIm;
-        THR = THR - 10;
-        targetHR.string = THR;
-        container.container.container.controls[1][1].delegate("onTouchEnded");
-        first = 0;
-        container.container.container.controls[1][1].delegate("onTouchEnded");
-    }
+ left: 47, width: 30, height: 30, skin: subIm, active: true,
+ contents: [
+ ],
+ behavior: Behavior({
+  onTouchBegan: function(container) {
+    container.skin = subImPush;
+  },
+  onTouchEnded: function(container) {
+    container.skin = subIm;
+    THR = THR - 10;
+    targetHR.string = THR;
+    container.container.container.controls[1][1].delegate("onTouchEnded");
+    first = 0;
+    container.container.container.controls[1][1].delegate("onTouchEnded");
+  }
 })
 }));
 
@@ -601,51 +542,51 @@ let subButton = Container.template($ => ({
 var curr_cat = 90;
 var count = -1;
 let playButton = Container.template($ => ({
-   left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,
-   contents: [
-   ],
-   behavior: Behavior({
-    onCreate: function(container){
-      if (remotePins) {
-        remotePins.repeat("/heartRate/read", 100, (HR) => {
-          CHR = HR * 130;
-          container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
+ left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,
+ contents: [
+ ],
+ behavior: Behavior({
+  onCreate: function(container){
+    if (remotePins) {
+      remotePins.repeat("/heartRate/read", 100, (HR) => {
+        CHR = HR * 130;
+        container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
 
-          trace(curr_cat+"\n");
+        trace(curr_cat+"\n");
       });
     }
-},
-onTouchEnded: function(container) {
- if (container.skin ==pauseIm){
-  container.skin = playIm;
-  song.stop();
+  },
+  onTouchEnded: function(container) {
+   if (container.skin ==pauseIm){
+    container.skin = playIm;
+    song.stop();
 
-} else{
-  container.skin = pauseIm;
-  if (count == 2){
-    count = 0;
-    if (THR - CHR >= 10){
-      curr_cat +=10;
-  } else if( CHR - THR >= 10){
-      curr_cat -= 10;
-  } 
-} else{
-   count +=1;
-}
+  } else{
+    container.skin = pauseIm;
+    if (count == 2){
+      count = 0;
+      if (THR - CHR >= 10){
+        curr_cat +=10;
+      } else if( CHR - THR >= 10){
+        curr_cat -= 10;
+      } 
+    } else{
+     count +=1;
+   }
 
-index = dictionary[curr_cat.toString()].length;
+   index = dictionary[curr_cat.toString()].length;
             if (first == 0){ // when the application first loads up, play the first song in the correct HB category.
-               first = 1;
-               curr_index = 0;
-               song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".mp3"),width: 0, height: 0});
-               let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
-               container.container.container[0][0].empty();
-               container.container.container[0][0].add(picture);
+             first = 1;
+             curr_index = 0;
+             song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".mp3"),width: 0, height: 0});
+             let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+             container.container.container[0][0].empty();
+             container.container.container[0][0].add(picture);
 
-               container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+             container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
 
-               container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
-               song.start();
+             container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+             song.start();
 
            } else if(initial_song.length > 0){
             trace("it worked\n");
@@ -659,114 +600,114 @@ index = dictionary[curr_cat.toString()].length;
             container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
             song.start();
 
-        } else{
+          } else{
            song.start();
+         }
        }
-   }
-}
-})
+     }
+   })
 }));
 
 
  let prevButton = Container.template($ => ({
-     left: 50, width: 20, height: 20, skin: prevIm, active: true,
-     contents: [
-     ],
-     behavior: Behavior({
-      onTouchEnded: function(container) {
-       song.stop();
+   left: 50, width: 20, height: 20, skin: prevIm, active: true,
+   contents: [
+   ],
+   behavior: Behavior({
+    onTouchEnded: function(container) {
+     song.stop();
 
-       curr_index = curr_index -1;
-       index = dictionary[curr_cat.toString()].length;
-       if (curr_index < 0){
-         curr_index = index -1;
+     curr_index = curr_index -1;
+     index = dictionary[curr_cat.toString()].length;
+     if (curr_index < 0){
+       curr_index = index -1;
      }
 
      if (count == 2){
-        count = 0;
-        if (THR - CHR >= 10){
-          curr_cat +=10;
+      count = 0;
+      if (THR - CHR >= 10){
+        curr_cat +=10;
       } else if( CHR - THR >= 10){
-          curr_cat -= 10;
+        curr_cat -= 10;
       } 
-  } else{
-   count +=1;
-}
-song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
-let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
-container.container.container[0][0].empty();
+    } else{
+     count +=1;
+   }
+   song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
+   let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+   container.container.container[0][0].empty();
 
-container.container.container[0][0].add(picture);
+   container.container.container[0][0].add(picture);
 
-container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+   container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
 
-container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+   container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
 
-song.start();
-}
+   song.start();
+ }
 })
 }));
 
  let nextButton = Container.template($ => ({
-     right: 50, width: 20, height: 20, skin: nextIm, active: true,
-     contents: [
-     ],
-     behavior: Behavior({
-      onTouchEnded: function(container) {
-        song.stop();
+   right: 50, width: 20, height: 20, skin: nextIm, active: true,
+   contents: [
+   ],
+   behavior: Behavior({
+    onTouchEnded: function(container) {
+      song.stop();
 
-        curr_index = curr_index +1;
+      curr_index = curr_index +1;
 
-        if (count == 2){
-            count = 0;
-            if (THR - CHR >= 10){
-              curr_cat +=10;
-          } else if( CHR - THR >= 10){
-              curr_cat -= 10;
-          } 
+      if (count == 2){
+        count = 0;
+        if (THR - CHR >= 10){
+          curr_cat +=10;
+        } else if( CHR - THR >= 10){
+          curr_cat -= 10;
+        } 
       } else{
        count +=1;
+     }
+     if (curr_index >= index){
+       curr_index = 0;
+     }
+     song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
+     let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+
+     container.container.container[0][0].empty();
+     container.container.container[0][0].add(picture);
+
+     container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+
+     container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+
+     song.start();
    }
-   if (curr_index >= index){
-     curr_index = 0;
- }
- song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
- let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
-
- container.container.container[0][0].empty();
- container.container.container[0][0].add(picture);
-
- container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
-
- container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
-
- song.start();
-}
-})
+ })
 }));
 
  let finishButton = Container.template($ => ({
-    width: 200, height: 50, skin: startBtnImSR, active: true,
-    contents: [
-    new Label({
-        left: 0, right: 0, top: 0, bottom: 0, style: whiteHeaderStyle,
-        string: "Finish Run"
-    }),
-    ],
-    behavior: Behavior({
-        onTouchBegan: function(container) {
-            container.skin = startBtnImPushSR;
-        },
-        onTouchEnded: function(container) {
-            container.skin = startBtnImSR;
-            application.remove(currentScreen);
+  width: 200, height: 50, skin: startBtnImSR, active: true,
+  contents: [
+  new Label({
+    left: 0, right: 0, top: 0, bottom: 0, style: whiteHeaderStyle,
+    string: "Finish Run"
+  }),
+  ],
+  behavior: Behavior({
+    onTouchBegan: function(container) {
+      container.skin = startBtnImPushSR;
+    },
+    onTouchEnded: function(container) {
+      container.skin = startBtnImSR;
+      application.remove(currentScreen);
 
-            currentScreen = analyticsTempVar;
-            application.remove(navBar2);
-            application.add(currentScreen);
-            application.add(navBar);
-        }
-    })
+      currentScreen = analyticsTempVar;
+      application.remove(navBar2);
+      application.add(currentScreen);
+      application.add(navBar);
+    }
+  })
 }));
 
 
@@ -782,7 +723,7 @@ song.start();
     new heartButton(),
     new addButton(),
     ]
-}),
+  }),
 
   new Column({
     left: 0, right: 0, skin: pinkSkin,
@@ -797,17 +738,17 @@ song.start();
         top: 0, left: 5, right: 5, height: 250, skin: pinkSkin,
         contents: [
         new Line({
-            top: 10, left: 50, width: 180, height: 180, skin: blackSkin,
-            contents: [
-            ]
+          top: 10, left: 50, width: 180, height: 180, skin: blackSkin,
+          contents: [
+          ]
         }),
         //having trouble making these labels appear
         new Label({left: 10, right: 10, top: 0,
-            style: blackHeaderStyle, string: ""}),
+          style: blackHeaderStyle, string: ""}),
         new Label({left: 10, right: 10, top: 0,
-            style: blackMedStyle, string: ""}),
+          style: blackMedStyle, string: ""}),
         ]
-    }),
+      }),
       new Line({
         top: 0, left: 5, right: 5, height: 30, skin: pinkSkin,
         contents: [
@@ -815,11 +756,11 @@ song.start();
         new playButton(),
         new nextButton(),
         ]
-    }),
+      }),
       ]
-  })
+    })
     ]
-}),
+  }),
  new finishButton()
  ]
 }));
@@ -854,41 +795,41 @@ var menuItems = [
  * yellow when the state is 1 (while it's being tapped)
  * and reverts back to white when the state is 0. */
  class ProcessorLineBehavior extends Behavior {
-    /* data is an object from the menuItems array */
-    onCreate(line, data) {
-        this.data = data;
-    }    
-    onTouchBegan(line, id, x,  y, ticks) {
-        line.state = 1;
-    }
-    onTouchCancelled(line, id, x,  y, ticks) {
-        line.state = 0;
-    }
+  /* data is an object from the menuItems array */
+  onCreate(line, data) {
+    this.data = data;
+  }    
+  onTouchBegan(line, id, x,  y, ticks) {
+    line.state = 1;
+  }
+  onTouchCancelled(line, id, x,  y, ticks) {
+    line.state = 0;
+  }
     /* Traces out the value of the first Label's string, which we 
     * get by referencing this.data.title */
     onTouchEnded(line, id, x,  y, ticks) {  
-        line.state = 0;
-        trace(this.data.title+"\n");
+      line.state = 0;
+      trace(this.data.title+"\n");
     }
-}
+  }
 
 /* The 'button' property of each item in the menuItems array
  * is used as the string of a label. Each of those labels 
  * is assigned an instance of the following behavior. */
  class ProductDescriptionButtonBehavior extends Behavior {
-    /* When this label is touched, simply trace out its string. */
-    onTouchEnded(label, id, x,  y, ticks) { 
-        trace(label.string+"\n");
-    }
+  /* When this label is touched, simply trace out its string. */
+  onTouchEnded(label, id, x,  y, ticks) { 
+    trace(label.string+"\n");
+  }
 }
 
 /* This is a template that will be used to for each entry populating the list. 
  * Note that it is anticipating an object each time it is instantiated; the
  * object it gets is an item from the menuItems array. */
  var ProcessorLine = Line.template($ =>  ({
-    left: 0, right: 0, height: 52, active: true, skin: lineSkin, 
-    behavior: new ProcessorLineBehavior($),
-    contents: [
+  left: 0, right: 0, height: 52, active: true, skin: lineSkin, 
+  behavior: new ProcessorLineBehavior($),
+  contents: [
         /* This label expects that the object passed to ProcessorLine 
          * includes a value for title.  Note that this Label is not marked
          * as active. Touches registered here will bubble back up through
@@ -899,19 +840,19 @@ var menuItems = [
          * is marked active. Touches registered here will be handled by its
          * own behavior */
          Label($, { 
-            right: 14, style: productDescriptionStyle, skin: salmonSkin, 
-            active: true, string: $.button, behavior: new ProductDescriptionButtonBehavior()
+          right: 14, style: productDescriptionStyle, skin: salmonSkin, 
+          active: true, string: $.button, behavior: new ProductDescriptionButtonBehavior()
         })                          
          ]
-     }));
+       }));
  
  let scroll_header = Line.template($ =>({
-    top: 40, left: 0, right: 0, height: 50, skin: new Skin({ fill: "#c4c4c4" }),
-    contents: [
-    new Label({left: 10, right: 10,
+  top: 40, left: 0, right: 0, height: 50, skin: new Skin({ fill: "#c4c4c4" }),
+  contents: [
+  new Label({left: 10, right: 10,
 
-      style: whiteMedStyle, string: "Most HR Boosting Songs"}),
-    ]
+    style: whiteMedStyle, string: "Most HR Boosting Songs"}),
+  ]
 }));
 
 
@@ -919,22 +860,28 @@ var menuItems = [
  * whole screen.  It contains only a single object,
  * a VerticalScroller. */
  var AnalyticsTemplate = Container.template($ => ({
-    left: 0, right: 0, top: 0, bottom: 55,
+  left: 0, right: 0, top: 0, bottom: 55,
+  behavior: Behavior({
+    onDisplayed: function(container) {
+      application.remove(navBar2);
+      application.add(navBar2);
+    }
+  }),
+  contents: [
+  VerticalScroller($, {
+    top: 30 , bottom: 30,
+    name: 'scroller',
     contents: [
-    VerticalScroller($, {
-        top: 30 , bottom: 30,
-        name: 'scroller',
-        contents: [
-        Column($, { 
-            left: 0, right: 0, top: 0, name: 'menu',
-            /* Add a ProcessorLine object for each item in the menuItems array */
-            contents: menuItems.map(element => new ProcessorLine(element))
-        })                      
-        ]
-    }),
-    HEADER({string: "Analytics"}),
-    new scroll_header(),
+    Column($, { 
+      left: 0, right: 0, top: 0, name: 'menu',
+      /* Add a ProcessorLine object for each item in the menuItems array */
+      contents: menuItems.map(element => new ProcessorLine(element))
+    })                      
     ]
+  }),
+  HEADER({string: "Analytics"}),
+  new scroll_header(),
+  ]
 }));
 
 //******************************************************************************************************************
@@ -946,18 +893,23 @@ var menuItems = [
  * a VerticalScroller. */
  var HistoricalAnalyticsTemplate = Container.template($ => ({
   left: 0, right: 0, top: 0, bottom: 0,
+  behavior: Behavior({
+    onDisplayed: function(container) {
+      application.remove(navBar); // so that the navbar displays fixed at the bottom of the screen
+      application.add(navBar); //instead of below the scroller
+    }
+  }),
   contents: [
-
   new VerticalScroller($, {
-      top: 30 , bottom: 30,
-      name: 'scroller',
-      contents: [
-      Column($, { 
-          left: 0, right: 0, top: 0, name: 'menu',
-          /* Add a ProcessorLine object for each item in the menuItems array */
-          contents: menuItems.map(element => new ProcessorLine(element))
-      })                  
-      ]
+    top: 30 , bottom: 30,
+    name: 'scroller',
+    contents: [
+    Column($, { 
+      left: 0, right: 0, top: 0, name: 'menu',
+      /* Add a ProcessorLine object for each item in the menuItems array */
+      contents: menuItems.map(element => new ProcessorLine(element))
+    })                  
+    ]
   }),
   new HEADER({string: "Historical Analytics"}),
   new scroll_header(),
@@ -970,70 +922,70 @@ var menuItems = [
 
 
 let emailButton = Container.template($ => ({
-    width: 200, height: 50, top: 10, skin: new Skin({ fill: "#c4c4c4" }), active: true,
-    contents: [
-    new Label({
-        left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
-        string: "Email"
-    }),
-    ],
-    behavior: Behavior({
-        onTouchEnded: function(container) {
+  width: 200, height: 50, top: 10, skin: new Skin({ fill: "#c4c4c4" }), active: true,
+  contents: [
+  new Label({
+    left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
+    string: "Email"
+  }),
+  ],
+  behavior: Behavior({
+    onTouchEnded: function(container) {
         //go to running screen
-    }
-})
+      }
+    })
 }));
 
 let passwordButton = Container.template($ => ({
-    width: 200, height: 50, top: 15, skin: new Skin({ fill: "#c4c4c4" }), active: true,
-    contents: [
-    new Label({
-        left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
-        string: "Password"
-    }),
-    ],
-    behavior: Behavior({
-        onTouchEnded: function(container) {
+  width: 200, height: 50, top: 15, skin: new Skin({ fill: "#c4c4c4" }), active: true,
+  contents: [
+  new Label({
+    left: 0, right: 0, top: 0, bottom: 0, style: whiteMedStyle,
+    string: "Password"
+  }),
+  ],
+  behavior: Behavior({
+    onTouchEnded: function(container) {
         //go to running screen
-    }
-})
+      }
+    })
 }));
 
 var SettingsTemplate = Container.template($ => ({
-    left: 0, right: 0, top: 0, bottom: 55,
-    skin: new Skin({fill: "white"}),
+  left: 0, right: 0, top: 0, bottom: 55,
+  skin: new Skin({fill: "white"}),
+  contents: [
+  new Column({
+    top: 0, left: 0, bottom: 0, right: 0,
+    skin: whiteSkin,
     contents: [
+    HEADER({string: "Settings"}),
+    new Label({
+      top: 100, left: 0, right: 0, height: 30,
+      style: new Style({ font: "30px", color: "black" }),
+      string: "Spotify Account"
+
+    }),
     new Column({
-        top: 0, left: 0, bottom: 0, right: 0,
-        skin: whiteSkin,
-        contents: [
-        HEADER({string: "Settings"}),
-        new Label({
-            top: 100, left: 0, right: 0, height: 30,
-            style: new Style({ font: "30px", color: "black" }),
-            string: "Spotify Account"
+      top: 0, left: 0, right: 0, height: 80,
+      skin: whiteSkin,
+      contents: [
+      new emailButton(),
+      new passwordButton()
 
-        }),
-        new Column({
-            top: 0, left: 0, right: 0, height: 80,
-            skin: whiteSkin,
-            contents: [
-            new emailButton(),
-            new passwordButton()
+      ]
+    }),
+    new Line({
+      top: 25, height: 30, skin: whiteSkin,
+      contents: [
 
-            ]
-        }),
-        new Line({
-            top: 25, height: 30, skin: whiteSkin,
-            contents: [
-
-            ]
-        }),
-        ]
-    })
-
-
+      ]
+    }),
     ]
+  })
+
+
+  ]
 }));
 
 
@@ -1044,47 +996,45 @@ let analyticsTempVar = new AnalyticsTemplate();
 let libraryTempVar = new LibraryTemplate();
 let nowPlayingTemp = new PlaySongTemplate();
 
-let screen2Var = new Screen2Template();
-
 
 var currentScreen = startRunTemplateVar;
 application.add(currentScreen);
 
 
 var navButton = Container.template($ => ({
-    active: true,
-    fill: "transparent", 
-    width: 30, height: 30,
-    left: 57,
-    skin: $.btnSkin,
-    behavior: Behavior({
-        onTouchBegan: function(container) {
-            container.skin = $.pushSkin;
-        },
-        onTouchEnded: function(container){
-            container.skin = $.btnSkin;
+  active: true,
+  fill: "transparent", 
+  width: 30, height: 30,
+  left: 57,
+  skin: $.btnSkin,
+  behavior: Behavior({
+    onTouchBegan: function(container) {
+      container.skin = $.pushSkin;
+    },
+    onTouchEnded: function(container){
+      container.skin = $.btnSkin;
             application.remove(currentScreen);  // Remove the old screen from the application
             currentScreen = $.nextScreen;  // Make the new screen
             application.add(currentScreen);  // Add the new screen to the application
-        }
-    })
+          }
+        })
 }));
 
 var navBar = new Line({ bottom: 0, height: 55, left: 0, right: 0,
-    skin: new Skin({ fill: "white" }),
-    contents: [
-    new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
-    new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: startRunTemplateVar}),
-    new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: histAnalyticsTemp})
-    ]
+  skin: new Skin({ fill: "white" }),
+  contents: [
+  new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
+  new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: startRunTemplateVar}),
+  new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: histAnalyticsTemp})
+  ]
 });
 
 var navBar2 = new Line({ bottom: 0, height: 55, left: 0, right: 0,
-    skin: new Skin({ fill: "white" }),
-    contents: [
-    new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
-    new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: nowPlayingTemp}),
-    new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: analyticsTempVar})
-    ]
+  skin: new Skin({ fill: "white" }),
+  contents: [
+  new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
+  new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: nowPlayingTemp}),
+  new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: analyticsTempVar})
+  ]
 });
 application.add(navBar);
