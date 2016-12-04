@@ -4,10 +4,10 @@
   TopScrollerShadow,
   BottomScrollerShadow
 } from 'scroller';
-
-import Pins from "pins";
-var remotePins;
-
+import Pins from "pins";var remotePins;class AppBehavior extends Behavior {    onLaunch(application) {
+        let discoveryInstance = Pins.discover(            connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Connecting to remote pins\n");                    remotePins = Pins.connect(connectionDesc);                }            },             connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Disconnected from remote pins\n");                    remotePins = undefined;                }            }         );
+    }}
+application.behavior = new AppBehavior();
 
 var index;
 var curr_index = 0;
@@ -171,6 +171,7 @@ let startBtnImPushSR = new Skin({
   fill: "white",
   aspect: "fit"
 });
+
 
 let addButtonSR = Container.template($ => ({
   left: 5, width: 40, height: 40, skin: addImSR, active: true,
@@ -379,6 +380,7 @@ var LibraryTemplate = Container.template($ => ({
 //******************************************************************************************************************
 
 
+
 var dictionary = {};
 dictionary['80'] = ["21 Guns" , "Hey Ho","See You Again"];
 dictionary['90'] = ["Gold Digger" , "Diamonds","We Are Young"];
@@ -552,16 +554,24 @@ let playButton = Container.template($ => ({
  ],
  behavior: Behavior({
   onCreate: function(container){
+
+ trace("remotePins: " + remotePins + "\n");
     if (remotePins) {
       remotePins.repeat("/heartRate/read", 100, (HR) => {
         CHR = HR * 130;
         container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
 
-        trace(curr_cat+"\n");
       });
     }
   },
   onTouchEnded: function(container) {
+
+     if (remotePins) {
+      remotePins.repeat("/heartRate/read", 100, (HR) => {
+        CHR = HR * 130;
+        container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
+      });
+    }
    if (container.skin ==pauseIm){
     container.skin = playIm;
     song.stop();
@@ -681,9 +691,10 @@ let playButton = Container.template($ => ({
       song.stop();
 
          analytics_dict[curr_song_name][1]= CHR;
+        trace("Current HR: "+ CHR + "\n");
    if (analytics_dict[curr_song_name][2] < analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0]){
 		analytics_dict[curr_song_name][2] = analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0];
-
+		trace("Difference HR: "+ analytics_dict[curr_song_name][2] + "\n");
 	}
 
       curr_index = curr_index +1;
@@ -937,9 +948,12 @@ var menuItems = [
     onDisplayed: function(container) {
 
       var sorted = [];var temp_dict= {};for (var song_name in analytics_dict) {  // do something with key	if (analytics_dict[song_name][2] in temp_dict){		temp_dict[analytics_dict[song_name][2]].push([song_name,name_artist_dict[song_name][2]]);	} else{		temp_dict[analytics_dict[song_name][2]] = [[song_name,name_artist_dict[song_name][2]]];	}}var  keys = [],  k, i, len;
- for (k in temp_dict) {  if (temp_dict.hasOwnProperty(k)) {    keys.push(k);  }}keys.sort();len = keys.length;var new_dict = {};
+ for (k in temp_dict) {  if (temp_dict.hasOwnProperty(k)) {    keys.push(k);  }}keys.sort();
+trace("KEYS: " + keys + "\n");len = keys.length;var new_dict = {};
 for (i = 0; i < len; i++) {  k = keys[i];new_dict[k] = temp_dict[k];};
-for (var diff in temp_dict){	for (var item in temp_dict[diff]){		menuItems.push({title: temp_dict[diff][item][0], button: temp_dict[diff][item][1].toString()+ " bpm"});}};
+
+for (var diff in new_dict){
+	trace("HERE   " + diff + " " + new_dict[diff] + "\n");	for (var item in new_dict[diff]){		menuItems.push({title: new_dict[diff][item][0], button: new_dict[diff][item][1].toString()+ " bpm"});}};
 trace(container[0][0].name + "\n");
 container[0][0].empty(0);
 container[0][0].add(    Column($, { 
