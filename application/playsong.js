@@ -57,15 +57,15 @@ let blueSkin = new Skin ({fill: 'blue'});
  dictionary['100'] = ["Riptide" , "ManintheMirror","TurnDownForWhat"];
 
  var name_artist_dict = {};
- name_artist_dict["21guns"] = ["21 Guns", "Green Day"];
- name_artist_dict["HeyHo"] = ["Hey Ho", "The Lumineers"];
- name_artist_dict["SeeYouAgain"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth"];
- name_artist_dict["GoldDigger"] = ["Gold Digger", "Kanye West"];
- name_artist_dict["Diamonds"] = ["Diamonds", "Rihanna"];
- name_artist_dict["WeAreYoung"] = ["We Are Young", "Fun ft. Janelle Monáe"];
- name_artist_dict["Riptide"] = ["Riptide", "Vance Joy"];
- name_artist_dict["ManintheMirror"] = ["Man in the Mirror", "Green Day"];
- name_artist_dict["TurnDownForWhat"] = ["Turn Down For What", "DJ Snake, Lil Jon"];
+ name_artist_dict["21guns"] = ["21 Guns", "Green Day", -100000];
+ name_artist_dict["HeyHo"] = ["Hey Ho", "The Lumineers", -100000];
+ name_artist_dict["SeeYouAgain"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth", -100000];
+ name_artist_dict["GoldDigger"] = ["Gold Digger", "Kanye West", -100000];
+ name_artist_dict["Diamonds"] = ["Diamonds", "Rihanna", -100000];
+ name_artist_dict["WeAreYoung"] = ["We Are Young", "Fun ft. Janelle Monáe", -100000];
+ name_artist_dict["Riptide"] = ["Riptide", "Vance Joy", -100000];
+ name_artist_dict["ManintheMirror"] = ["Man in the Mirror", "Green Day", -100000];
+ name_artist_dict["TurnDownForWhat"] = ["Turn Down For What", "DJ Snake, Lil Jon", -100000];
 
  var index;
  var curr_index = 0;
@@ -389,6 +389,7 @@ let nextButton = Container.template($ => ({
   onTouchEnded: function(container) {
     song.stop();
 
+
     curr_index = curr_index +1;
 
 	if (count == 2){
@@ -404,15 +405,18 @@ let nextButton = Container.template($ => ({
     if (curr_index >= index){
      curr_index = 0;
    }
-   song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
-   let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+
+  var song_name = dictionary[curr_cat.toString()][curr_index];
+
+   song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + song_name+".mp3"),width: 0, height: 0});
+   let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + song_name +".jpg"),width: 180, height: 180});
 
    container.container.container[0][0].empty();
    container.container.container[0][0].add(picture);
 
-   container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+   container.container.container[0][1].string = name_artist_dict[song_name][0];
 
-   container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+   container.container.container[0][2].string = name_artist_dict[song_name][1];
 
    song.start();
  }

@@ -8,10 +8,12 @@
 import Pins from "pins";
 var remotePins;
 
+
 var index;
 var curr_index = 0;
 var first = 0;
 var song = 0;
+var curr_song_name = 0;
 
 var productDescriptionStyle = new Style({  font: '18px Lato', horizontal: 'left', vertical: 'middle', left: 1, color: 'white' });
 var productNameStyle = new Style({  font: 'bold 22px Lato', horizontal: 'left', vertical: 'middle', lines: 1, color: 'black' });
@@ -337,7 +339,6 @@ var SongNameWhite = Container.template($ => ({
 
 
  function getCurrHRArrays(hr, screen){
-  trace("getCurrHRArrays\n");
   var songArrName = "songs"+hr+"bpm";
   var artistArrName = "artists"+hr+"bpm";
   var songArr = songArrays[songArrName];
@@ -384,15 +385,18 @@ dictionary['90'] = ["Gold Digger" , "Diamonds","We Are Young"];
 dictionary['100'] = ["Riptide" , "Man in the Mirror","Turn Down For What"];
 
 var name_artist_dict = {};
-name_artist_dict["21 Guns"] = ["21 Guns", "Green Day"];
-name_artist_dict["Hey Ho"] = ["Hey Ho", "The Lumineers"];
-name_artist_dict["See You Again"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth"];
-name_artist_dict["Gold Digger"] = ["Gold Digger", "Kanye West"];
-name_artist_dict["Diamonds"] = ["Diamonds", "Rihanna"];
-name_artist_dict["We Are Young"] = ["We Are Young", "Fun ft. Janelle Monáe"];
-name_artist_dict["Riptide"] = ["Riptide", "Vance Joy"];
-name_artist_dict["Man in the Mirror"] = ["Man in the Mirror", "Green Day"];
-name_artist_dict["Turn Down For What"] = ["Turn Down For What", "DJ Snake, Lil Jon"];
+name_artist_dict["21 Guns"] = ["21 Guns", "Green Day",80];
+name_artist_dict["Hey Ho"] = ["Hey Ho", "The Lumineers",80];
+name_artist_dict["See You Again"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth",80];
+name_artist_dict["Gold Digger"] = ["Gold Digger", "Kanye West",90];
+name_artist_dict["Diamonds"] = ["Diamonds", "Rihanna",90];
+name_artist_dict["We Are Young"] = ["We Are Young", "Fun ft. Janelle Monáe",90];
+name_artist_dict["Riptide"] = ["Riptide", "Vance Joy",100];
+name_artist_dict["Man in the Mirror"] = ["Man in the Mirror", "Green Day",100];
+name_artist_dict["Turn Down For What"] = ["Turn Down For What", "DJ Snake, Lil Jon",100];
+var analytics_dict = {};
+for (var key in name_artist_dict) {  // do something with key
+ analytics_dict[key] = [0,0,-100000];}
 
 
 let set = new Texture("images/settings-cogwheel-button copy.png");
@@ -541,6 +545,7 @@ let subButton = Container.template($ => ({
 
 var curr_cat = 90;
 var count = -1;
+
 let playButton = Container.template($ => ({
  left: 0, right: 0, width: 30, height: 30, skin: playIm, active: true,
  contents: [
@@ -578,15 +583,19 @@ let playButton = Container.template($ => ({
             if (first == 0){ // when the application first loads up, play the first song in the correct HB category.
              first = 1;
              curr_index = 0;
-             song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".mp3"),width: 0, height: 0});
-             let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+
+            curr_song_name = dictionary[curr_cat.toString()][curr_index];
+             song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + curr_song_name +".mp3"),width: 0, height: 0});
+             let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + curr_song_name +".jpg"),width: 180, height: 180});
              container.container.container[0][0].empty();
              container.container.container[0][0].add(picture);
 
-             container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+             container.container.container[0][1].string = name_artist_dict[curr_song_name][0];
 
-             container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+             container.container.container[0][2].string = name_artist_dict[curr_song_name][1];
              song.start();
+
+            analytics_dict[curr_song_name][0]= CHR;
 
            } else if(initial_song.length > 0){
             trace("it worked\n");
@@ -595,13 +604,19 @@ let playButton = Container.template($ => ({
             container.container.container[0][0].empty();
             container.container.container[0][0].add(picture);
 
-            container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+            curr_song_name = dictionary[curr_cat.toString()][curr_index];
 
-            container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+            container.container.container[0][1].string = name_artist_dict[curr_song_name][0];
+
+            container.container.container[0][2].string = name_artist_dict[curr_song_name][1];
             song.start();
+
+           analytics_dict[curr_song_name][0]= CHR;
 
           } else{
            song.start();
+
+          analytics_dict[curr_song_name][0]= CHR;
          }
        }
      }
@@ -616,6 +631,12 @@ let playButton = Container.template($ => ({
    behavior: Behavior({
     onTouchEnded: function(container) {
      song.stop();
+    analytics_dict[curr_song_name][1]= CHR;
+   if (analytics_dict[curr_song_name][2] < analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0]){
+		analytics_dict[curr_song_name][2] = analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0];
+
+	}
+  
 
      curr_index = curr_index -1;
      index = dictionary[curr_cat.toString()].length;
@@ -644,6 +665,9 @@ let playButton = Container.template($ => ({
    container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
 
    song.start();
+
+  
+   analytics_dict[curr_song_name][0]= CHR;
  }
 })
 }));
@@ -655,6 +679,12 @@ let playButton = Container.template($ => ({
    behavior: Behavior({
     onTouchEnded: function(container) {
       song.stop();
+
+         analytics_dict[curr_song_name][1]= CHR;
+   if (analytics_dict[curr_song_name][2] < analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0]){
+		analytics_dict[curr_song_name][2] = analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0];
+
+	}
 
       curr_index = curr_index +1;
 
@@ -671,6 +701,7 @@ let playButton = Container.template($ => ({
      if (curr_index >= index){
        curr_index = 0;
      }
+
      song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
      let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
 
@@ -682,6 +713,9 @@ let playButton = Container.template($ => ({
      container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
 
      song.start();
+
+    
+          analytics_dict[curr_song_name][0]= CHR;
    }
  })
 }));
@@ -771,23 +805,26 @@ let playButton = Container.template($ => ({
 //                                   Analytics
 //******************************************************************************************************************
 var menuItems = [
-{title: 'Closer', button: '80 bpm'},
-{title: 'Dream On', button: '60 bpm'},
-{title: 'Gagnam Style', button: '120 bpm'},
-{title: 'Fly', button: '60 bpm'},
-{title: 'Baby', button: '90 bpm'},
-{title: 'One Time Comin', button: '200 bpm'},
-{title: 'No Vasaline', button: '150 bpm'},
-{title: 'Lose Yourself', button: '120 bpm'},
-{title: 'All Eyez On Me', button: '22 bpm'},
-{title: 'Heartless', button: '90 bpm'},
-{title: 'Baby', button: '90 bpm'},
-{title: 'One Time Comin', button: '200 bpm'},
-{title: 'No Vasaline', button: '150 bpm'},
-{title: 'Lose Yourself', button: '120 bpm'},
-{title: 'All Eyez On Me', button: '22 bpm'},
-{title: 'Heartless', button: '90 bpm'}
+//{title: 'Closer', button: '80 bpm'},
+//{title: 'Dream On', button: '60 bpm'},
+//{title: 'Gagnam Style', button: '120 bpm'},
+///{title: 'Fly', button: '60 bpm'},
+//{title: 'Baby', button: '90 bpm'},
+//{title: 'One Time Comin', button: '200 bpm'},
+//{title: 'No Vasaline', button: '150 bpm'},
+//{title: 'Lose Yourself', button: '120 bpm'},
+//{title: 'All Eyez On Me', button: '22 bpm'},
+//{title: 'Heartless', button: '90 bpm'},
+//{title: 'Baby', button: '90 bpm'},
+//{title: 'One Time Comin', button: '200 bpm'},
+//{title: 'No Vasaline', button: '150 bpm'},
+//{title: 'Lose Yourself', button: '120 bpm'},
+//{title: 'All Eyez On Me', button: '22 bpm'},
+//{title: 'Heartless', button: '90 bpm'}
 ];
+
+
+
 
 /* Changing the state in the touch events gives the user
  * visual feedback on which entry they have tapped by changing
@@ -798,7 +835,7 @@ var menuItems = [
   /* data is an object from the menuItems array */
   onCreate(line, data) {
     this.data = data;
-  }    
+  }
   onTouchBegan(line, id, x,  y, ticks) {
     line.state = 1;
   }
@@ -863,12 +900,14 @@ var menuItems = [
   left: 0, right: 0, top: 0, bottom: 55,
   behavior: Behavior({
     onDisplayed: function(container) {
+
+
       application.remove(navBar2);
       application.add(navBar2);
-    }
+	}
   }),
   contents: [
-  VerticalScroller($, {
+  VerticalScroller({
     top: 30 , bottom: 30,
     name: 'scroller',
     contents: [
@@ -892,12 +931,25 @@ var menuItems = [
  * whole screen.  It contains only a single object,
  * a VerticalScroller. */
  var HistoricalAnalyticsTemplate = Container.template($ => ({
-  left: 0, right: 0, top: 0, bottom: 0,
+  left: 0, right: 0, top: 0, bottom: 0,name: "hist",
   behavior: Behavior({
+
     onDisplayed: function(container) {
+
+      var sorted = [];var temp_dict= {};for (var song_name in analytics_dict) {  // do something with key	if (analytics_dict[song_name][2] in temp_dict){		temp_dict[analytics_dict[song_name][2]].push([song_name,name_artist_dict[song_name][2]]);	} else{		temp_dict[analytics_dict[song_name][2]] = [[song_name,name_artist_dict[song_name][2]]];	}}var  keys = [],  k, i, len;
+ for (k in temp_dict) {  if (temp_dict.hasOwnProperty(k)) {    keys.push(k);  }}keys.sort();len = keys.length;var new_dict = {};
+for (i = 0; i < len; i++) {  k = keys[i];new_dict[k] = temp_dict[k];};
+for (var diff in temp_dict){	for (var item in temp_dict[diff]){		menuItems.push({title: temp_dict[diff][item][0], button: temp_dict[diff][item][1].toString()+ " bpm"});}};
+trace(container[0][0].name + "\n");
+container[0][0].empty(0);
+container[0][0].add(    Column($, { 
+      left: 0, right: 0, top: 0, name: 'menu',
+      /* Add a ProcessorLine object for each item in the menuItems array */
+      contents: [menuItems.map(element => new ProcessorLine(element))]
+    }) );
       application.remove(navBar); // so that the navbar displays fixed at the bottom of the screen
       application.add(navBar); //instead of below the scroller
-    }
+   }
   }),
   contents: [
   new VerticalScroller($, {
@@ -907,7 +959,7 @@ var menuItems = [
     Column($, { 
       left: 0, right: 0, top: 0, name: 'menu',
       /* Add a ProcessorLine object for each item in the menuItems array */
-      contents: menuItems.map(element => new ProcessorLine(element))
+      contents: [menuItems.map(element => new ProcessorLine(element))]
     })                  
     ]
   }),
@@ -1012,6 +1064,8 @@ var navButton = Container.template($ => ({
       container.skin = $.pushSkin;
     },
     onTouchEnded: function(container){
+
+
       container.skin = $.btnSkin;
             application.remove(currentScreen);  // Remove the old screen from the application
             currentScreen = $.nextScreen;  // Make the new screen
@@ -1034,7 +1088,7 @@ var navBar2 = new Line({ bottom: 0, height: 55, left: 0, right: 0,
   contents: [
   new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
   new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: nowPlayingTemp}),
-  new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: analyticsTempVar})
+  new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: histAnalyticsTemp})
   ]
 });
 application.add(navBar);
