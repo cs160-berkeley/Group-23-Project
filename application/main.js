@@ -883,16 +883,6 @@ var menuItems = [
          ]
        }));
  
- let scroll_header = Line.template($ =>({
-  top: 40, left: 0, right: 0, height: 50, skin: new Skin({ fill: "#c4c4c4" }),
-  contents: [
-  new Label({left: 10, right: 10,
-
-    style: whiteMedStyle, string: "Most HR Boosting Songs"}),
-  ]
-}));
-
-
 /* This is a template for a container which takes up the
  * whole screen.  It contains only a single object,
  * a VerticalScroller. */
@@ -919,7 +909,7 @@ var menuItems = [
     ]
   }),
   HEADER({string: "Analytics"}),
-  new scroll_header(),
+  //new scroll_header(),
   ]
 }));
 
@@ -963,8 +953,8 @@ container[0][0].add(    Column($, {
     })                  
     ]
   }),
-  new HEADER({string: "Historical Analytics"}),
-  new scroll_header(),
+  new HEADER({string: "Most Motivating Songs"}),
+  //new scroll_header(),
   ]
 }));
 
