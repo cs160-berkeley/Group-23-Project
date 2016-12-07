@@ -3,8 +3,7 @@
   VerticalScrollbar,
   TopScrollerShadow,
   BottomScrollerShadow
-} from 'scroller';
-import Pins from "pins";var remotePins;class AppBehavior extends Behavior {    onLaunch(application) {
+} from 'scroller';import Pins from "pins";var remotePins;class AppBehavior extends Behavior {    onLaunch(application) {
         let discoveryInstance = Pins.discover(            connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Connecting to remote pins\n");                    remotePins = Pins.connect(connectionDesc);                }            },             connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Disconnected from remote pins\n");                    remotePins = undefined;                }            }         );
     }}
 application.behavior = new AppBehavior();
@@ -739,20 +738,7 @@ let playButton = Container.template($ => ({
     string: "Finish Run"
   }),
   ],
-  behavior: Behavior({
-    onTouchBegan: function(container) {
-      container.skin = startBtnImPushSR;
-    },
-    onTouchEnded: function(container) {
-      container.skin = startBtnImSR;
-      application.remove(currentScreen);
-
-      currentScreen = analyticsTempVar;
-      application.remove(navBar2);
-      application.add(currentScreen);
-      application.add(navBar);
-    }
-  })
+behavior: Behavior({    onTouchBegan: function(container) {      container.skin = graphPink;    },    onTouchEnded: function(container){      container.skin = graphGray;            application.remove(currentScreen);  // Remove the old screen from the application            currentScreen = histAnalyticsTemp;  // Make the new screen            application.add(currentScreen);  // Add the new screen to the application          }        })
 }));
 
 
