@@ -1,4 +1,4 @@
- import {
+import {
   VerticalScroller,
   VerticalScrollbar,
   TopScrollerShadow,
@@ -400,7 +400,7 @@ var LibraryTemplate = Container.template($ => ({
 
 var dictionary = {};
 dictionary['60'] = ["Everlasting", "Here", "No Good Deed"];
-dictionary['70'] = ["I Hope You Dance", "You're Not Sorry", "Shake Ya Tailfeather"];
+dictionary['70'] = ["I Hope You Dance", "Youre Not Sorry", "Shake Ya Tailfeather"];
 dictionary['80'] = ["21 Guns" , "Hey Ho","See You Again"];
 dictionary['90'] = ["Gold Digger" , "Diamonds","We Are Young"];
 dictionary['100'] = ["Riptide" , "Man in the Mirror","Turn Down For What"];
@@ -414,7 +414,7 @@ name_artist_dict["Here"] = ["Here", "Alessia Cara", 60];
 name_artist_dict["No Good Deed"] = ["No Good Deed", "Idina Menzel", 60];
 name_artist_dict["I Hope You Dance"] = ["I Hope You Dance", "Leeann Womack", 70];
 name_artist_dict["Shake Ya Tailfeather"] = ["Shake Ya Tailfeather", "Nelly, P.Diddy, Murphy Lee", 70];
-name_artist_dict["You're Not Sorry"] = ["You're Not Sorry", "Taylor Swift", 70];
+name_artist_dict["Youre Not Sorry"] = ["Youre Not Sorry", "Taylor Swift", 70];
 name_artist_dict["21 Guns"] = ["21 Guns", "Green Day",80];
 name_artist_dict["Hey Ho"] = ["Hey Ho", "The Lumineers",80];
 name_artist_dict["See You Again"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth",80];
@@ -1150,6 +1150,7 @@ var navButton = Container.template($ => ({
 var navBar = new Line({ bottom: 0, height: 55, left: 0, right: 0,
   skin: new Skin({ fill: "white" }),
   contents: [
+  new Line({ bottom: 0, height: 5, left: 0, right: 0, skin: new Skin({ fill: "gray" })}),
   new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
   new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: startRunTemplateVar}),
   new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: histAnalyticsTemp})
@@ -1159,6 +1160,7 @@ var navBar = new Line({ bottom: 0, height: 55, left: 0, right: 0,
 var navBar2 = new Line({ bottom: 0, height: 55, left: 0, right: 0,
   skin: new Skin({ fill: "white" }),
   contents: [
+  new Line({ bottom: 0, height: 5, left: 0, right: 0, skin: new Skin({ fill: "gray" })}),
   new navButton({btnSkin: listGray, pushSkin: listPink, nextScreen: libraryTempVar}),
   new navButton({btnSkin: runningGray, pushSkin: runningPink, nextScreen: nowPlayingTemp}),
   new navButton({btnSkin: graphGray, pushSkin: graphPink, nextScreen: histAnalyticsTemp})
