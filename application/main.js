@@ -399,22 +399,22 @@ var LibraryTemplate = Container.template($ => ({
 
 
 var dictionary = {};
-dictionary['60'] = ["Everlasting", "Here", "No Good Deed"];
-dictionary['70'] = ["I Hope You Dance", "Youre Not Sorry", "Shake Ya Tailfeather"];
+//dictionary['60'] = ["Everlasting", "Here", "No Good Deed"];
+//dictionary['70'] = ["I Hope You Dance", "Youre Not Sorry", "Shake Ya Tailfeather"];
 dictionary['80'] = ["21 Guns" , "Hey Ho","See You Again"];
 dictionary['90'] = ["Gold Digger" , "Diamonds","We Are Young"];
 dictionary['100'] = ["Riptide" , "Man in the Mirror","Turn Down For What"];
-dictionary['110'] = ["Into You", "Just The Way You Are", "Payphone"];
-dictionary['120'] = ["Call Me Maybe", "How To Save A Life", "Just Dance"];
-dictionary['130'] = ["Hot N Cold", "I Got A Feeling", "Moves Like Jagger"];
+//dictionary['110'] = ["Into You", "Just The Way You Are", "Payphone"];
+//dictionary['120'] = ["Call Me Maybe", "How To Save A Life", "Just Dance"];
+//dictionary['130'] = ["Hot N Cold", "I Got A Feeling", "Moves Like Jagger"];
 
 var name_artist_dict = {};
-name_artist_dict["Everlasting"] = ["Everlasting", "Natalie Cole", 60];
-name_artist_dict["Here"] = ["Here", "Alessia Cara", 60];
-name_artist_dict["No Good Deed"] = ["No Good Deed", "Idina Menzel", 60];
-name_artist_dict["I Hope You Dance"] = ["I Hope You Dance", "Leeann Womack", 70];
-name_artist_dict["Shake Ya Tailfeather"] = ["Shake Ya Tailfeather", "Nelly, P.Diddy, Murphy Lee", 70];
-name_artist_dict["Youre Not Sorry"] = ["Youre Not Sorry", "Taylor Swift", 70];
+//name_artist_dict["Everlasting"] = ["Everlasting", "Natalie Cole", 60];
+//name_artist_dict["Here"] = ["Here", "Alessia Cara", 60];
+//name_artist_dict["No Good Deed"] = ["No Good Deed", "Idina Menzel", 60];
+//name_artist_dict["I Hope You Dance"] = ["I Hope You Dance", "Leeann Womack", 70];
+//name_artist_dict["Shake Ya Tailfeather"] = ["Shake Ya Tailfeather", "Nelly, P.Diddy, Murphy Lee", 70];
+//name_artist_dict["Youre Not Sorry"] = ["Youre Not Sorry", "Taylor Swift", 70];
 name_artist_dict["21 Guns"] = ["21 Guns", "Green Day",80];
 name_artist_dict["Hey Ho"] = ["Hey Ho", "The Lumineers",80];
 name_artist_dict["See You Again"] = ["See You Again", "Wiz Khalifa ft. Charlie Puth",80];
@@ -424,15 +424,15 @@ name_artist_dict["We Are Young"] = ["We Are Young", "Fun ft. Janelle Monáe",90]
 name_artist_dict["Riptide"] = ["Riptide", "Vance Joy",100];
 name_artist_dict["Man in the Mirror"] = ["Man in the Mirror", "Green Day",100];
 name_artist_dict["Turn Down For What"] = ["Turn Down For What", "DJ Snake, Lil Jon",100];
-name_artist_dict["Into You"] = ["Into You", "Ariana Grande", 110];
-name_artist_dict["Just The Way You Are"] = ["Just The Way You Are", "Bruno Mars", 110];
-name_artist_dict["Payphone"] = ["Payphone", "Maroon 5", 110];
-name_artist_dict["Call Me Maybe"] = ["Call Me Maybe", "Carly Rae Jepsen", 120];
-name_artist_dict["How To Save A Life"] = ["How To Save A Life", "The Fray", 120];
-name_artist_dict["Just Dance"] = ["Just Dance", "Lady Gaga", 120];
-name_artist_dict["Hot N Cold"] = ["Hot N Cold", "Katy Perry", 130];
-name_artist_dict["I Got A Feeling"] = ["I Got A Feeling", "The Black Eyed Peas", 130];
-name_artist_dict["Moves Like Jagger"] = ["Moves Like Jagger", "Maroon 5", 130];
+//name_artist_dict["Into You"] = ["Into You", "Ariana Grande", 110];
+//name_artist_dict["Just The Way You Are"] = ["Just The Way You Are", "Bruno Mars", 110];
+//name_artist_dict["Payphone"] = ["Payphone", "Maroon 5", 110];
+//name_artist_dict["Call Me Maybe"] = ["Call Me Maybe", "Carly Rae Jepsen", 120];
+//name_artist_dict["How To Save A Life"] = ["How To Save A Life", "The Fray", 120];
+//name_artist_dict["Just Dance"] = ["Just Dance", "Lady Gaga", 120];
+//name_artist_dict["Hot N Cold"] = ["Hot N Cold", "Katy Perry", 130];
+//name_artist_dict["I Got A Feeling"] = ["I Got A Feeling", "The Black Eyed Peas", 130];
+//name_artist_dict["Moves Like Jagger"] = ["Moves Like Jagger", "Maroon 5", 130];
 
 var analytics_dict = {};
 for (var key in name_artist_dict) {
