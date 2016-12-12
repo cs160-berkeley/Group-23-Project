@@ -4,6 +4,8 @@
   TopScrollerShadow,
   BottomScrollerShadow
 } from 'scroller';
+
+
 import Pins from "pins";
 var remotePins;
 class AppBehavior extends Behavior {
@@ -301,6 +303,7 @@ var songArrays = {};
 songArrays.songs60bpm = ["Here", "Love Gun", "Grapevine Fires", "If No One Will Listen", "My Love", "Beautiful War", "Culo", "No Good Deed", "Cold Desert"];
 //songArrays.artists60bpm = ["Alessia Cara", "Cee Lo Green", "Death Cab for Cutie", "Kelly Clarkson", "Sia"];
 songArrays.songs80bpm = ["21 Guns", "Hey Ho", "See You Again", "Complicated", "You Shook Me All Night Long", "Come And Get It", "We Cant Stop", "Rehab", "Halo"];
+var artist_dict = {"21 Guns":"Green Day", "Hey Ho":"The Lumineers", "See You Again":"Wiz Khalifa", "Complicated":"Avril Lavigne", "You Shook Me All Night Long":"AC/DC", "Come And Get It":"Selena Gomez", "We Cant Stop":"Miley Cyrus", "Rehab":"Rihanna", "Halo":"Beyoncé"};
 
 var labelStuff = Container.template($ => ({ 
   skin: graySkin, 
@@ -333,9 +336,16 @@ var SongNameWhite = Container.template($ => ({
       application.remove(currentScreen);
       currentScreen = nowPlayingTemp;
       application.add(nowPlayingTemp);
-    }
-  }
-}));
+
+      let picture = new Picture({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".jpg"),width: 180, height: 180});
+
+      nextBtn.container.container.container[0][0][0].empty();
+      nextBtn.container.container.container[0][0][0].add(picture);
+      nextBtn.container.container.container[0][0][1].string = $;
+      nextBtn.container.container.container[0][0][2].string = artist_dict[$];
+     }
+   }
+ }));
 
 // var SongNameGray = Container.template($ => ({
 //     left: 0, right: 0, top: 0, height: 60, active: true, skin: graySkin, state:0,
@@ -770,9 +780,13 @@ if (container.skin ==pauseIm){
       application.remove(navBar2);
       application.add(navBar);
       song.stop();
-      }
-    })
+    }
+  })
 }));
+
+var prevBtn = new prevButton();
+var playBtn = new playButton();
+var nextBtn = new nextButton();
 
 
  /* Play screen layout */
@@ -795,17 +809,17 @@ if (container.skin ==pauseIm){
     // new Label({left: 10, right: 10, top: 0, name: "curr_bpm_bar",
     //  style: blackMedStyle, string: "Current Music BPM:"}),
 
+  new Column({
+    left: 10, right: 10, height: 300, top: 0, bottom: 0, skin: whiteSkin, name:"controls",
+    contents: [
     new Column({
-      left: 10, right: 10, height: 300, top: 0, bottom: 0, skin: whiteSkin, name:"controls",
+      top: 0, left: 5, right: 5, height: 250, skin: pinkSkin,
       contents: [
-      new Column({
-        top: 0, left: 5, right: 5, height: 250, skin: pinkSkin,
+      new Line({
+        top: 10, left: 50, width: 180, height: 180, skin: blackSkin,
         contents: [
-        new Line({
-          top: 10, left: 50, width: 180, height: 180, skin: blackSkin,
-          contents: [
-          ]
-        }),
+        ]
+      }),
         //having trouble making these labels appear
         new Label({left: 10, right: 10, top: 0,
           style: blackHeaderStyle, string: ""}),
@@ -813,20 +827,20 @@ if (container.skin ==pauseIm){
           style: blackMedStyle, string: ""}),
         ]
       }),
-      new Line({
-        top: 0, left: 5, right: 5, height: 30, skin: pinkSkin,
-        contents: [
-        new prevButton(),
-        new playButton(),
-        new nextButton(),
-        ]
-      }),
+    new Line({
+      top: 0, left: 5, right: 5, height: 30, skin: pinkSkin,
+      contents: [
+      prevBtn,
+      playBtn,
+      nextBtn,
       ]
-    })
+    }),
     ]
-  }),
- new finishButton()
- ]
+  })
+  ]
+}),
+  new finishButton()
+  ]
 }));
 
 
