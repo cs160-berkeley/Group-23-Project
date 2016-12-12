@@ -331,13 +331,13 @@ var SongNameWhite = Container.template($ => ({
     onTouchEnded(content){
       var songStr = $.replace(/\s/g, "-").toLowerCase();
       if(song!=0) song.stop();
-      song = new Media({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".mp3")});
+      song = new Media({url: mergeURI(application.url, "songs/"+80+"/"+songStr+".mp3")});
       song.start();
       application.remove(currentScreen);
       currentScreen = nowPlayingTemp;
       application.add(nowPlayingTemp);
 
-      let picture = new Picture({url: mergeURI(application.url, "songs/"+THR+"/"+songStr+".jpg"),width: 180, height: 180});
+      let picture = new Picture({url: mergeURI(application.url, "songs/"+80+"/"+songStr+".jpg"),width: 180, height: 180});
 
       nextBtn.container.container.container[0][0][0].empty();
       nextBtn.container.container.container[0][0][0].add(picture);
