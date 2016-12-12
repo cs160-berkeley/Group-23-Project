@@ -3,9 +3,27 @@
   VerticalScrollbar,
   TopScrollerShadow,
   BottomScrollerShadow
-} from 'scroller';import Pins from "pins";var remotePins;class AppBehavior extends Behavior {    onLaunch(application) {
-        let discoveryInstance = Pins.discover(            connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Connecting to remote pins\n");                    remotePins = Pins.connect(connectionDesc);                }            },             connectionDesc => {                if (connectionDesc.name == "pins-share-led") {                    trace("Disconnected from remote pins\n");                    remotePins = undefined;                }            }         );
-    }}
+} from 'scroller';
+import Pins from "pins";
+var remotePins;
+class AppBehavior extends Behavior {
+  onLaunch(application) {
+    let discoveryInstance = Pins.discover(
+      connectionDesc => {
+        if (connectionDesc.name == "pins-share-led") {
+          trace("Connecting to remote pins\n");
+          remotePins = Pins.connect(connectionDesc);
+        }
+      }, 
+      connectionDesc => {
+        if (connectionDesc.name == "pins-share-led") {
+          trace("Disconnected from remote pins\n");
+          remotePins = undefined;
+        }
+      } 
+      );
+  }
+}
 application.behavior = new AppBehavior();
 
 var index;
@@ -396,8 +414,10 @@ name_artist_dict["Riptide"] = ["Riptide", "Vance Joy",100];
 name_artist_dict["Man in the Mirror"] = ["Man in the Mirror", "Green Day",100];
 name_artist_dict["Turn Down For What"] = ["Turn Down For What", "DJ Snake, Lil Jon",100];
 var analytics_dict = {};
-for (var key in name_artist_dict) {  // do something with key
- analytics_dict[key] = [0,0,-100000];}
+for (var key in name_artist_dict) {
+  // do something with key
+  analytics_dict[key] = [0,0,-100000];
+}
 
 
 let set = new Texture("images/settings-cogwheel-button copy.png");
@@ -554,46 +574,46 @@ let playButton = Container.template($ => ({
  behavior: Behavior({
   onCreate: function(container){
 
- trace("remotePins: " + remotePins + "\n");
-    if (remotePins) {
-      remotePins.repeat("/heartRate/read", 100, (HR) => {
-        CHR = HR * 130;
-        container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
+   trace("remotePins: " + remotePins + "\n");
+   if (remotePins) {
+    remotePins.repeat("/heartRate/read", 100, (HR) => {
+      CHR = HR * 130;
+      // container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
 
-      });
-    }
-  },
-  onTouchEnded: function(container) {
+    });
+  }
+},
+onTouchEnded: function(container) {
 
-     if (remotePins) {
-      remotePins.repeat("/heartRate/read", 100, (HR) => {
-        CHR = HR * 130;
-        container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
-      });
-    }
-   if (container.skin ==pauseIm){
-    container.skin = playIm;
-    song.stop();
+ if (remotePins) {
+  remotePins.repeat("/heartRate/read", 100, (HR) => {
+    CHR = HR * 130;
+    // container.container.container.container.curr_bpm_bar.string = "Current Music BPM: " + curr_cat;
+  });
+}
+if (container.skin ==pauseIm){
+  container.skin = playIm;
+  song.stop();
 
+} else{
+  container.skin = pauseIm;
+  if (count == 2){
+    count = 0;
+    if (THR - CHR >= 10){
+      curr_cat +=10;
+    } else if( CHR - THR >= 10){
+      curr_cat -= 10;
+    } 
   } else{
-    container.skin = pauseIm;
-    if (count == 2){
-      count = 0;
-      if (THR - CHR >= 10){
-        curr_cat +=10;
-      } else if( CHR - THR >= 10){
-        curr_cat -= 10;
-      } 
-    } else{
-     count +=1;
-   }
+   count +=1;
+ }
 
-   index = dictionary[curr_cat.toString()].length;
+ index = dictionary[curr_cat.toString()].length;
             if (first == 0){ // when the application first loads up, play the first song in the correct HB category.
              first = 1;
              curr_index = 0;
 
-            curr_song_name = dictionary[curr_cat.toString()][curr_index];
+             curr_song_name = dictionary[curr_cat.toString()][curr_index];
              song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + curr_song_name +".mp3"),width: 0, height: 0});
              let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + curr_song_name +".jpg"),width: 180, height: 180});
              container.container.container[0][0].empty();
@@ -604,7 +624,7 @@ let playButton = Container.template($ => ({
              container.container.container[0][2].string = name_artist_dict[curr_song_name][1];
              song.start();
 
-            analytics_dict[curr_song_name][0]= CHR;
+             analytics_dict[curr_song_name][0]= CHR;
 
            } else if(initial_song.length > 0){
             trace("it worked\n");
@@ -620,12 +640,12 @@ let playButton = Container.template($ => ({
             container.container.container[0][2].string = name_artist_dict[curr_song_name][1];
             song.start();
 
-           analytics_dict[curr_song_name][0]= CHR;
+            analytics_dict[curr_song_name][0]= CHR;
 
           } else{
            song.start();
 
-          analytics_dict[curr_song_name][0]= CHR;
+           analytics_dict[curr_song_name][0]= CHR;
          }
        }
      }
@@ -640,44 +660,44 @@ let playButton = Container.template($ => ({
    behavior: Behavior({
     onTouchEnded: function(container) {
      song.stop();
-    analytics_dict[curr_song_name][1]= CHR;
-   if (analytics_dict[curr_song_name][2] < analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0]){
-		analytics_dict[curr_song_name][2] = analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0];
+     analytics_dict[curr_song_name][1]= CHR;
+     if (analytics_dict[curr_song_name][2] < analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0]){
+      analytics_dict[curr_song_name][2] = analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0];
 
-	}
-  
+    }
 
-     curr_index = curr_index -1;
-     index = dictionary[curr_cat.toString()].length;
-     if (curr_index < 0){
-       curr_index = index -1;
-     }
 
-     if (count == 2){
-      count = 0;
-      if (THR - CHR >= 10){
-        curr_cat +=10;
-      } else if( CHR - THR >= 10){
-        curr_cat -= 10;
-      } 
-    } else{
-     count +=1;
+    curr_index = curr_index -1;
+    index = dictionary[curr_cat.toString()].length;
+    if (curr_index < 0){
+     curr_index = index -1;
    }
-   song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
-   let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
-   container.container.container[0][0].empty();
 
-   container.container.container[0][0].add(picture);
-
-   container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
-
-   container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
-
-   song.start();
-
-  
-   analytics_dict[curr_song_name][0]= CHR;
+   if (count == 2){
+    count = 0;
+    if (THR - CHR >= 10){
+      curr_cat +=10;
+    } else if( CHR - THR >= 10){
+      curr_cat -= 10;
+    } 
+  } else{
+   count +=1;
  }
+ song = new Media({url: mergeURI(application.url,"songs/" + curr_cat + "/" + dictionary[curr_cat.toString()][curr_index]+".mp3"),width: 0, height: 0});
+ let picture = new Picture({url: mergeURI(application.url, "songs/" +curr_cat + "/" + dictionary[curr_cat.toString()][curr_index] +".jpg"),width: 180, height: 180});
+ container.container.container[0][0].empty();
+
+ container.container.container[0][0].add(picture);
+
+ container.container.container[0][1].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][0];
+
+ container.container.container[0][2].string = name_artist_dict[dictionary[curr_cat.toString()][curr_index]][1];
+
+ song.start();
+
+
+ analytics_dict[curr_song_name][0]= CHR;
+}
 })
 }));
 
@@ -689,12 +709,12 @@ let playButton = Container.template($ => ({
     onTouchEnded: function(container) {
       song.stop();
 
-         analytics_dict[curr_song_name][1]= CHR;
-        trace("Current HR: "+ CHR + "\n");
-   if (analytics_dict[curr_song_name][2] < analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0]){
-		analytics_dict[curr_song_name][2] = analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0];
-		trace("Difference HR: "+ analytics_dict[curr_song_name][2] + "\n");
-	}
+      analytics_dict[curr_song_name][1]= CHR;
+      trace("Current HR: "+ CHR + "\n");
+      if (analytics_dict[curr_song_name][2] < analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0]){
+        analytics_dict[curr_song_name][2] = analytics_dict[curr_song_name][1] - analytics_dict[curr_song_name][0];
+        trace("Difference HR: "+ analytics_dict[curr_song_name][2] + "\n");
+      }
 
       curr_index = curr_index +1;
 
@@ -724,8 +744,8 @@ let playButton = Container.template($ => ({
 
      song.start();
 
-    
-          analytics_dict[curr_song_name][0]= CHR;
+
+     analytics_dict[curr_song_name][0]= CHR;
    }
  })
 }));
@@ -738,7 +758,20 @@ let playButton = Container.template($ => ({
     string: "Finish Run"
   }),
   ],
-behavior: Behavior({    onTouchBegan: function(container) {      container.skin = graphPink;    },    onTouchEnded: function(container){      container.skin = graphGray;            application.remove(currentScreen);  // Remove the old screen from the application            currentScreen = histAnalyticsTemp;  // Make the new screen            application.add(currentScreen);  // Add the new screen to the application          }        })
+  behavior: Behavior({
+    onTouchBegan: function(container) {
+      container.skin = startBtnImPushSR;
+    },
+    onTouchEnded: function(container){
+      container.skin = startBtnImSR;
+      application.remove(currentScreen);  // Remove the old screen from the application
+      currentScreen = histAnalyticsTemp;  // Make the new screen
+      application.add(currentScreen);  // Add the new screen to the application
+      application.remove(navBar2);
+      application.add(navBar);
+      song.stop();
+      }
+    })
 }));
 
 
@@ -759,8 +792,8 @@ behavior: Behavior({    onTouchBegan: function(container) {      container.ski
   new Column({
     left: 0, right: 0, skin: pinkSkin,
     contents: [
-    new Label({left: 10, right: 10, top: 0, name: "curr_bpm_bar",
-     style: blackMedStyle, string: "Current Music BPM:"}),
+    // new Label({left: 10, right: 10, top: 0, name: "curr_bpm_bar",
+    //  style: blackMedStyle, string: "Current Music BPM:"}),
 
     new Column({
       left: 10, right: 10, height: 300, top: 0, bottom: 0, skin: whiteSkin, name:"controls",
@@ -891,7 +924,7 @@ var menuItems = [
 
       application.remove(navBar2);
       application.add(navBar2);
-	}
+    }
   }),
   contents: [
   VerticalScroller({
@@ -923,37 +956,67 @@ var menuItems = [
 
     onDisplayed: function(container) {
 
-      var sorted = [];var temp_dict= {};for (var song_name in analytics_dict) {  // do something with key	if (analytics_dict[song_name][2] in temp_dict){		temp_dict[analytics_dict[song_name][2]].push([song_name,name_artist_dict[song_name][2]]);	} else{		temp_dict[analytics_dict[song_name][2]] = [[song_name,name_artist_dict[song_name][2]]];	}}var  keys = [],  k, i, len;
- for (k in temp_dict) {  if (temp_dict.hasOwnProperty(k)) {    keys.push(k);  }}keys.sort();
-trace("KEYS: " + keys + "\n");len = keys.length;var new_dict = {};
-for (i = 0; i < len; i++) {  k = keys[i];new_dict[k] = temp_dict[k];};
+      var sorted = [];
+      var temp_dict= {};
+
+      for (var song_name in analytics_dict) {
+  // do something with key
+  if (analytics_dict[song_name][2] in temp_dict){
+    temp_dict[analytics_dict[song_name][2]].push([song_name,name_artist_dict[song_name][2]]);
+  } else{
+    temp_dict[analytics_dict[song_name][2]] = [[song_name,name_artist_dict[song_name][2]]];
+  }
+}
+
+var  keys = [],
+k, i, len;
+for (k in temp_dict) {
+  if (temp_dict.hasOwnProperty(k)) {
+    keys.push(k);
+  }
+}
+
+keys.sort();
+trace("KEYS: " + keys + "\n");
+
+len = keys.length;
+var new_dict = {};
+for (i = 0; i < len; i++) {
+  k = keys[i];
+  new_dict[k] = temp_dict[k];
+};
 
 for (var diff in new_dict){
-	trace("HERE   " + diff + " " + new_dict[diff] + "\n");	for (var item in new_dict[diff]){		menuItems.push({title: new_dict[diff][item][0], button: new_dict[diff][item][1].toString()+ " bpm"});}};
+	trace("HERE   " + diff + " " + new_dict[diff] + "\n");
+	for (var item in new_dict[diff]){
+		menuItems.push({title: new_dict[diff][item][0], button: new_dict[diff][item][1].toString()+ " bpm"});
+
+  }
+};
 trace(container[0][0].name + "\n");
 container[0][0].empty(0);
 container[0][0].add(    Column($, { 
-      left: 0, right: 0, top: 0, name: 'menu',
-      /* Add a ProcessorLine object for each item in the menuItems array */
-      contents: [menuItems.map(element => new ProcessorLine(element))]
-    }) );
+  left: 0, right: 0, top: 0, name: 'menu',
+  /* Add a ProcessorLine object for each item in the menuItems array */
+  contents: [menuItems.map(element => new ProcessorLine(element))]
+}) );
       application.remove(navBar); // so that the navbar displays fixed at the bottom of the screen
       application.add(navBar); //instead of below the scroller
-   }
+    }
   }),
+ contents: [
+ new VerticalScroller($, {
+  top: 30 , bottom: 30,
+  name: 'scroller',
   contents: [
-  new VerticalScroller($, {
-    top: 30 , bottom: 30,
-    name: 'scroller',
-    contents: [
-    Column($, { 
-      left: 0, right: 0, top: 0, name: 'menu',
-      /* Add a ProcessorLine object for each item in the menuItems array */
-      contents: [menuItems.map(element => new ProcessorLine(element))]
-    })                  
-    ]
-  }),
-  new HEADER({string: "Most Motivating Songs"}),
+  Column($, { 
+    left: 0, right: 0, top: 0, name: 'menu',
+    /* Add a ProcessorLine object for each item in the menuItems array */
+    contents: [menuItems.map(element => new ProcessorLine(element))]
+  })                  
+  ]
+}),
+ new HEADER({string: "Most Motivating Songs"}),
   //new scroll_header(),
   ]
 }));
